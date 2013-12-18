@@ -1,0 +1,235 @@
+}
+img.photo {
+	-moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3)
+}
+
+div.photo {
+	position: relative;
+	line-height: 0
+}
+
+div.photo:hover .details .title,div.photo:hover .userdetails .title {
+	width: 210px
+}
+
+div.photo a {
+	cursor: pointer
+}
+
+div.photo img {
+	-moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3)
+}
+
+div.photo .details {
+	position: absolute;
+	overflow: hidden;
+	white-space: nowrap;
+	bottom: 0px;
+	color: #fff;
+	background: #000;
+	background: rgba(0, 0, 0, 0.65);
+	width: 100%;
+	height: 50px
+}
+
+div.photo .details a {
+	color: #fff
+}
+
+div.photo .details a:hover {
+	color: #00afe9
+}
+
+div.photo .details .title {
+	width: 260px;
+	font-size: 20px;
+	line-height: 20px;
+	height: 23px;
+	font-weight: 100;
+	letter-spacing: 1px;
+	position: absolute;
+	top: 6px;
+	left: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis
+}
+
+div.photo .details .info {
+	width: 200px;
+	font-size: 11px;
+	line-height: 11px;
+	font-weight: 300;
+	position: absolute;
+	bottom: 9px;
+	left: 10px
+}
+
+div.photo .details .rating {
+	position: absolute;
+	font-weight: 100;
+	letter-spacing: 1px;
+	font-size: 24px;
+	line-height: 50px;
+	height: 100%;
+	right: 10px;
+	top: 0px;
+	text-align: right
+}
+
+div.photo .for_sale {
+	position: absolute;
+	bottom: 55px;
+	right: 5px
+}
+
+div.photo .for_sale a {
+	display: block;
+	text-align: center;
+	font-size: 12px;
+	padding: 4px 6px;
+	color: #fff;
+	line-height: 1.2em;
+	background-color: rgba(0, 0, 0, 0.4);
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	margin: 5px 0px 0px 0px
+}
+
+div.photo .for_sale a:hover {
+	background-color: #000
+}
+
+div.photo .userdetails {
+	position: absolute;
+	overflow: hidden;
+	white-space: nowrap;
+	bottom: 0px;
+	color: #fff;
+	background: #000;
+	background: rgba(0, 0, 0, 0.65);
+	width: 100%;
+	height: 50px
+}
+
+div.photo .userdetails a {
+	color: #fff
+}
+
+div.photo .userdetails a:hover {
+	color: #00afe9
+}
+
+div.photo .userdetails .title {
+	width: 260px;
+	font-size: 20px;
+	line-height: 20px;
+	height: 23px;
+	font-weight: 100;
+	letter-spacing: 1px;
+	position: absolute;
+	top: 13px;
+	left: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis
+}
+
+div.photo .userdetails .rating {
+	position: absolute;
+	font-weight: 100;
+	letter-spacing: 1px;
+	font-size: 24px;
+	line-height: 50px;
+	height: 100%;
+	right: 10px;
+	top: 0px;
+	text-align: right
+}
+
+div.photo .userdetails .info {
+	display: none
+}
+
+div.photo .cdn_deleted {
+	background: rgba(255, 0, 0, 0.65)
+}
+
+div.photo .loupe {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0px;
+	top: 0px;
+	padding: 0;
+	margin: 0;
+	background: rgba(233, 233, 233, 0.5) url("/unity/img/loupe.png")
+		no-repeat center center;
+	display: none
+}
+
+div.photo .rollover {
+	display: none
+}
+
+.rounded {
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px
+}
+
+.shadow {
+	-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15)
+}
+
+.noise {
+	background: transparent url("/unity/img/textures/transparent-noise.png")
+}
+
+.linen {
+	background: #fff url(/unity/img/textures/linen.jpg);
+	border: 1px solid #aaa
+}
+
+.outline {
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	padding: 10px;
+	-moz-box-shadow: inset 0 1px 0px rgba(255, 255, 255, 0.5), 0 1px 0
+		rgba(255, 255, 255, 0.5);
+	-webkit-box-shadow: inset 0 1px 0px rgba(255, 255, 255, 0.5), 0 1px 0
+		rgba(255, 255, 255, 0.5);
+	box-shadow: inset 0 1px 0px rgba(255, 255, 255, 0.5), 0 1px 0
+		rgba(255, 255, 255, 0.5);
+	margin: 0 0 20px 0
+}
+
+.filled {
+	background: #ffffff;
+	padding: 10px;
+	margin: 0 0 20px 0
+}
+
+.box {
+	padding: 10px 0px
+}
+
+.linetop {
+	background: url("/unity/img/bgs/border.gif") repeat-x top left;
+	padding: 14px 0 12px
+}
+
+.linebottom {
+	background: url("/unity/img/bgs/border.gif") repeat-x bottom left;
+	padding: 12px 0 14px
+}
+
+ul {
+	list-style: none;
+	padding: 0;
+	margin: 0
+}

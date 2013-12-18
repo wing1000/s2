@@ -1,0 +1,118 @@
+body {
+	background: #39414a;
+	font: normal 62.5% "Trebuchet MS", Verdana, Helvetica, Arial, sans-serif
+		!important;
+	color: #fff;
+	line-height: 1.4;
+	margin: 0px;
+	padding: 0px;
+
+}
+
+h1,h2,h3,h4,h5,h6 {
+	font-family: "Trebuchet MS", Verdana, Helvetica, Arial,
+		sans-serif !important;
+	margin: 0;
+	padding: 0;
+	letter-spacing: 0;
+	border-bottom: 0 !important;
+}
+
+a {
+	border-bottom: 0px;
+	color: #5DB0E6;
+	text-decoration: none;
+}
+
+a:focus {
+	outline: 1px dotted #eee;
+}
+
+a:active {
+	outline: 0px;
+}
+
+a:hover {
+	color: #7bc4f4;
+}
+
+#spruce_site {
+	margin: 0 auto;
+}
+
+.spruce_body_width {
+	width: 910px;
+	margin: 0 auto;
+}
+
+#spruce_body {
+	padding: 23px;
+}
+
+#spruce_header {
+	height: 26px;
+	padding: 4px;
+	padding-top: 23px;
+	position: relative;
+	display: block;
+	width: 100%;
+	background-color: #333;
+}
+
+#spruce_logo {
+	font-size: 24px;
+	font-family: Meiryo;
+	color: #CC99CC;
+	float: left;
+	position: absolute;
+
+}
+
+/*Primary Navigation*/
+#spruce_main_nav {
+	float: right;
+}
+
+#spruce_main_nav ul {
+	float: left;
+	padding: 0 .8em 2px;
+	margin: 0;
+}
+
+#spruce_main_nav li {
+	float: left;
+	list-style: none;
+	margin: 0;
+	background: none;
+	padding: 0;
+}
+
+#spruce_main_nav li a {
+	float: left;
+	padding: 0 1em;
+	line-height: 25px;
+	font-size: 1.2em;
+	color: #D0D0D0;
+	text-decoration: none;
+	margin-bottom: 2px;
+}
+
+#spruce_main_nav li.spruce_ui,#spruce_main_nav li.spruce_blog {
+	border-right: 1px solid #0F1924;
+}
+
+#spruce_main_nav li.spruce_current a,#spruce_main_nav li.spruce_current a:hover
+	{
+	border-bottom: 2px solid #996699;
+	background: #192839;
+	margin-bottom: 0;
+	cursor: default;
+	color: #D0D0D0;
+}
+
+#spruce_main_nav li a:hover {
+	color: #fff;
+	border-bottom: 2px solid #996666;
+	margin-bottom: 0;
+}
+

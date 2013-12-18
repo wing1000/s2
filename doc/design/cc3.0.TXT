@@ -1,0 +1,20 @@
+by=Attribution License 3.0
+by.nd=Attribution No Derivatives License 3.0
+by.sa=Attribution Share Alike License 3.0
+by.nc=Attribution Non-Commercial License 3.0
+by.nc.nd=Attribution Non-Commercial No Derivatives License 3.0
+by.nc.sa=Attribution Non-Commercial Share Alike License 3.0
+
+by=署名3.0
+by.nd=署名-禁止演绎3.0
+by.sa=署名-相同方式共享3.0
+by.nc=署名-非商业性使用3.0
+by.nc.nd=署名-非商业使用-禁止演绎3.0
+by.nc.sa=署名-非商业性使用-相同方式共享3.0
+
+http://creativecommons.net.cn/licenses/meet-the-licenses/
+
+
+署名3.0
+署名-非商业性使用-相同方式共享 3.0
+署名-相同方式共享 3.0 

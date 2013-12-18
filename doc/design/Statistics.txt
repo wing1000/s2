@@ -1,0 +1,10 @@
+Statistics
+We need a bit more activity to generate your stats.	Upload some photos and get some likes, faves, or comments.
+	Activity
+		A graphical overview of your daily interactions on 500px.
+	Totals
+		Quick all-time and last-week totals of your Likes, Dislikes, Faves and Comments.
+	Friends & Followers
+		See your most engaged friends and followers.
+	Photos
+		View and sort your photos by ratings, likes, comments and more!

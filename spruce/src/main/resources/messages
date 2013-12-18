@@ -1,0 +1,311 @@
+server.error=The connection to the Server has timed out.
+server.inner.error=Internal server error.
+# You can specialize this file for each language.
+web.app.name = Spruce Photography
+web.keywords = pictures, photos, photography, photographer, photo gallery, photography, communication, work, equipment, photo, professional, upload, share, camera, camera, photo album, blog, online photo gallery, share pictures, professional photography, social photography, upload photos, share photos, excellent photo portfolio, photo community, latest photos, hot photos, hot pictures, models and photography, commercial photography, architectural photography
+web.description = Spruce is the professional photography community share exchange, you can share your own photographs, you can also find a photographer, and the national good photographer can explore photographic skills.
+Untitled=Untitled
+unknown.city=Unknown
+
+success=successful
+fail=failed
+error=Error
+msg.save.success=Save successfully.
+msg.save.fail=Save failed.
+msg.save.error=An error occurred while saving.
+msg.delete.success=Delete successfully.
+msg.delete.fail=Delete failed.
+msg.delete.error=An error occurred while deleting.
+
+# nav link
+home=Home
+photo=Photo
+photos=Photos
+pop=Popular
+last=Last
+choice=Choice
+upcoming=Upcoming
+category=Category
+flow=Flow
+fav=Favorite
+favorite=Favorite
+photo.nav.suffix=Photos
+search=Search
+upload=Upload
+
+#profile
+profile=Profile
+account=Account
+settings=Settings
+store=Store
+login=Login
+logout=Logout
+signup=Signup
+sign.in=Sign In
+sign.up=Sign Up
+pluse.alt=Pluse
+follow=Follow
+followed=Followed
+unfollow=Unfollow
+following=Following
+view=View
+vote=Vote
+like=Like
+comment=Comment
+view.num=View
+vote.num=Vote
+like.num=Like
+comment.num=Comment
+more=More
+all=All
+published=Published
+sets=Sets
+edit=Edit
+delete=Delete
+remove=Remove
+add=Add
+close=Close
+cancel=Cancel
+save.change=Save Change
+no.login=Please login!
+yes=Yes
+no=No
+#show
+highest.pulse=Highest Pulse
+vote.like=Like
+vote.voted=Voted
+thank.vote=Thank for your vote.
+favorite.wanna=Favorite?
+favorite.cancel=Cancel favorite?
+follow.cancel=Cancel follow?
+i.wanna.buy.photo=I want to buy this photo.
+#Licenses
+#http://creativecommons.org/choose/
+#http://creativecommons.org/choose/?lang=zh&jurisdiction=cn
+#http://creativecommons.net.cn/licenses/meet-the-licenses/
+license.content=Default license of your choice:
+license.by=Allow modifications of your work?
+license.by.share=Yes, as long as others share alike
+license.commercial=Allow commercial uses of your work?
+license.cc.by = Attribution
+license.cc.nc = Non-Commercial
+license.cc.nd= No Derivatives
+license.cc.sa = Share Alike
+
+
+#exif key
+make=Make
+model=Model
+camera=Camera
+aperture=Aperture
+shutter=Shutter
+iso=ISO
+lens=Lens
+focus=Focus
+ev=EV
+dateTimeOriginal=Taken
+taken=Taken
+WhiteBalance=WhiteBalance
+Software=Software
+Flash=Flash
+ColorSpace=ColorSpace
+MeteringMode=MeteringMode
+ExposureProgram=ExposureProgram
+ExposureMode=ExposureMode
+GPSLatitude=GPSLatitude
+GPSLongitude=GPSLongitude
+GPSAltitude=GPSAltitude
+
+
+
+
+
+#  login
+login.title=Log in with your account
+login.no.account=No account yet?
+login.forget.password=Can't access your account?
+login.username.alt= Email or Username
+login.username.label=Login with your username or email:
+login.password.alt= Password
+login.password.label=Input your password:
+login.qq=Log in with your QQ account
+login.sina.weibo=Log in with your Weibo account
+login.error=Email And Password mismatch.
+login.json.message.before=Can't operate,please
+login.json.message.login=login
+
+#sign up
+signup.password.mismatch=Twice password mismatched.
+signup.password.max=password length<=20 char(or 6 chinese).
+signup.user.exist=Username already existed.
+signup.name.and.email.exist=Username and Email already existed.
+signup.email.exist=Email already existed.
+# upload
+add.photo=New Photo
+add.story=New Story
+add.story.alt=New Story of Photos
+add.blink=Blink Photo
+add.manage=Manage
+add.ps=PS Together
+manage=Manage
+organize=Organize
+#
+upload.error=Upload error.
+upload.drag=Drag photo from your computer in here.
+upload.add.before= You can also
+upload.add.button= Add file...
+upload.add.after= for photos to upload.
+photo.file.name=file name:
+photo.file.size=source size:
+photo.note=Note:Drag photo from your computer in here and replace current photo.
+photo.title=Title
+photo.description=Description
+photo.tags=Tags
+photo.tags.alt=Tags (split by space)
+photo.adult=For adult content?
+photo.copyright=Owns the copyright?
+photo.can.ps=This photo can be modified and republish?
+photo.make=Make
+photo.model=Model
+photo.camera=Camera
+photo.aperture=Aperture
+photo.shutter=Shutter
+photo.shutter.alt=Shutter Speed
+photo.iso=ISO
+photo.iso.alt=ISO/Film
+photo.lens=Lens
+photo.focus=Focus
+photo.focus.alt=Focal Length
+photo.ev=EV
+photo.ev.alt=Exposure Compensation
+photo.taken=Taken
+photo.taken.alt=Date Taken
+photo.category=Category
+photo.category.no=No Category
+photo.dir=Directory
+photo.dir.no=No available directory
+photo.status=Publish
+#
+photo.delete.confirm=Are you sure you want to delete this photo\u003f
+#dir
+dir.save.error=The set save error.
+dir.limit=You can create directories less than %s.
+dir.name.max=The dir name's max size <= %s
+dir.name.existed=the dir has existed.
+dir.delete.confirm=Are you sure you want to delete this dir %s \u003f 
+#Editor's choice
+editor.choice=Choice
+editor.view=View
+
+#profile
+profile.menu.profile=Profile
+profile.menu.camera=Camera
+profile.menu.password=Password
+profile.menu.notifications=Notifications
+profile.menu.social.media=Social Media
+profile.menu.license=License
+profile.menu.account=Account
+profile.menu.album=Album
+profile.menu.settings=Settings
+profile.menu.themes=Themes
+profile.menu.friends=Friends
+profile.menu.following=Following
+profile.menu.followed=Followed
+#user
+user.title=User profile manage
+user.gender=Gender
+user.male=Male
+user.female=Female
+user.not.specified=Not specified
+user.crop.photo=Crop Photo
+user.username=User Name
+user.email=Email
+user.location=Location
+user.city=City
+user.state=State
+user.country=Country
+user.nice.name=Nice name
+user.birthday=Birthday
+user.phone=Phone
+user.real.name=Real Name
+user.about=About You
+
+#camera
+camera.title=Equipment manage:Camera,Lens,Tripod,Filter
+camera.add.camera=Add Camera
+camera.add.lens=Add Lens
+camera.add.tripod=Add Tripod
+camera.add.filter=Add Filter
+camera.camera=Camera
+camera.lens=Lens
+camera.tripod=Tripod
+camera.filter=Filter
+#password
+password.title=Update Password
+password.old=Old Password
+#unsouport .new keyword
+password.again=New Password
+password.again.repeat=Repeat New Password
+password.error.mismatched=Twice password mismatched, please re-type.
+password.error.old.mismatched=Old password mismatched.
+password.error.new.no.updated=New password didn't updated.
+password.message.updated=New password has updated.
+#notify
+notify.title=Email Notifications setting
+notify.comment.wall=Somebody comments on my wall
+notify.comment.photo=Somebody comments on my photo
+notify.comment.story=Somebody comments on my story
+notify.favorite.photo=Somebody adds my photo to Favorites
+notify.choice.photo=My photo is selected to Editors' Choice
+notify.score.up=My photo becomes Upcoming or Popular
+notify.follow.me=Somebody starts following me
+notify.subscribed=Somebody comments on a photo or story I am subscribed to
+notify.buy.photo=Somebody buys one of my photos
+notify.news=News and updates
+notify.account.change=Account changes and updates
+#Social Media
+social.website=Website
+social.qq=QQ
+social.qq.weibo=Tencent Weibo
+social.weibo=Sina Weibo
+social.twitter=Twitter
+social.facebook=Facebook
+social.flickr=Flickr
+social.fengniao=Fengniao
+social.renren=Renren
+social.douban=Douban
+
+
+# For use in JavaExtensions.since tag
+since.seconds = about %s second%s ago
+since.minutes = about %s minute%s ago
+since.hours   = about %s hour%s ago
+since.days    = about %s day%s ago
+since.months  = about %s month%s ago
+since.years   = about %s year%s ago
+since.years.months   = about %s year%s %s month%s ago
+since.format  = MMM d, yyyy
+
+# Validation messages
+validation.required=Required
+validation.minSize=Minimum size is %2$d
+validation.maxSize=Maximum size is %2$d
+validation.email=Invalid email address
+validation.range=Not in the range %2$d through %3$d
+validation.min=Cannot be lower than %2$d
+validation.max=Cannot be greater than %2$d
+validation.match=Must match %2$s
+validation.isTrue=Must be checked
+validation.equals=Must be equal to &{%2$s}
+validation.invalid=Incorrect value
+validation.future=Must be in the future
+validation.after=Must be after %2$s
+validation.past=Must be in the past
+validation.before=Must be before %2$s
+validation.object=Validation failed
+validation.notFound=Object not found for id %2$s
+validation.url=Not a valid URL
+validation.phone=Not a valid phone
+validation.ipv4=Not a valid IP address
+validation.ipv6=Not a valid IP v6 address
+validation.unique=Must be unique

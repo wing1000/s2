@@ -1,0 +1,21 @@
+
+What is Pulse and Views?
+Last Updated: Jul 03, 2013 11:30AM EDT
+Pulse
+
+The pulse number is a score out of 100 points that shows how popular your photo is at given moment. Pulse is calculated by an algorithm, which is unique to 500px. Pulse algorithm was designed to promote daily exposure of new photographs and photographers. It is not necessarily a measure of photograph's quality.
+ 
+The algorithm was created to promote best photographs most enjoyed by the community on hourly basis. Hence, you can see a rotation of photos from Upcoming to Popular and other pages.
+ 
+When a photo is first uploaded its Pulse is at N/A, meaning that it doesn't have any activity yet. When users start viewing, voting, leaving comments and adding to favourites Pulse starts to grow. Growth of the Pulse is proportionate to how much attention photo is getting and how popular other photos are at 500px. Users who are not logged in to 500px can also vote on photos using a "Starter Account", however these votes do not count towards the photo's Pulse or the photographer's Affection score.
+ 
+Once photo is in Fresh and reaches a Pulse over 75, a photo is then featured on Upcoming page. With a Pulse over 80 the photo is added to Popular page. As other photos are getting popular as well a photo's Pulse can drop causing it to be removed from the Popular or Upcoming pages. Over time, as photo ages its Pulse will drop.
+
+Your photo's highest achieved Pulse will be recorded and displayed below the current Pulse.
+
+N/A - Your photo has not received any voting criteria that would affect its Pulse.
+0.00 - Your photo's current Pulse is at zero. For your photo's pulse to increase it needs more attention from viewers.
+70+ -  If your photo is Fresh and has a Pulse over 75, it will be in the Upcoming section. The Fresh section can be delayed, as photos are queued. Fresh and Upcoming sections are both sorted chronologically, by time uploaded.
+80+ - Your photo will be featured in the Popular section, if it's Pulse reaches 80. The Popular section is sorted by Pulse, so photos with a lower Pulse will be deep in the pages of Popular (there are over 1000 pages usually).
+
+Where you can view pulse:

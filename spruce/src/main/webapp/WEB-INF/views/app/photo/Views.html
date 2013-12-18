@@ -1,0 +1,38 @@
+`import java.util.Set;import fengfei.ucm.entity.photo.Refresh;import fengfei.fir.utils.Path;`
+ `extends  japidviews._layouts.Layout` `args List<Refresh> refreshs` `set title: "Sprucy Home Page"`
+
+ `set header: "Show"`
+
+
+
+<div class="alert">
+	<button type="button" class="close" data-dismiss="alert">×</button>
+	<strong>Warning!</strong> Best check yo self, you're not looking too
+	good.
+</div>
+
+
+
+<ul class="previews">
+	`for(Refresh refresh : refreshs){`
+	<li class="">	
+	<a href="/show/${refresh.idPhoto}" target="photo_view" class="preview"> <div class="caption">
+			<div class="title">${refresh.title}</div>
+			<div class="info">${refresh.userName}</div>
+			<div class="rating rollover">99.6</div>
+		</div><img
+			src="${Path.getJpegDownloadPath(refresh.idPhoto,1)}"  alt=""></a>
+	</li> `}`
+</ul>
+ 
+<div class="pagination  pagination-centered">
+	<ul>
+		<li><a href="#">Prev</a></li>
+		<li class="disabled"><a href="#">1</a></li>
+		<li><a href="#">2</a></li>
+		<li><a href="#">3</a></li>
+		<li><a href="#">4</a></li>
+		<li><a href="#">5</a></li>
+		<li><a href="#">Next</a></li>
+	</ul>
+</div>

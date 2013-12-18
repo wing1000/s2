@@ -1,0 +1,16 @@
+.navbar .brand {
+    padding-top: 16px;
+    font-size: 26px;
+}
+
+/*profile*/
+.profile_right {
+    max-width: 914px;
+    width: 914px;
+}
+div.photo_preview .caption {
+    bottom: 50px;
+}
+.photo_nav .hr {
+    margin-top:-19px;
+}

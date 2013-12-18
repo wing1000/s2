@@ -1,0 +1,96 @@
+var jcrop_api;
+$(function() {
+
+	$('#fileupload').fileupload(
+		{
+			url : "/profile/upload",
+			dataType : 'json',
+			disableImageResize : /Android(?!.*Chrome)|Opera/.test(window.navigator
+					&& navigator.userAgent),
+			imageMaxWidth : 800,
+			imageMaxHeight : 800,
+			previewCrop : false, // Force cropped images
+			autoUpload : true,
+			multipart : false,
+			processQueue : [ {
+				action : 'loadImage',
+				fileTypes : /^image\/(gif|jpeg|png)$/,
+				maxFileSize : 512000
+			}, {
+				action : 'resizeImage',
+				maxWidth : 800,
+				maxHeight : 800,
+				minWidth : 800,
+				minHeight : 800,
+				crop : false
+			}, {
+				action : 'saveImage'
+			}, {
+				action : 'setImage'
+			} ],
+			formData : function(form) {
+				return {
+					"id_photo" : $("#user_id_photo").val()
+				};
+			}
+		}).on("fileuploadprogressall", function(e, data) {
+
+		var progress = parseInt(data.loaded / data.total * 100, 10);
+		$('#progress .bar').css('width', progress + '%');
+
+	}).on('fileuploaddone', function(e, data) {
+		// data.result
+		// data.textStatus;
+		// data.jqXHR;
+		alert(data.result.toSource());
+		if (data.result.sucess) {
+			var path = data.result.path + "?" + Math.random();
+			$("#head_img").attr("src", path);
+			$("#user_id_photo").val(data.id_photo);
+			var userPhoto = $('#ora_user_photo');
+			userPhoto.attr("src", path);
+			jcrop_api.setImage(path);
+			jcrop_api.setOptions({
+				setSelect : [ 0, 0, 100, 100 ]
+			});
+			// $("#viewUserPhoto").width(userPhoto.width() +
+			// 40).height(userPhoto.height() + 40);
+
+			$('#userPhotoModal').modal('show');
+		}
+
+	});
+
+	var userPhoto = $('#ora_user_photo');
+	userPhoto.Jcrop({
+		onChange : showCoords,
+		onSelect : showCoords,
+		aspectRatio : 1,
+		maxSize : [ 300, 300 ],
+		minSize : [ 64, 64 ],
+		setSelect : [ 0, 0, 100, 100 ]
+	}, function() {
+		jcrop_api = this;
+		jcrop_api.animateTo([ 0, 0, 100, 100 ]);
+	});
+
+	$("#SaveUserPhoto").click(function() {
+		$.post("/settings/profile/crop/done", $("#cropForm").serialize(), function(data) {
+			if (data.status == "Success") {
+				var path = data.path + "?" + Math.random();
+				$("#head_img").attr("src", path);
+				jcrop_api.setImage(path);
+
+				$('#userPhotoModal').modal('hide');
+			}
+		}, "json");
+	});
+});
+function showCoords(c) {
+	$('#x1').val(c.x);
+	$('#y1').val(c.y);
+	$('#x2').val(c.x2);
+	$('#y2').val(c.y2);
+	$('#w').val(c.w);
+	$('#h').val(c.h);
+};

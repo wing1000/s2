@@ -1,0 +1,211 @@
+@CHARSET "UTF-8";
+
+a {
+    text-decoration: none;
+}
+
+.page-header {
+    padding-bottom: 4px;
+    margin: 0px;
+    border-bottom: 1px solid #eeeeee;
+}
+.hr1 {
+    padding-bottom: 4px;
+    padding-top:4px;
+    margin: 0px;
+    border-bottom: 1px solid #ddd;
+}.hr2 {
+    padding-bottom: 4px;
+    padding-top:4px;
+    margin: 0px;
+    border-bottom: 2px solid #ddd;
+}
+
+.footer {
+    padding: 70px 0;
+    margin-top: 70px;
+    border-top: 1px solid #e5e5e5;
+    background-color: #f5f5f5;
+}
+
+.footer p {
+    margin-bottom: 0;
+    color: #777;
+}
+
+.footer-links {
+    margin: 10px 0;
+}
+
+.footer-links li {
+    display: inline;
+    margin-right: 10px;
+}
+
+/*
+ */
+.line1 {
+    height: 1px;
+    max-height: 1px;
+}
+
+.line2 {
+    height: 2px;
+    max-height: 2px;
+}
+
+.line3 {
+    height: 3px;
+    max-height: 3px;
+}
+
+.line4 {
+    height: 4px;
+    max-height: 4px;
+}
+
+.line5 {
+    height: 5px;
+    max-height: 5px;
+}
+
+.line6 {
+    height: 6px;
+    max-height: 6px;
+}
+
+.line7 {
+    height: 7px;
+    max-height: 7px;
+}
+
+.line8 {
+    height: 8px;
+    max-height: 8px;
+}
+
+.line9 {
+    height: 9px;
+    max-height: 9px;
+}
+
+.line10 {
+    height: 10px;
+    max-height: 10px;
+}
+
+.stat {
+    background-color: #F5F5F5;
+}
+
+.border-left {
+    border-left: solid 1px #ddd;
+}
+
+.border-bottom {
+    border-bottom: solid 1px #ddd;
+}
+
+.photo_stats {
+    padding: 4px 0px 4px 10px;
+    margin: 0px;
+}
+
+.photo_stats ul.stats {
+    list-style: none;
+    margin: 0px;
+}
+
+.photo_stats ul.stats li {
+    height: 20px;
+    padding: 0px;
+}
+
+.photo_stats ul.stats li small {
+    color: #AAA;
+}
+
+.photo_stats ul.stats li .faded {
+    padding-left: 4px;
+}
+
+.photo_stats ul.exif li .faded {
+    padding-left: 12px;
+}
+
+.photo_max_stats {
+    padding: 11px;
+    font-size: 18px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.photo_score_stats {
+    padding: 11px;
+    font-size: 18px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+ul.media-list {
+    margin-left: 0px;
+    padding-left: 0px;
+}
+
+ul li a {
+    margin-left: 0px;
+    text-decoration: none;
+}
+
+
+.left6 {
+    margin-left: 6px;
+    *margin-left: 6px;
+}
+
+.card {
+    padding: 0px;
+    margin: 0px;
+    max-height: 200px;
+    min-height: 30px;
+}
+
+.rounded {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px
+    border: 1px solid #FFFFFF;
+}
+
+.shadow {
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+}
+
+.filled {
+    background: #f6f6f6;
+    padding: 10px;
+    margin: 0 0 20px 0
+}
+.img-rounded {
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+}
+
+.img-polaroid {
+  padding: 4px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.img-circle {
+  -webkit-border-radius: 500px;
+     -moz-border-radius: 500px;
+          border-radius: 500px;
+}

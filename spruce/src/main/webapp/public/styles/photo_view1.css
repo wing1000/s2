@@ -1,0 +1,49 @@
+.photo_col {
+    margin-top: 20px;
+    -moz-box-shadow: 0px 1px 3px rgba(0,0,0,0.3);
+    -webkit-box-shadow: 0px 1px 3px rgba(0,0,0,0.3);
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.3)
+}
+
+.photo_preview .caption {
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    bottom: 50px;
+    background: #FFFFFF;
+    color: #000000;
+    width: 100%;
+    height: 50px;
+    max-height: 50px;
+    min-height: 50px;
+    border: 0px;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.photo_preview .caption .score a {
+    color: #777777;
+}
+.photo_preview .caption a {
+    color: #000000;
+    text-decoration: none;
+}
+.photo_preview .caption a:hover {
+    color: #000000;
+    text-decoration: none;
+}
+.photo_preview .caption .title a, .photo_preview .caption .info a {
+    color: #000000;
+}
+.photo_preview .caption .info a:hover, .photo_preview .caption .title a:hover {
+    color: #006DCC;
+}
+.photo_preview:hover .caption .score, .photo_preview:hover .caption a {
+    color: #000000;
+    text-decoration: none;
+}
+.photo_preview:hover .caption {
+    color: #000000;
+    background-color: #FFFFFF;
+}
