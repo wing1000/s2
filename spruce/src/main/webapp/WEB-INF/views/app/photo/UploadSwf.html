@@ -1,0 +1,223 @@
+`extends japidviews._layouts.Layout` `set title:"Sprucy Upload Page"`
+`set css
+<style type="text/css">
+	<!--
+	.left {
+	text-align: left;
+	padding: 0px;
+	padding-right: 4px;
+	margin: 0px;
+	width: 50px;
+	*width: 50px;
+	margin: 0px;
+	}
+
+	.right_line {
+	border-right: 1px solid #dddddd;
+	}
+
+	.non-border {
+	border: 0px;
+	}
+
+	.magin_left {
+	margin-left: 0px;
+	}
+
+	.center {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	}
+	-->
+</style>
+<script src="@{'/public/agile-uploader-3.0/jquery.flash.min.js'}" type="text/javascript"></script>
+
+<script src="@{'/public/agile-uploader-3.0/agile-uploader-3.1.js'}" type="text/javascript"></script>
+<link type="text/css" rel="stylesheet" href="@{'/public/agile-uploader-3.0/agile-uploader.css'}" />
+<script src="@{'/public/app/ExifUtils.js'}"></script>
+<script src="@{'/public/app/upload.js'}"></script>
+`
+<div class="grid_row">
+
+	<form id="multipleDemo" enctype="multipart/form-data">
+
+		<div id="multiple"></div>
+
+		<div id="files">
+			<table class="table table-striped center " id="content"
+			style="display: none">
+				<thead>
+					<tr>
+						<td colspan="3" class="non-border span12">
+						<div id="progress"
+						class="progress progress-success progress-striped">
+							<div class="bar"></div>
+						</div></td>
+					</tr>
+				</thead>
+				<tbody data-target="#modal-gallery" data-toggle="modal-gallery"
+				class="files">
+					<tr>
+						<td class="right_line span6">
+						<div class=" magin_left">
+							<div id="preview"></div>
+							<br />
+							<p>
+								file name: <span id="name"></span>
+							</p>
+							<p>
+								source size: <span id="size"></span>
+							</p>
+						</div></td>
+						<td class="right_line span3">
+						<div class=" magin_left">
+							<div class="block">
+								<label for="title1">Title</label>
+								<input type="text"
+								placeholder="title" maxlength="100" id="title1" value=""
+								name="title" class=" input-width ">
+								<input
+								type="hidden" placeholder="ID" maxlength="100" id="id1"
+								value="" name="id" class=" input-width ">
+							</div>
+							<div class="block">
+								<label for="desc1">Description</label>
+								<textarea class=" input-width " id="desc1"
+										placeholder="Description" name="description"></textarea>
+							</div>
+							<div class="block">
+								<select name="category" id="category1"
+								class="category select-width">
+									<optgroup label="Category"></optgroup>
+									<option value="10">Abstract</option>
+									<option value="11">Animals</option>
+									<option value="5">Black and White</option>
+									<option value="1">Celebrities</option>
+									<option value="9">City and Architecture</option>
+									<option value="15">Commercial</option>
+									<option value="16">Concert</option>
+									<option value="20">Family</option>
+									<option value="14">Fashion</option>
+									<option value="2">Film</option>
+									<option value="24">Fine Art</option>
+									<option value="23">Food</option>
+									<option value="3">Journalism</option>
+									<option value="8">Landscapes</option>
+									<option value="12">Macro</option>
+									<option value="18">Nature</option>
+									<option value="4">Nude</option>
+									<option value="7">People</option>
+									<option value="19">Performing Arts</option>
+									<option value="17">Sport</option>
+									<option value="6">Still Life</option>
+									<option value="21">Street</option>
+									<option value="26">Transportation</option>
+									<option value="13">Travel</option>
+									<option value="22">Underwater</option>
+									<option value="27">Urban Exploration</option>
+									<option value="25">Wedding</option>
+									<option selected="selected" value="0">Uncategorized</option>
+								</select>
+							</div>
+							<div class="block">
+								<label for="tags1">Tags</label>
+								<textarea rows="" cols="" placeholder="Tags (divide by comma)"
+										class="tags" name="tags" id="tags1"></textarea>
+							</div>
+							<div class="checkbox">
+								<label for="adult1">
+									<input type="checkbox" value="1"
+									id="adult1" name="adult">
+									For adult content?</label>
+							</div>
+							<div class="checkbox">
+								<label for="copyright1">
+									<input type="checkbox"
+									value="1" id="copyright1" name="copyright" checked="checked">
+									Owns
+									the copyright?</label>
+							</div>
+						</div></td>
+						<td class="span3">
+						<div class=" magin_left">
+							<div class="inline input-prepend">
+								<span class="add-on"><span class=" span1 left">Camera </span></span>
+								<input type="text" placeholder="Camera" value=""
+								class="Camera" id="camera1" name="camera">
+								<input
+								type="hidden" placeholder="Make" value="" class="make"
+								id="make1" name="make">
+							</div>
+							<div class="inline input-prepend">
+								<span class="add-on"><span class=" span1 left">Lens</span> </span>
+								<input type="text" placeholder="Lens" value="" class="lens"
+								id="lens1" name="lens">
+							</div>
+							<div class="inline input-prepend">
+								<span class="add-on"><span class=" span1 left">Focus </span></span>
+								<input type="text" placeholder="Focal Length" value=""
+								class="focal-length" id="focus1" name="focus">
+							</div>
+							<div class="inline input-prepend">
+								<span class="add-on "><span class=" span1 left">Shutter </span></span>
+								<input type="text" placeholder="Shutter Speed" value=""
+								class="shutter-speed" id="shutter1" name="shutter">
+							</div>
+							<div class="inline input-prepend">
+								<span class="add-on"><span class=" span1 left">Aperture</span></span>
+								<input type="text" placeholder="Aperture" value=""
+								class="aperture" id="aperture1" name="aperture">
+							</div>
+							<div class="inline input-prepend last">
+								<span class="add-on"><span class=" span1 left">ISO </span></span>
+								<input type="text" placeholder="ISO/Film" value="" class="iso"
+								id="iso1" name="iso">
+							</div>
+							<div class="inline input-prepend last">
+								<span class="add-on"><span class=" span1 left">EV</span></span>
+								<input type="text" placeholder="Exposure Compensation" value=""
+								class="iso" id="ev1" name="ev">
+							</div>
+							<div class="inline input-prepend">
+								<span class="add-on"><span class=" span1 left"> Taken </span></span>
+								<input type="hidden" value="" id="taken_at1"
+								name="taken_at">
+								<input type="text"
+								placeholder="Date Taken" value="" class="date"
+								id="taken_at_display1">
+							</div>
+						</div></td>
+					</tr>
+					<tr class="template-upload fade in">
+						<td colspan="2"></td>
+						<td><span class="start" id="start"> </span><!-- 			 <span class="cancel" id="Cancel">
+
+						<button class="btn btn-warning">
+						<i class="icon-ban-circle icon-white"></i> <span>Cancel</span>
+						</button>
+
+						</span> --></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</form>
+
+	<a href="#" onClick="document.getElementById('agileUploaderSWF').submit();">Submit</a>
+</div>
+
+<script type="text/javascript">
+	$('#multiple').agileUploader({
+		flashSrc : 'agile-uploader.swf',
+		submitRedirect : 'results.php',
+		formId : 'multipleDemo',
+		flashVars : {
+			firebug : true,
+			form_action : '/process.php',
+			file_limit : 3,
+			max_post_size : (10000 * 1024)
+		}
+	}); 
+</script>
+

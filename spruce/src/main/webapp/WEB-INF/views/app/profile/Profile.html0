@@ -1,0 +1,244 @@
+
+<pre style="display: none">
+ `import fengfei.ucm.entity.profile.User` 
+ `extends japidviews._layouts.Layout` 
+ `args User user` 
+ `set title:"Sprucy Profile Page"` 
+ `set header:"Information" ` 
+</pre>
+
+`set css
+<link rel="stylesheet"
+	href="@{'/public/blueimp/css/jquery.fileupload-ui.css'}">
+<script src="@{'/public/blueimp/js/vendor/jquery.ui.widget.js'}"></script>
+<script src="@{'/public/blueimp/load-image.min.js'}"></script>
+<script src="@{'/public/blueimp/js/jquery.iframe-transport.js'}"></script>
+<script src="@{'/public/blueimp/load-image.min.js'}"></script>
+<script src="@{'/public/blueimp/canvas-to-blob.min.js'}"></script>
+<script src="@{'/public/blueimp/js/jquery.fileupload.js'}"></script>
+<script src="@{'/public/blueimp/js/jquery.fileupload-process.js'}"></script>
+<script src="@{'/public/blueimp/js/jquery.fileupload-image.js'}"></script>
+<link href="@{'/public/jcrop/jquery.Jcrop.min.css'}" rel="stylesheet" />
+<script src="@{'public/jcrop/jquery.Jcrop.min.js'}"></script>
+<script src="@{'public/app/profile.js'}" ></script>
+
+
+<style type="text/css">
+.head_img {
+	max-width: 100px;
+	max-height: 100px;
+	width: 100px;
+	height: 100px;
+}
+
+.modal_photo {
+	max-width: 800px;
+	width: 800px;
+}
+
+.modal-body_photo {
+	max-width: 800px;
+	max-height: 540px;
+}
+</style>
+`
+
+<div id="userPhotoModal" class="modal hide fade modal_photo"
+	tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">×</button>
+		<h3 id="myModalLabel">User's photo</h3>
+	</div>
+	<div class="modal-body modal-body_photo">
+		<div id="viewUserPhoto">
+			<img
+				src="${fengfei.spruce.utils.PhotoPathUtils.getUserPhotoDownloadPath(user)}"
+				id="ora_user_photo" />
+		</div>
+	</div>
+	<div class="modal-footer">
+		<form id="cropForm" method="post" class="form-inline">
+			<label>X1 <input type="text" size="4" id="x1" name="x1"
+				class="span1" /></label> <label>Y1 <input type="text" size="4"
+				id="y1" name="y1" class="span1" />
+			</label> <label>X2 <input type="text" size="4" id="x2" name="x2"
+				class="span1" /></label> <label>Y2 <input type="text" size="4"
+				id="y2" name="y2" class="span1" /></label> <label>W <input
+				type="text" size="4" id="w" name="w" class="span1" />
+			</label> <label>H <input type="text" size="4" id="h" name="h"
+				class="span1" /></label> <input type="hidden" id="crop_id_photo"
+				name="crop_id_photo" class="span1" value="${user.idPhoto}">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn btn-primary" id="SaveUserPhoto" type="button">Save
+				changes</button>
+		</form>
+	</div>
+</div>
+
+
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span2 ">
+			<div class="sidebar-nav ">`tag SettingsMenu "Profile"`</div>
+		</div>
+		<div class="span10 ">
+			<div class="row-fluid ">
+				<div class="span12  ">
+					`if asBoolean(flash.get("error")){`
+
+					<div class="alert alert-error">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						${flash.get("error")}
+					</div>
+
+					`}`
+
+
+					<form class="" action="/settings/profile/done" method="post">
+						<div class="span12"></div>
+						<div class="row-fluid well">
+							<div class="span6  ">
+
+								<div class="control-group ">
+									<div class="controls inline">
+										<div class="head_img">
+											<img id="head_img"
+												src="${fengfei.spruce.utils.PhotoPathUtils.getUserPhotoDownloadPath(user)}">
+										</div>
+										<input type="hidden" id="user_id_photo" name="user_id_photo"
+											value="${user.idPhoto}">
+										<div>maximum 100kB or 200 pixels in size</div>
+										<a href="#userPhotoModal" role="button" class="btn inline"
+											data-toggle="modal">Crop Photo</a>
+
+										<div id="progress"
+											class="progress progress-success progress-striped">
+											<div class="bar"></div>
+										</div>
+										
+										<span class="btn fileinput-button"> <i
+											class="icon-plus icon-white"></i> <span>Select
+												files...</span> 
+											<input id="fileupload" type="file" name="file" >
+										</span>
+									</div>
+								</div>
+								<div class="control-group ">
+									<label class="control-label" for="gender0">Gender</label>
+									<div class="controls ">
+										<label class="radio inline"> <input type="radio"
+											id="gender1" name="gender" value="1" ${user.gender==1?"checked":""}>
+											Male
+										</label> <label class="radio inline"> <input type="radio"
+											id="gender2" name="gender" value="2" ${user.gender==2?"checked":""}>
+											Female
+										</label> <label class="radio inline"> <input type="radio"
+											id="gender0" name="gender" value="0" ${(user.gender==null
+											|| user.gender==0)?"checked":""}> Not specified
+										</label>
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label" for="username">Username</label>
+									<div class="controls">
+										<input type="text" id="username1" name="username1"
+											class="span10" placeholder="Username"
+											value="${user.userName}" readonly="readonly"> <input
+											type="hidden" id="username" name="username" class="span9"
+											value="${user.userName}">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label" for="email">Email</label>
+									<div class="controls">
+										<input type="text" id="email1" name="email1" class="span10"
+											placeholder="Email" value="${user.email}" readonly="readonly">
+										<input type="hidden" id="email" name="email" class="span11"
+											placeholder="Email" value="${user.email}">
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label" for="location">Location</label>
+									<div class="controls">
+										<input id="city" name="city" class="span10" placeholder="City"
+											type="text" value="${user.city}" /> <input class="span10"
+											id="state" name="state" placeholder="State" type="text"
+											value="${user.state}" /> <input id="country" name="country"
+											class="span10" placeholder="Country" type="text"
+											value="${user.country}" />
+									</div>
+								</div>
+
+							</div>
+
+							<div class="span6  ">
+
+								<div class="control-group">
+									<label class="control-label" for="nicename">Nice Name</label>
+									<div class="controls">
+										<input type="text" id="nicename" name="nicename"
+											class="span11" placeholder="Nice Name"
+											value="${user.niceName}">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label" for="birthday">Birthday</label>
+									<div class="controls">
+										<input type="text" id="birthday" name="birthday"
+											class="span11" placeholder="Birthday"
+											value="${user.birthday}">
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label" for="phone">Phone</label>
+									<div class="controls">
+										<input type="text" id="phone" name="phone" class="span11"
+											placeholder="Phone" value="${user.phoneNum}">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label" for="realName">Real Name</label>
+									<div class="controls">
+										<input type="text" id="realName" name="realName"
+											class="span11" placeholder="Real Name"
+											value="${user.realName}">
+									</div>
+								</div>
+
+								<div class="control-group">
+									<label class="control-label" for="about">about you</label>
+									<div class="controls">
+										<textarea id="about" name="about" class="span11" rows="6">${user.about}</textarea>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="control-group">
+							<div class="controls">
+								<button type="submit" class="btn">Save change</button>
+							</div>
+						</div>
+
+					</form>
+
+
+				</div>
+				<div class="span5"></div>
+			</div>
+
+
+
+		</div>
+	</div>
+
+</div>
+
+</div>
+</div>

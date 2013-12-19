@@ -1,0 +1,56 @@
+<pre style="display: none">
+	
+`import java.util.*;import fengfei.ucm.entity.photo.*;import japidviews.Application.photo.*;`
+`import fengfei.fir.utils.Path;import fengfei.fir.model.PhotoShow`
+`extends japidviews._layouts.Layout`
+`args Photo photo,List<PhotoSet> photoSets `
+`set css
+<script src="@{/public/bootstrap/bootstrap-tag.js}"></script>
+<link type="text/css" href="@{/public/bootstrap/bootstrap-tag.css}"  rel="stylesheet"/>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDqPLY_onh61yMSw5KSVICJN-B5igbHCTs&sensor=false&language=zh-cn"></script>
+<script src="@{'/public/js/gmap/gmap-context-menu.js'}"></script>
+<link type="text/css" href="@{/public/js/gmap/gmap-context-menu.css}"  rel="stylesheet"/>
+<script src="@{'/public/app/map.js'}"></script>
+<script src="@{'/public/app/photoEdit.js'}"></script>
+<script type="text/javascript">var _edit_photo = `p(fengfei.spruce.utils.WebUtils.toJSON(photo));`;</script>
+`
+</pre>
+<form id="photoEditForm" action="/edit/done" method="post" enctype="multipart/form-data"  >
+	<div class="grid_row upload ">
+		<div class="col col_16">
+
+			<div>
+
+				<table class="table table-striped  exif_table img_shadow exif" id="content" >
+					<tbody >
+						`tag UploadForm photo,photoSets`
+
+						<tr>
+							<td colspan="2">`String msg=(String)flash.get("msg");`
+							`if( msg!=null){`
+							<div class="alert `if("success".equals(msg)){`alert-success`}else{`alert-error`}`">
+								<button type="button" class="close" data-dismiss="alert">
+									&times;
+								</button>
+								${msg}
+							</div> `}` </td>
+							<td>
+							<button class="btn btn-success" type="submit" id="save_photo">
+								Save
+							</button>
+							<button class="btn btn-success" type="button" id="publish_photo">
+								Publish
+							</button>
+							<button class="btn btn-info" onclick="window.close()" type="button"  >
+								Close
+							</button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+
+	</div>
+
+</form>

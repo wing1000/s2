@@ -4,10 +4,11 @@ import fengfei.ucm.dao.Sequence;
 import fengfei.ucm.repository.impl.SqlCommentRepository;
 import fengfei.ucm.repository.impl.SqlPhotoRepository;
 import fengfei.ucm.repository.impl.SqlUserRepository;
-import play.Logger;
-import play.PlayPlugin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class DbInstallPlugin extends PlayPlugin {
+public class DbInstallPlugin  {
+    static Logger logger= LoggerFactory.getLogger(AppInitPlugin.class);
 
     final static String[] Tables = {
             SqlUserRepository.UserTableName,
@@ -16,9 +17,8 @@ public class DbInstallPlugin extends PlayPlugin {
             SqlCommentRepository.CommentsPhotoTableName
     };
 
-    @Override
     public void onApplicationStart() {
-        Logger.info("Sequence init.");
+        logger.info("Sequence init.");
         try {
             Sequence.install(1, Tables);
         } catch (Exception e) {

@@ -1,21 +1,24 @@
 package controllers;
 
-import cn.bran.play.JapidResult;
+import fengfei.fir.i18n.Messages;
 import fengfei.fir.model.Done;
 import fengfei.fir.model.Done.Status;
 import fengfei.fir.utils.AppUtils;
-import japidviews.Application.error.E500;
+import fengfei.spruce.Constants;
+import fengfei.ucm.entity.profile.User;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import play.i18n.Messages;
-import play.mvc.Before;
-import play.mvc.Http;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.Map.Entry;
 
-public class Admin extends ExceptionCatchController {
+public class Admin {
     static Logger logger = LoggerFactory.getLogger(Admin.class);
 
     public static Map<String, String> pathTitle = new HashMap<>();
@@ -29,29 +32,15 @@ public class Admin extends ExceptionCatchController {
         pathTitle.put("/flow", i18n("flow"));
         pathTitle.put("/fav", i18n("fav"));
         pathTitle.put("/favorate", i18n("favorate"));
-
     }
 
-
-    public final static String SESSION_LOGIN_KEY = "islogin";
-    public final static String SESSION_USER_ID_KEY = "USER_ID";
-    public final static String SESSION_USER_NAME_KEY = "USER_NAME";
-    public final static String COOKIE_EMAIL = "spruce_email";
-    public final static String COOKIE_PASSWORD = "spruce_pwd";
     //
     public final static int Row = 13;
     public final static int TotalRowShow = 20;
 
-    @Before
-    static void log() {
-        Http.Header agentHeader = request.headers.get("user-agent");
-        String agent = agentHeader.value().toLowerCase();
-        String ip = request.remoteAddress;
-        logger.info(ip + ": " + agent);
-    }
 
-    protected static Map<String, String[]> escapeAll() {
-        Map<String, String[]> maps = params.all();
+    protected static Map<String, String[]> escapeAll(HttpServletRequest request) {
+        Map<String, String[]> maps = request.getParameterMap();// params.all();
         Set<Entry<String, String[]>> sets = maps.entrySet();
         for (Entry<String, String[]> entry : sets) {
             String[] values = entry.getValue();
@@ -66,13 +55,36 @@ public class Admin extends ExceptionCatchController {
         return maps;
     }
 
-    protected static Map<String, String> escapeAllSimple() {
-        Map<String, String> map = params.allSimple();
-        Set<Entry<String, String>> sets = map.entrySet();
-        for (Entry<String, String> entry : sets) {
-            map.put(entry.getKey(), escape(entry.getValue()));
+    protected static Map<String, String> escapeAllSimple(HttpServletRequest request) {
+        Map<String, String> params = new HashMap<>();
+        Map<String, String[]> map = request.getParameterMap();
+
+        Set<Entry<String, String[]>> sets = map.entrySet();
+        for (Entry<String, String[]> entry : sets) {
+            String[] entries = entry.getValue();
+            params.put(entry.getKey(), escape(entries[0]));
         }
-        return map;
+        return params;
+    }
+
+    protected static Map<String, String> allSimple(HttpServletRequest request) {
+        Map<String, String> params = new HashMap<>();
+        Map<String, String[]> map = request.getParameterMap();
+
+        Set<Entry<String, String[]>> sets = map.entrySet();
+        for (Entry<String, String[]> entry : sets) {
+            String[] entries = entry.getValue();
+            params.put(entry.getKey(), entries[0]);
+        }
+        return params;
+
+    }
+
+    protected static Map<String, String> allSimple( ) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+
+        return allSimple(request);
+
     }
 
     protected static String escape(String str) {
@@ -83,28 +95,23 @@ public class Admin extends ExceptionCatchController {
     }
 
     protected static Integer currentUserId() {
-        String sidUser = session.get(SESSION_USER_ID_KEY);
-        return sidUser == null || "".equals(sidUser) ? null : Integer.parseInt(sidUser);
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute(Constants.SESSION_USER_KEY);
+        return user == null ? null : user.idUser;
     }
 
     protected static String currentNiceName() {
-        String username = session.get(SESSION_USER_NAME_KEY);
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpSession session = request.getSession();
+        String username = (String) session.getAttribute(Constants.SESSION_USER_NAME_KEY);
         return username;
     }
 
-    protected static void renderDoneJSON(boolean updated) {
-        Done done = createDone(updated);
-        renderJSON(done);
+    protected static Done renderDoneJSON(boolean updated) {
+        return createDone(updated);
     }
 
-    protected static void renderHasErrors() {
-
-        if (validation.hasErrors()) {
-            Done done = createDone(false);
-            done.put("messages", validation.errorsMap());
-            renderJSON(done);
-        }
-    }
 
     protected static Done createDone(boolean updated) {
         Done done = null;
@@ -117,42 +124,41 @@ public class Admin extends ExceptionCatchController {
     }
 
 
-    protected static void renderErrorJSON() {
+    protected static Done renderErrorJSON() {
         Done done = new Done(i18n("server.inner.error"), Status.Error);
-        renderJSON(done);
+        return done;
     }
 
-    protected static void renderSuccessJSON() {
+    protected static Done renderSuccessJSON() {
         Done done = new Done(i18n("server.inner.error"), Status.Error);
-        renderJSON(done);
+        return done;
     }
 
 
-    protected static void redirect500() {
-        redirect("/500");
+    protected static void flashError(ModelAndView mv) {
+
+        mv.addObject("error", i18n("msg.save.fail"));
     }
 
-
-    protected static void render500() {
-        throw new JapidResult(new E500().render());
+    protected static void flashSuccess(ModelAndView mv) {
+        mv.addObject("success", i18n("msg.save.success"));
     }
 
-    protected static void flashError() {
-        flash.put("error", i18n("msg.save.fail"));
+    protected static void flashFail(ModelAndView mv) {
+        mv.addObject("error", i18n("msg.save.fail"));
     }
 
-    protected static void flashSuccess() {
-        flash.put("success", i18n("msg.save.success"));
-    }
-
-    protected static void flashFail() {
-        flash.put("error", i18n("msg.save.fail"));
-    }
-
-    protected static int getIIP() {
-        String ip = request.remoteAddress;
+    protected static int getIntRemoteIP() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String ip = request.getRemoteAddr();
         int iip = AppUtils.ip2int(ip);
         return iip;
+    }
+
+    protected static String getRemoteAddr() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String ip = request.getRemoteAddr();
+        return ip;
     }
 
     public static List<String> pageList(int page, int maxPage) {

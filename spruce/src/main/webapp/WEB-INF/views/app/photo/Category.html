@@ -1,0 +1,11 @@
+`import java.util.Set;import fengfei.ucm.entity.photo.Refresh;import fengfei.fir.utils.Path;import fengfei.fir.model.PhotoShow`
+`extends  japidviews._layouts.Layout`
+`args  Map<String, String> pathTitle,String pagePath, List<? extends PhotoShow> photos, int pageNum`
+`set title: pathTitle.get(pagePath)`
+`set header: "Show"`
+`set css
+<!---->
+<link rel="stylesheet" type="text/css" href="@{/public/styles/photo.css}"/>
+`
+`tag PhotoNav pagePath,pathTitle`
+`tag PhotoView pagePath,photos,pageNum`

@@ -1,0 +1,83 @@
+<pre style="display: none">
+`import fengfei.fir.model.PhotoShow;`
+`import fengfei.ucm.entity.profile.User;`
+`extends japidviews._layouts.Layout`
+`args int type,String pagePath, Object rs, int pageNum`
+`set title: "Sprucy Search Page"`
+`set header: "Search" `	
+</pre>
+
+
+
+
+
+
+<div class="grid_row">
+
+	<div class="col col_16">
+		<form accept-charset="UTF-8" action="/search" method="get" class="form-inline">
+
+			<select class="selectpicker input-small span1" id="type" name="t" >
+				<option value="photos">Photos</option>
+				<option value="photo_tags" class="suboption">Photo Tags</option>
+				<!--
+				<option value="stories">Stories</option>
+				<option value="story_tags" class="suboption">Story Tags</option>--->
+				<option value="users" >Users</option>
+			</select>
+
+			`String skey=params.get("c");`
+			`Byte key=(byte)0;`
+			`if(skey!=null) {key=Byte.parseByte(skey);}`
+
+			<select class="selectpicker  span2" id="category" name="c" onchange="form.submit();">
+				`tag CategorySelectOptions fengfei.spruce.cache.SimpleCache.categories,key`
+			</select>
+
+			<select  class="selectpicker  span2"  id="photos_sort" name="o" onchange="form.submit();">
+				<option value="votes" selected="selected">Sort by Votes</option>
+				<option value="date">Sort by Date</option>
+				<option value="name">Sort by Name</option>
+			</select>
+			<script type="application/javascript">
+				var typeValue = '${params.get("t")}';
+				$("#type").val(typeValue);
+				function search_type_change() {
+					if (this.value == "users") {
+						$("#category").attr("disabled", "disabled");
+					} else {
+						$("#category").removeAttr("disabled");
+					}
+					//$(this).parent("form").submit()
+				}
+
+
+				$(document).ready(function() {
+					$("select#type").change(search_type_change);
+					if(typeValue!=''){
+					$("select#type").trigger("change");
+					}
+					
+				})
+			</script>
+			<div class="input-append pull-right">
+				<input class="input-xxlarge"   autofocus="autofocus" id="search-box" name="q" placeholder="Search for people, photos or tags..." type="text" value="${params.get("q")}" />
+
+				<button class="btn" type="submit">
+					<i class="icon-search"></i>
+				</button>
+			</div>
+		</form>
+
+	</div>
+
+</div>
+
+`if(type==0){`
+	`List<PhotoShow>	photos=(List<PhotoShow>)rs;`
+		`tag japidviews.Application.photo.PhotoView pagePath,photos,pageNum`
+`}else{`
+	`List<User>	users=(List<User>)rs;`
+	`tag UsersCard pagePath,users,pageNum`
+
+`}`

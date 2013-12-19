@@ -1,5 +1,8 @@
 package fengfei.web.app.init;
 
+import fengfei.fir.i18n.Language;
+import fengfei.fir.i18n.Messages;
+import fengfei.fir.utils.Path;
 import fengfei.forest.slice.utils.ResourcesUtils;
 import fengfei.spruce.cache.SimpleCache;
 import fengfei.spruce.utils.FollowServiceUtils;
@@ -13,20 +16,25 @@ import fengfei.ucm.service.WriteFollowService;
 import fengfei.ucm.service.relation.ReadFollowSqlService;
 import fengfei.ucm.service.relation.WriteFollowSqlService;
 import fengfei.web.app.init.utils.PropertiesToJson;
-import play.Logger;
-import play.PlayPlugin;
-import play.i18n.Lang;
-import play.i18n.Messages;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.io.*;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-public class AppInitPlugin extends PlayPlugin {
-
-    @Override
+public class AppInitPlugin  {
+    static Logger logger= LoggerFactory.getLogger(AppInitPlugin.class);
+    private String uploadPhotoPath = "/opt/upload/photo";
+    private String downloadPhotoPath = "/photo";
+   
     public void onApplicationStart() {
+//        Path.UPLOAD_PATH = uploadPhotoPath;
+//        Path.DOWNLOAD_PATH = downloadPhotoPath;
+
         initFollowService();
         AppConstants.PopularMinScore = 30;
         AppConstants.UpcomingMinScore = 20;
@@ -37,7 +45,7 @@ public class AppInitPlugin extends PlayPlugin {
 
         try {
             i18nJavaScriptGenerate();
-            Logger.info("Generate i18n javascript file finished.");
+            logger.info("Generate i18n javascript file finished.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -45,7 +53,7 @@ public class AppInitPlugin extends PlayPlugin {
 
 
     private void initFollowService() {
-        Logger.info("init follow service.");
+        logger.info("init follow service.");
         RelationRepository repository = new SqlRelationRepository();
         //
         ChainExecuteProxy<WriteFollowService> writeChainExecuteProxy = new ChainExecuteProxy<>(
@@ -72,8 +80,9 @@ public class AppInitPlugin extends PlayPlugin {
 
     private void readCategory() {
 
-        play.Logger.info("read category.");
-        String lang = Lang.get();
+        logger.info("read category.");
+        Locale locale = Language.get();
+        String lang=locale.getLanguage()+"_"+locale.getCountry();
         if (lang == null || "en".equals(lang)) {
             lang = "";
         } else {
@@ -113,7 +122,7 @@ public class AppInitPlugin extends PlayPlugin {
 
     private void readLicense() {
 
-        play.Logger.info("read license.");
+        logger.info("read license.");
         String lang = getLang();
 
         try (InputStream inputStream = ResourcesUtils
@@ -140,7 +149,8 @@ public class AppInitPlugin extends PlayPlugin {
     }
 
     private static String getLang() {
-        String lang = Lang.get();
+        Locale locale = Language.get();
+        String lang=locale.getLanguage()+"_"+locale.getCountry();
         if (lang == null || "en".equals(lang)) {
             lang = "";
         } else {
@@ -178,6 +188,20 @@ public class AppInitPlugin extends PlayPlugin {
 
 
     }
+    public String getUploadPhotoPath() {
+        return uploadPhotoPath;
+    }
 
+    public void setUploadPhotoPath(String uploadPhotoPath) {
+        this.uploadPhotoPath = uploadPhotoPath;
+    }
+
+    public String getDownloadPhotoPath() {
+        return downloadPhotoPath;
+    }
+
+    public void setDownloadPhotoPath(String downloadPhotoPath) {
+        this.downloadPhotoPath = downloadPhotoPath;
+    }
 
 }

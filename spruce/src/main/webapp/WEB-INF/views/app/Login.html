@@ -1,70 +1,89 @@
-`extends japidviews._layouts.Layout` `set title:"Sprucy Login Page"` `set css
-<style type="text/css">
-.input_control_group {
-	margin-bottom: 4px;
-}
-</style>
-<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=1166443256" type="text/javascript" charset="utf-8"></script>
+`extends japidviews._layouts.Layout`
+`import fengfei.ucm.entity.profile.UserPwd`
+`set title:"Sprucy Log in Page"`
+`set header:" Log in " `
+`set css
+
+<script src="@{'/public/js/jquery.validate.js'}" type="text/javascript"></script>
+<script src="@{'/public/js/additional-methods.js'}" type="text/javascript"></script>
+<script src="@{'/public/js/jquery.validate.localization/messages_cn.js'}" type="text/javascript"></script>
+<script src="@{'/public/app/signup.js'}" type="text/javascript"></script>
+<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="100229030" charset="utf-8"></script>
+<script src=" http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=3168919025" type="text/javascript" charset="utf-8"></script>
 `
-<div id="login" class="container-960 login">
 
-	<div class="row-fluid">
+<div class="grid_row signupx">
 
+	<div class="col col_16" >
+		<p>
+			<h4>Log in with your account</h4>
+		</p>
+	</div>
 
+	<div class="col col_16" >
 
-		<div class="span5">
-			<h3>Login to your account</h3>
-			<div class="control-group">
-				<div class="controls">
-					<div id="wb_connect_btn" class="btn"></div>
-					<script type="text/javascript">
-						WB2.anyWhere(function(W) {
-							W.widget.connectButton({
-								id : "wb_connect_btn",
-								type : '4,2',
-								callback : {
-									login : function(o) {
-										alert(o.screen_name)
-									},
-									logout : function() {
-										alert('logout');
-									}
-								}
+		<div id="login"   class=" 	cardx">
+			<div class="col left_form rigth_line" >
+				<form class="form-horizontal"  method="post" action="/login${flash.get("cpage")}">
+					<div class="control-group">
+						No account yet? <a href="/signup">Sign up</a>
+					</div>
+					`tag ErrorMessage`
+					<p class="control-group ">
+						<label for="email">	Login with your username or email:</label>
+						<input type="text" name="email" id="inputEmail" placeholder="Email or Username" value="${flash.get("email")}" class="input"/>
+					</p>
+					<p class="control-group ">
+						<label for="password">Input your password:</label>
+						<input type="password" name="password" id="inputPassword" placeholder="Password" class="input" alt=""/>
+					</p>
+					<div class="input_control_group">
+						<small class="left terms"><a href="/recover" target="_">Can't access your account?</a></small>
+						<button type="submit" class="btn btn-large">
+							Login
+						</button>
+					</div>
+
+				</form>
+
+			</div>
+			<div class="col right_form  " >
+				<div class="cell">
+					<div>
+
+						<span id="qqLoginBtn" class="qqLoginBtn">Log in with QQ</span>
+						<script type="text/javascript">
+							QC.Login({
+								btnId : "qqLoginBtn", //插入按钮的节点id
+								size : 'A_L'
 							});
-						});
-					</script>
+						</script>
+					</div>
+					<p></p>
+					<div>
+
+						<span id="wb_connect_btn"  class="wb_connect_btn">Log in with Weibo</span>
+
+						<script type="text/javascript">
+							WB2.anyWhere(function(W) {
+								W.widget.connectButton({
+									id : "wb_connect_btn",
+									type : '2,3',
+									callback : {
+										login : function(o) {//登录后的回调函数
+											alert("login: " + o.screen_name)
+										},
+										logout : function() {//退出后的回调函数
+											alert('logout');
+										}
+									}
+								});
+							});
+
+						</script>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="span6">
-
-			<form class="form-horizontal"  method="post" action="/login${flash.get("cpage")}">
-				<div class="control-group">
-					No account yet? <a href="/signup">Sign up</a>
-				</div>
-				`if asBoolean(flash.get("error")){`
-
-				<div class="alert alert-error control-group">
-					<button type="button" class="close" data-dismiss="alert">&times;</button>
-					${flash.get("error")}
-				</div>
-
-				`}`
-				<div class="input_control_group">Login with your username or email</div>
-				<div class="input_control_group">
-					<input type="text" name="email" id="inputEmail" placeholder="Email or Username" value="${flash.get(" email")}"/>
-				</div>
-				<div class="input_control_group">
-					<input type="password" name="password" id="inputPassword" placeholder="Password" />
-				</div>
-				<div class="input_control_group">
-					<small class="left terms"><a href="/recover" target="_">Can't access your account?</a></small>
-					<button type="submit" class="btn">Login</button>
-				</div>
-
-			</form>
-		</div>
 	</div>
-
 </div>
-

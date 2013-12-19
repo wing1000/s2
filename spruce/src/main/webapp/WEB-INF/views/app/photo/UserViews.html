@@ -1,0 +1,265 @@
+<pre style="display: none">
+`import java.util.Set;import fengfei.ucm.entity.photo.*;import fengfei.fir.utils.Path;import fengfei.fir.model.PhotoShow`
+`import fengfei.ucm.entity.profile.*;`
+`import com.google.common.collect.ListMultimap;`
+`extends  japidviews._layouts.Layout`
+`args String pagePath, List<? extends PhotoShow> photos,int pageNum, User user,List<Long> targets,List<Long> sources,int targetCount,int sourceCount,Rank rank,ListMultimap<String,Camera> cameras,boolean isFollow,String action`
+`set title: "Sprucy Your Page"`
+`set header: "Yours"`
+`set css
+ <script src="@{'/public/app/follow.js'}"></script>
+ `
+</pre>
+
+<div class="grid_row users">
+
+    <div class="col col_4">
+        <div class=" card ">
+            <div class="introduction">
+                个人介绍
+            </div>
+
+        </div>
+    </div>
+    <div class="col col_4">
+
+        <div class="row-fluid card ">
+            <div class="span6 affection">
+                <div>
+                    <strong>${rank.affection}</strong>
+                </div>
+                <div>
+                    Affection
+                </div>
+            </div>
+            <div class="span6 photo_stats">
+                <ul class="stats">
+
+                    <li title="Views">
+                        <small class="faded">Views</small>
+                        <strong>${rank.view}</strong>
+                    </li>
+                    <li title="Votes">
+                        <small class="faded">Votes</small>
+                        <strong>${rank.vote}</strong>
+                    </li>
+                    <li title="Favorites">
+                        <small class="faded">Favorites</small>
+                        <strong>${rank.favorite}</strong>
+                    </li>
+                    <li title="comments">
+                        <small class="faded">Comments</small>
+                        <strong>${rank.comment}</strong>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col col_4">
+        <div class=" card map ">
+            `String location=user.toLocation();if(location.length()<=6) location="chengdu, China";`
+            <a href="http://maps.google.com/maps?spn=0.1,0.1&t=m&z=10&q=${location}" target="_blank"> <img
+                    alt="Staticmap?size=280x100&amp;sensor=false&amp;zoom=6&amp;markers${location}"
+                    src="http://maps.googleapis.com/maps/api/staticmap?size=280x100&amp;sensor=false&amp;zoom=6&amp;markers=${location}"/>
+            </a>
+        </div>
+    </div>
+
+    <div class="col col_4">
+        <div class="card">
+            <div class="follow">
+                <div>
+                    Following (${targetCount})
+                </div>
+                <div class="onerow">
+                    `if(targets!=null){`
+                    `for(long id: targets){`
+                    <div class="col3"><img class="img-rounded"
+                                           src="${fengfei.spruce.utils.PhotoPathUtils.getUserPhotoDownloadPath(id)}">
+                    </div>
+
+                    `}`
+                    `}`
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col col_4">
+        <div class=" card  ">
+            <div class="follow">
+                <div>
+                    Followed (${sourceCount})
+                </div>
+                <div class="onerow">
+                    `if(sources!=null){`
+                    `for(Long id: sources){`
+                    <div class="col3"><img class="img-rounded"
+                                           src="${fengfei.spruce.utils.PhotoPathUtils.getUserPhotoDownloadPath(id)}">
+                    </div>
+
+                    `}`
+                    `}`
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col col_4">
+        <div class=" card camera ">
+            <ul>
+                ` if(cameras!=null){
+                `Set keys = cameras.keySet();`
+                `for (Object key : keys) {`
+                ` Collection cs = cameras.get(key.toString());`
+                ` String value = null;`
+                ` for (Object obj : cs) {`
+                ` Camera camera=(Camera)obj;`
+                ` if (value == null) {`
+                ` value = camera.equipment;`
+                ` } else {`
+                ` value += ", " + camera.equipment;`
+                ` }`
+                ` }`
+
+                <li>
+                    <small class="key">${key}</small>
+                    <strong class="value">${value}</strong>
+                </li>
+
+                `}
+                `}
+            </ul>
+        </div>
+    </div>
+    <div class="col col_4">
+        <div class="card ">
+            <div class="feeds">
+                RSS Feeds:
+                <div>
+                    <a>${user.niceName}'s Photos</a>
+                </div>
+                <div>
+                    <a>${user.niceName}'s Favorites</a>
+                </div>
+                <div>
+                    <a>${user.niceName}'s Stories</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col col_16 ">
+        <div class="nav_title"></div>
+    </div>
+</div>
+<div class="grid_row users">
+    <div class="col col_2">
+        <img class="img-rounded"
+             src="${fengfei.spruce.utils.PhotoPathUtils.getUserPhotoDownloadPath(user.idUser)}"/>
+    </div>
+    <div class="col col_2">
+
+        <div class="username txt_left">
+            <strong>${user.niceName}</strong>
+        </div>
+        <div class="introduction txt_left">
+
+        </div>
+        <div class="follow_btn txt_left">
+            <button
+                    class="follow_btn btn `if(isFollow){` btn-success`}else{`btn-info`}` btn-mini  "
+                    type="button" id="follow" toid="${user.idUser}" isfollow="${isFollow}">
+                ${isFollow?"Following":"Follow"}
+            </button>
+        </div>
+
+    </div>
+
+
+    `Map actions=new HashMap();`
+    `actions.put(action,"class=\"active\"");`
+    <div class="col col_16 ">
+        <div class="onerow">
+            <div class="col10 nav_title  ">
+                <ul class="nav nav-pills ">
+                    <li
+                    ${actions.get("home")}>
+                    <a href="/to/${user.idUser}/0/home">Photos</a>
+                    </li>
+                    <li
+                    ${actions.get("story")}>
+                    <a href="/to/${user.idUser}/0/story">Stories</a>
+                    </li>
+                    <li
+                    ${actions.get("fav")}>
+                    <a href="/to/${user.idUser}/0/fav">Favorites</a>
+                    </li>
+                    <li
+                    ${actions.get("flow")}>
+                    <a href="/to/${user.idUser}/0/flow">Flow</a>
+                    </li>
+                    <li
+                    ${actions.get("stats")}>
+                    <a href="/to/${user.idUser}/0/stats">Statistics</a>
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+    `String path=request.url;`
+    `path=path.substring(path.lastIndexOf("/")+1);`
+    <div class="  previews">
+        `for(PhotoShow photo : photos){`
+        <div class="col photo_col width_4">
+            <div class="photo_preview photo_preview_4">
+                <a href="/show/${photo.idPhoto}_${photo.idUser}?from=${path}" target="photo_view"><img
+                        src="${Path.getJpegDownloadPath(photo.idPhoto,1)}"/></a>
+
+                <div class="caption">
+                    <div class="title">
+                        <a href="/show/${photo.idPhoto}_${photo.idUser}?feature=${path}" target="photo_view">${photo.title}</a>
+                    </div>
+                    <div class="score">
+                        ${photo.sscore}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        `}`
+
+    </div>
+    <div class=" paging">
+        <div class="col col_16 pager pagination-right">
+            <ul>
+                <li>
+                    <a href="${pagePath}/${(pageNum-1<=0)?1:(pageNum-1)}">Prev</a>
+                </li>
+                `if(pageNum>=2){`
+                <li>
+                    <a href="${pagePath}/1">First</a>
+                </li>
+                `}`
+
+                <!--	<li class="disabled"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>-->
+                `if(photos.size()>=20){`
+                <li>
+                    <a href="${pagePath}/${photos.size()<20?pageNum:(pageNum+1)}">Next</a>
+                </li>
+                `}`
+
+            </ul>
+        </div>
+    </div>
+
+</div>
+

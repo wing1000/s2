@@ -1,0 +1,61 @@
+`import java.util.Set;import fengfei.ucm.entity.photo.Refresh;`
+`import fengfei.fir.utils.Path;import fengfei.fir.model.PhotoShow`
+`args String pagePath, List<? extends PhotoShow> photos, int pageNum`
+
+<!--
+<div class="alert">
+<button type="button" class="close" data-dismiss="alert">
+×
+</button>
+<strong>Warning!</strong> Best check yo self, you're not looking too
+good.
+</div>
+-->
+`if(photos==null){}else{`
+<div class="grid_row">
+
+	` for(PhotoShow photo : photos){`
+	<div class="col photo_col width_4">
+		<div class="photo_preview photo_preview_4 ">
+			<a href="/show/${photo.idPhoto}_${photo.idUser}?from=${pagePath}" target="photo_view" > <img src="${Path.getJpegDownloadPath(photo.idPhoto,1)}" class="rounded3" /></a>
+			<div class="caption">
+				<div class="title">
+					<a href="/show/${photo.idPhoto}_${photo.idUser}?feature=popular" target="photo_view" >${(photo.title==null || "".equals(photo.title.trim()))?"Untitled":photo.title}</a>
+				</div>
+				<div class="info">
+					<a href="/to/${photo.idUser}">${photo.niceName}</a>
+				</div>
+				<div class="score">
+					<a href="#">${photo.sscore}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	`}`
+
+</div>
+<div class="grid_row">
+	<div class="col col_16 pager  pagination-right">
+		<ul>
+			<li>
+				<a href="${pagePath}/${(pageNum-1<=0)?1:(pageNum-1)}">Prev</a>
+			</li>
+			`if(pageNum>=2){`
+			<li >
+				<a href="${pagePath}/1">First</a>
+			</li>`}`
+
+			<!--	<li class="disabled"><a href="#">1</a></li>
+			<li><a href="#">2</a></li>
+			<li><a href="#">3</a></li>
+			<li><a href="#">4</a></li>
+			<li><a href="#">5</a></li>-->
+			`if(photos.size()>=20){`
+			<li>
+				<a href="${pagePath}/${photos.size()<20?pageNum:(pageNum+1)}" >Next</a>
+			</li>`}`
+
+		</ul>
+	</div>
+</div>
+`}`

@@ -1,189 +1,241 @@
-` suppressNull on`
-`import fengfei.ucm.entity.photo.*;import fengfei.fir.utils.Path;import java.util.*;import java.util.Map.Entry;` 
-  `extends japidviews._layouts.Layout`
-  `args PhotoModel photo,Rank rank,Map  exif,boolean isFollow`
-   `set title: "Sprucy Show Page"`
+`suppressNull on`
+`import fengfei.ucm.entity.photo.*;import fengfei.fir.utils.Path;import java.util.*;import java.util.Map.Entry;`
+`extends japidviews._layouts.Layout`
+`args Photo photo,Rank rank,Map exif,boolean isFollow,boolean isFavorite,boolean isVote`
+`set title: photo.title+" by "+photo.niceName`
 `set header: "Show" `
+`set keywords: photo.tags == null ? photo.title :  photo.tags`
+`set description: photo.title+(photo.tags == null ? "" : (","+photo.tags))`
+
 `set css
+<script type="text/javascript"
+        src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDqPLY_onh61yMSw5KSVICJN-B5igbHCTs&sensor=false&language=zh-cn"></script>
+<script src="@{'/public/blueimp/tmpl.min.js'}" type="text/javascript"></script>
+<script src="@{'/public/app/map.js'}"></script>
+<script src="@{'/public/app/show.js'}"></script>
 <script src="@{'/public/app/follow.js'}"></script>
+<script src="@{'/public/app/comment.js'}"></script>
+
+
 
 `
-<div class="row-fluid">
-
-	<div class="span9 ">
-		<div>
-		
-				<img
-			src="${Path.getJpegDownloadPath(photo.idPhoto,0)}" class="img-rounded0" alt="">
-		</div>
-		<div class="line6"></div>
-		<div class="row-fluid ">
-			<div class="span7">
-				<button class="btn btn-mini" type="button">&nbsp;&nbsp; I
-					want to buy this photo! &nbsp;&nbsp;</button>
-			</div>
-			<div class="span5">
-				<!-- JiaThis Button BEGIN -->
-				<div class="jiathis_style">
-					<a class="jiathis_button_qzone"></a> <a
-						class="jiathis_button_tsina"></a> <a class="jiathis_button_tqq"></a>
-					<a class="jiathis_button_weixin"></a> <a
-						class="jiathis_button_renren"></a> <a
-						class="jiathis_button_xiaoyou"></a> <a
-						class="jiathis_button_tianya"></a> <a
-						class="jiathis_button_ishare"></a> <a
-						href="http://www.jiathis.com/share"
-						class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-					<a class="jiathis_counter_style"></a>
-				</div>
-				<script type="text/javascript"
-					src="http://v3.jiathis.com/code/jia.js?uid=1363333029194573"
-					charset="utf-8"></script>
-				<!-- JiaThis Button END -->
-			</div>
-		</div>
-		<div class="line10"></div>
-		<div>
-			<form class="form-horizontal">
-
-				<textarea class="span12" rows="3" cols="" id="comment"
-					name="comment" placeholder="Add your comments..."></textarea>
-				<div class="line3"></div>
-
-				<button type="button" class="btn btn-info  btn-mini">Comment</button>
-			</form>
-		</div>
-		<div class="line10"></div>
-		<div>
-			<ul class="media-list">
-				<li class="media"><a class="pull-left" href="#"> <img
-						width="64" height="64" class="media-object"
-						src="http://acdn.500px.net/1705009/4bd01a2c6181e48be20efd32105239b316e22d54/1.jpg?3">
-				</a>
-					<div class="media-body">
-						<h5 class="media-heading border-bottom">Media heading</h5>
-						<small>Cras sit amet nibh libero, in gravida nulla. Nulla
-							vel metus scelerisque ante sollicitudin commodo. Cras purus odio,
-							vestibulum in vulputate at, tempus viverra turpis. Fusce
-							condimentum nunc ac nisi vulputate fringilla. Donec lacinia
-							congue felis in faucibus.</small>
-
-					</div></li>
-				<li class="media"><a class="pull-left" href="#"> <img
-						width="64" height="64" class="media-object"
-						src="http://acdn.500px.net/1705009/4bd01a2c6181e48be20efd32105239b316e22d54/1.jpg?3">
-				</a>
-					<div class="media-body">
-						<h5 class="media-heading border-bottom">Media heading</h5>
-						<small>Cras sit amet nibh libero, in gravida nulla. Nulla
-							vel metus scelerisque ante sollicitudin commodo. Cras purus odio,
-							vestibulum in vulputate at, tempus viverra turpis. Fusce
-							condimentum nunc ac nisi vulputate fringilla. Donec lacinia
-							congue felis in faucibus.</small>
-
-					</div></li>
-			</ul>
-
-		</div>
-		<div class="line6"></div>
-		<div class="pagination pagination-centered">
-			<ul>
-				<li><a href="#">Prev</a></li>
-				<li><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
-				<li><a href="#">Next</a></li>
-			</ul>
-		</div>
-	</div>
-	<!-- user info -->
-	<div class="span3 ">
-		<div class="row-fluid stat ">
-			<div class="span6">
-				<img width="90" height="90"
-					src="http://acdn.500px.net/1705009/4bd01a2c6181e48be20efd32105239b316e22d54/1.jpg?3">
-			</div>
-			<div class="span6">
-				<p>David</p>
-				<p>
-					<button class="btn `if(isFollow){` btn-success`}else{`btn-info`}` btn-mini  " type="button" id="follow" toid="${photo.idUser}" isfollow="true">${isFollow?"Following":"Follow"}</button>
-				</p>
-			</div>
-		</div>
-		<div class="line6"></div>
-		<div class="row-fluid stat border-bottom">
-			<div class="span5">
-				<div class="photo-stats">${rank.score}</div>
-			</div>
-			<div class="span7 ">
-				<div class=" photo-stats border-left">
-					<ul class="stats">
-
-						<li class="views" title="Views"><strong>${rank.view}</strong><small
-							class="faded">Views</small></li>
-
-						<li class="votes" title="Votes" id="photo_rating_total_votes">
-							<strong class="votes_count">${rank.vote}</strong><small class="faded">Votes</small>
-						</li>
-
-						<li class="favs" title="Favs" id="photo_rating_favs"><strong
-							class="favorites_count">${rank.favorite}</strong><small class="faded">Favorites</small>
-						</li>
-
-					</ul>
-				</div>
-			</div>
-
-		</div>
-		<div class="row-fluid stat ">
-			<div class="span5">
-				<div class="photo-stats">99.9</div>
-			</div>
-			<div class="span7 ">
-				<div class="photo-stats  border-left">
-					<ul class="stats">
-						<li><small class="faded">Highest Pulse</small></li>
-						<li><small class="faded">2013-05-24</small></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		<div class="line6"></div>
-
-		<div class="row-fluid  ">
-			<button class="btn btn-success span9  btn-mini " type="button">Like</button>
-
-			<button class="btn span3 btn-mini" type="button">
-				<i class="icon-heart "></i>
-			</button>
+<div class="show_title">
+    <div class="grid_row ">
+        <div class="col col_16">
+            <div class="column">
+                <img class="img-rounded image_80 img_shadow"
+                     src="${fengfei.spruce.utils.PhotoPathUtils.getUserPhotoDownloadPath(photo.idUser)}"/>
+            </div>
+            <div class="column">
+                <div class="photo_title">
+                    ${(photo.title==null || "".equals(photo.title.trim()))?i18n("Untitled"):photo.title}
+                </div>
 
 
-		</div>
-		<div class="line6"></div>
-		<div class="row-fluid border-bottom  ">
-			<div class="span12">
-				<div id="desc" class="photo-stats border-bottom">${photo.description}</div>
-			</div>
-			<div class="span12">
-				<div id="tags" class="photo-stats border-bottom">
-					<span>${photo.tags}<i class=" icon-tags"></i>tags1</span> <span><i
-						class=" icon-tags"></i>tags2</span> <span><i class=" icon-tags"></i>tags3</span>
-				</div>
-			</div>
-			<div class="span12">
-				<div id="exif" class=" photo-stats ">
-					<ul class="stats exif">	
-					`Set<Entry> sets = exif.entrySet();`
-					`for (Object obj : sets) {`
-					`Entry entry=(Entry)obj;`
-			<li><small>${entry.getKey()}</small><strong class="faded">${entry.getValue()}</strong></li>
-`}`
-				
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+                <div class="user">
+
+                    <span><i class="icon-user"></i> ${photo.user.niceName}</span>
+                    <span><i class="icon-globe"></i> ${(photo.user.city==null || "".equals(photo.user.city.trim()))?i18n("unknown.city"):photo.user.city}</span>
+
+                </div>
+                <div>
+                    <button class="follow_btn btn `if(isFollow){` btn-success`}else{`btn-info`}` btn-small  "
+                            type="button" id="follow" toid="${photo.idUser}" isfollow="${isFollow}">
+                        ${isFollow?i18n("following "):i18n("follow")}
+                    </button>
+                    <button class="btn btn-info btn-small  "
+                            type="button" id="sendemail" toid="${photo.idUser}">
+                        Hire Me
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="column_right  ">
+                <div class="btn-group rank">
+                    <a id="vote_btn"
+                            class="btn flat-btn `if(isVote){`disabled`}` vote_btn"
+                            type="button"
+                            isvote="${isVote}" title="`if(isVote){`&{thank.vote}`}else{`&{like}`}`">
+                        <div class="icon-thumbs-up icon-white"></div>
+                        <div>`if(isVote){`&{vote.voted}`}else{`&{vote.like}`}`</div>
+
+                    </a>
+                    <a id="favorite_btn" title="`if(isFavorite){`&{favorite.cancel}`}else{`&{favorite}`}`"
+                            class="btn flat-btn favorite `if(isFavorite){`favorited`}else{`unfavorited`}` ico_favorite favorite_btn
+                pull-right" type="button"
+                            isfavorite="${isFavorite}">&nbsp;
+                    </a>
+                </div>
+            </div>
+            <div class="column_right rank_show" id="rankShow">
+                `tag RankShow rank`
+            </div>
+        </div>
+
+
+    </div>
 </div>
+<div class="show_photo ">
+    <div class="grid_row">
+        <!---->
+        <div class="col col_16  ">
+            <div class="center">
+                <img src="${Path.getJpegDownloadPath(photo.idPhoto,0)}" class="img_shadow" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="grid_row show">
+
+
+    <div class="col col_12  ">
+
+        <div class="line6"></div>
+        <div class="row-fluid ">
+            <div class="span7">
+                <button class="btn btn-mini" type="button">
+                    &nbsp;&nbsp; &{i.wanna.buy.photo}&nbsp;&nbsp;
+                </button>
+            </div>
+            <div class="span5">
+                <!-- Baidu Button BEGIN -->
+                <div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">
+                    <a class="bds_tsina"></a>
+                    <a class="bds_qzone"></a>
+                    <a class="bds_tqq"></a>
+                    <a class="bds_douban"></a>
+                    <a class="bds_tqf"></a>
+                    <a class="bds_sqq"></a>
+                    <a class="bds_renren"></a>
+                    <a class="bds_twi"></a>
+                    <a class="bds_fbook"></a>
+                    <a class="bds_msn"></a>
+                    <span class="bds_more">&nbsp; &{more}</span>
+                    <a class="shareCount"></a>
+                </div>
+                <script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=0"></script>
+                <script type="text/javascript" id="bdshell_js"></script>
+                <script type="text/javascript">
+                    document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date() / 3600000)
+                </script>
+                <!-- Baidu Button END -->
+            </div>
+        </div>
+        <div class="line10"></div>
+        <div>
+            <form class="form-horizontal" id="photoCommentForm" method="post">
+                `if (session.get(Admin.SESSION_LOGIN_KEY) == null) {`
+
+                <div class="line10"></div>
+                <div class="line12"></div>
+                <a href="/login">Login</a> or <a href="/signup">Sign up</a> to comment.
+                <div class="line10"></div>
+                <div class="line10"></div>
+                `}else{`
+                <textarea class="col_12 comment" rows="3" cols="" id="comment" name="comment"
+                          placeholder="Add your comments..."></textarea>
+
+                <div class="line3"></div>
+                <input type="hidden" name="comment_count" id="comment_count"
+                       value="${photo.commentCount}"/>
+
+                `//if(!String.valueOf(photo.idUser).equals(session.get(Admin.SESSION_USER_ID_KEY))){`
+                <button type="button" id="comment_btn" class="btn btn-info  btn-mini">
+                    &{comment}
+                </button>
+                `//}`
+
+                `}`
+                <input type="hidden" name="id_photo" id="id_photo_x" value="${photo.idPhoto}"/>
+                <input type="hidden" name="niceName" id="niceNameX" value="${photo.user.niceName}"/>
+                <input type="hidden" name="photoIdUser" id="photoIdUserX" value="${photo.idUser}"/>
+
+                <input type="hidden" name="category" id="categoryx" value="${photo.category}"/>
+
+                <input type="hidden" name="id_user" id="id_user" value="${photo.idUser}"/>
+                <input type="hidden" name="id_photo" id="id_photo" value="${photo.idPhoto}"/>
+            </form>
+        </div>
+
+        <div class="line10"></div>
+        <div id="comments_c">
+            loading comments...
+        </div>
+
+    </div>
+    <!-- user info -->
+    <div class="col col_4 ">
+
+        <div class="line6"></div>
+        <div class="row-fluid border-bottom shadow rounded6">
+            `if(photo.description!=null && !"".equals(photo.description)){`
+            <div class="span12">
+                <div id="description" class="photo_stats border-bottom">
+                    ${photo.description}
+                </div>
+            </div>
+
+            `}`
+
+            `if(photo.tagList!=null){`
+            <div class="span12">
+                <div id="tags" class="photo_stats border-bottom">
+                    `for(String tag:photo.tagList){`
+                    <a class="badge tag" href="javascript:void(0)"> ${tag} </a>
+                    `}`
+                </div>
+            </div>
+
+            `}`
+
+            <div class="span12">
+                <div id="exif" class="exif_info ">
+                    <ul>
+                        `Set sets = exif.entrySet();`
+                        `for (Object obj : sets) {`
+                        `Entry entry=(Entry)obj;`
+                        `String key=(String)entry.getKey();`
+                        `String keyI18n=i18n(key);`
+                        <li>
+                            <small class="key">${keyI18n}</small>
+                            <strong class="value">${entry.getValue()}</strong>
+                        </li>
+                        `}`
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-fluid border-bottom show_map">
+
+            <div class="span12">
+                <div id="map_show_canvas" lat="${photo.GPSLatitude}" lng="${photo.GPSLongitude}"
+                     class="show_map_canvas shadow rounded6"></div>
+            </div>
+
+            <div class="span12">
+                <div id="address">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script id="comments_tml" type="text/x-tmpl">
+
+    <li class="media"><a class="pull-left" href="#"> <img width="64" height="64"
+                                                          class="media-object">
+    </a>
+
+        <div class="media-body">
+            <h5 class="media-heading border-bottom">{~%=o.username%} 1 minutes ago</h5>
+            <small>{~%=o.content%}</small>
+
+        </div>
+    </li>
+
+</script>

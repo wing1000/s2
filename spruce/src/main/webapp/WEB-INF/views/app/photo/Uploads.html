@@ -1,0 +1,295 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<!-- Force latest IE rendering engine or ChromeFrame if installed -->
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
+<meta charset="utf-8">
+<title>Images Upload</title>
+
+
+<link rel="stylesheet" media="screen" href="@{'/public/css/jquery.fileupload-ui.css'}">
+<!-- <link rel="stylesheet" media="screen" href="@{'/public/css/ui-darkness/jquery-ui-1.10.2.custom.css'}"> -->
+<link rel="stylesheet" media="screen" href="@{'/public/bootstrap/css/bootstrap.min.css'}">
+<!-- <link rel="stylesheet" media="screen" href="@{'/public/css/form.css'}"> -->
+<!-- Shim to make HTML5 elements usable in older Internet Explorer versions -->
+<!--[if lt IE 9]><script src="@{'/public/js/html5shiv.js'}"></script><![endif]-->
+<script src="@{'/public/js/jquery-1.9.1.js'}" type="text/javascript"></script>
+<script src="@{'/public/bootstrap/js/bootstrap.min.js'}" type="text/javascript"></script>
+<script src="@{'/public/js/jquery-ui-1.10.2.custom.min.js'}" type="text/javascript"></script>
+<script src="@{'/public/js/blueimp/tmpl.js'}" type="text/javascript"></script>
+<script src="@{'/public/js/blueimp/load-image.min.js'}" type="text/javascript"></script>
+<script src="@{'/public/js/blueimp/canvas-to-blob.min.js'}" type="text/javascript"></script>
+<script src="@{'/public/js/blueimp/jquery.iframe-transport.js'}" type="text/javascript"></script>
+<script src="@{'/public/js/blueimp/jquery.fileupload.js'}" type="text/javascript"></script>
+<script src="@{'/public/js/blueimp/jquery.fileupload-fp.js'}" type="text/javascript"></script>
+<script src="@{'/public/app/ExifUtils.js'}" type="text/javascript"></script>
+<!--<script src="@{'/public/js/blueimp/jquery.fileupload-ui.js'}" type="text/javascript"></script> -->
+
+ <script src="@{'/public/js/jquery.fileupload-ui-sprucy.js'}" type="text/javascript"></script>
+<script src="@{'/public/js/binaryajax.js'}" type="text/javascript"></script>
+<script src="@{'/public/js/exif.js'}" type="text/javascript"></script>
+
+<script src="@{'/public/app/u.js'}" type="text/javascript"></script>
+<!-- The XDomainRequest Transport is included for cross-domain file deletion for IE8+ -->
+<!--[if gte IE 8]><script src="@{'/public/js/blueimp/cors/jquery.xdr-transport.js'}"></script><![endif]-->
+
+
+<style type="text/css">
+html,body {
+	background-color: #fff;
+}
+
+ 
+table {
+	max-width: 100%;
+	background-color: transparent;
+	border-collapse: collapse;
+	border-spacing: 0;
+	background-color: #f9f9f9;
+	width: 100%;
+	margin-bottom: 18px;
+}
+
+table td {
+	padding: 8px;
+	line-height: 18px;
+	text-align: left;
+	vertical-align: top;
+	border-top: 1px solid #dddddd;
+}
+
+table th {
+	font-weight: bold;
+}
+
+table thead th {
+	vertical-align: bottom;
+}
+
+.select-width {
+	width: 250px;
+}
+
+.input-width {
+	width: 236px;
+}
+</style>
+</head>
+<body>
+
+	<div class="container">
+		<div class="page-header">
+			<h1>Images Upload</h1>
+		</div>
+
+		<!-- The file upload form used as target for the file upload widget -->
+		<form id="fileupload" action="/upload/done" method="POST" enctype="multipart/form-data">
+			<!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+			<div class="row fileupload-buttonbar">
+				<div class="span7">
+					<!-- The fileinput-button span is used to style the file input field as button -->
+					<span class="btn btn-success fileinput-button"> <i class="icon-plus icon-white"></i> <span>Add files...</span> <input type="file" name="files[]" multiple>
+					</span>
+					<button type="submit" class="btn btn-primary start">
+						<i class="icon-upload icon-white"></i> <span>Start upload</span>
+					</button>
+					<button type="reset" class="btn btn-warning cancel">
+						<i class="icon-ban-circle icon-white"></i> <span>Cancel upload</span>
+					</button>
+
+
+				</div>
+				<!-- The global progress information -->
+				<div class="span5 fileupload-progress ">
+					<!-- The global progress bar -->
+					<div class="progress progress-success   progress-striped " >
+						<div class="bar"  ></div>
+					</div>
+					<!-- The extended global progress information -->
+					<div class="progress-extended">&nbsp;</div>
+				</div>
+			</div>
+			<!-- The loading indicator is shown during file processing -->
+			<div class="fileupload-loading"></div>
+			<br>
+			<div id="dropbox">
+				<span id="drop_message">Drag photos from your computer here or click "Add files" button for photos to upload. Maximum 10 photos at a time. </span> <span
+					id="drop_message_hover" style="display: none;">Drop photos to upload</span>
+			</div>
+			<!-- The table listing the files available for upload/download -->
+			<table role="presentation" class="table table-striped">
+				<tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody>
+			</table>
+		</form>
+		<form id="edit" action="/upload/save" class="clearfix photos_placeholder" id="photoinfo">
+			<!-- The table listing the files available for upload/download -->
+			<table class="" id="upload_table">
+				<tbody class="files">
+
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="4" style="text-align: right; padding-right: 40px;">
+							<button type="submit" class="btn btn-primary  " id="save">Save</button>
+						</td>
+
+					</tr>
+				</tfoot>
+			</table>
+		</form>
+
+	</div>
+
+	<!-- The template to display files available for upload -->
+	<script id="template-upload" type="text/x-tmpl">
+ 
+{~% for (var i=0, file; file=o.files[i]; i++) { var data=o.data;var maxImageIndex=data.imageIndex;   %}
+		<tr class="template-upload fade">
+        {~% if (file.error) { %}
+            <td class="error" colspan="2"><span class="label label-important">{~%=locale.fileupload.error%}</span> {~%=locale.fileupload.errors[file.error] || file.error%}</td>
+        {~% } else if (o.files.valid && !i) { %}
+            <td>
+                <div class="progress progress-info  progress-striped"  ><div class="bar" ></div></div>
+            </td>  
+            <td class="name"><span>{~%=file.name%}</span></td>
+ 			<td class="size"><span>{~%=o.formatFileSize(file.size)%}</span></td>
+            <td >
+				<span class="start">
+				{~% if (!o.options.autoUpload) { %}
+                <button class="btn btn-primary">
+                    <i class="icon-upload icon-white"></i>
+                    <span>{~%=locale.fileupload.start%}</span>
+                </button>
+            {~% } %} 
+        		</span>  
+			 {~% } %} 
+				<span class="cancel">
+			{~% if (!i) { %}
+            <button class="btn btn-warning">
+                <i class="icon-ban-circle icon-white"></i>
+                <span>{~%=locale.fileupload.cancel%}</span>
+            </button>
+        	{~% } %}
+
+			</span>
+ 
+	</tr>
+
+    <tr class="template-upload fade">
+       <td colspan="3"><center  class="preview"><span class="fade"></span></center></td>
+        <td>
+ 	<div class="span3">
+			<div class="block">
+				<label for="title{~%=maxImageIndex%}">Title</label> <input  class=" input-width " type="text" name="title" value="{~%=file.name%}" id="title{~%=maxImageIndex%}" maxlength="100"
+					placeholder="title" /> <input  class=" input-width " type="text" name="id" value="" id="id{~%=maxImageIndex%}" maxlength="100" placeholder="ID" />
+			</div>
+			<div class="block">
+				<label for="description{~%=maxImageIndex%}">Description</label>
+				<textarea name="description" id="description{~%=maxImageIndex%}" class=" input-width "></textarea>
+			</div>
+			<div class="block">
+				<select class="category select-width" id="category{~%=maxImageIndex%}" name="category"  >
+					<option value="">Category</option>
+					<option value="10">Abstract</option>
+					<option value="11">Animals</option>
+					<option value="5">Black and White</option>
+					<option value="1">Celebrities</option>
+					<option value="9">City and Architecture</option>
+					<option value="15">Commercial</option>
+					<option value="16">Concert</option>
+					<option value="20">Family</option>
+					<option value="14">Fashion</option>
+					<option value="2">Film</option>
+					<option value="24">Fine Art</option>
+					<option value="23">Food</option>
+					<option value="3">Journalism</option>
+					<option value="8">Landscapes</option>
+					<option value="12">Macro</option>
+					<option value="18">Nature</option>
+					<option value="4">Nude</option>
+					<option value="7">People</option>
+					<option value="19">Performing Arts</option>
+					<option value="17">Sport</option>
+					<option value="6">Still Life</option>
+					<option value="21">Street</option>
+					<option value="26">Transportation</option>
+					<option value="13">Travel</option>
+					<option value="22">Underwater</option>
+					<option value="27">Urban Exploration</option>
+					<option value="25">Wedding</option>
+					<option value="0" selected="selected">Uncategorized</option>
+				</select>
+			</div>
+
+			<div class="clearfix nsfw_toggle inline ">
+				<label for="nsfw{~%=maxImageIndex%}"><input type="checkbox" name="nsfw" id="nsfw{~%=maxImageIndex%}" value="1" />  Safe for work?</label>
+			</div>
+
+			<div class="inline input-prepend">
+				<span class="add-on"><i class="icon-tag"></i></span> <input type="text" name="tags" class="tags" value="" placeholder="Tags (divide by comma)" />
+			</div>
+			<div class="inline input-prepend">
+				<span class="add-on"><i class="icon-time"></i></span> <input type="hidden" name="taken_at" id="taken_at{~%=maxImageIndex%}" value="" /> <input type="text"
+					id="taken_at_display{~%=maxImageIndex%}" class="date" value="" placeholder="Date Taken" />
+			</div>
+			<div class="inline input-prepend">
+				<span class="add-on"><i class="icon-camera"></i></span> <input type="text" name="camera" id="camera{~%=maxImageIndex%}" class="camera" value="" placeholder="Camera" />
+			</div>
+			<div class="inline input-prepend">
+				<span class="add-on"><i class="icon-envelope"></i></span> <input type="text" name="lens" id="lens{~%=maxImageIndex%}" class="lens" value="" placeholder="Lens" />
+			</div>
+			<div class="inline input-prepend">
+				<span class="add-on"><i class="icon-envelope"></i></span> <input type="text" name="focus" id="focus{~%=maxImageIndex%}" class="focal-length" value=""
+					placeholder="Focal Length" />
+			</div>
+			<div class="inline input-prepend">
+				<span class="add-on"><i class="icon-envelope"></i></span> <input type="text" name="shutter" id="shutter{~%=maxImageIndex%}" class="shutter-speed" value=""
+					placeholder="Shutter Speed" />
+			</div>
+			<div class="inline input-prepend">
+				<span class="add-on"><i class="icon-eye-open"></i></span> <input type="text" name="aperture" id="aperture{~%=maxImageIndex%}" class="aperture" value=""
+					placeholder="Aperture" />
+			</div>
+			<div class="inline input-prepend last">
+				<span class="add-on"><i class="icon-envelope"></i></span> <input type="text" name="iso" id="iso{~%=maxImageIndex%}" class="iso" value="" placeholder="ISO/Film" />
+			</div>
+  	</div>
+		</td>   
+     </tr>
+{~%  } %}
+</script>
+	<!-- The template to display files available for download -->
+
+
+	<script id="template-download1" type="text/x-tmpl">
+{~% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+        {~% if (file.error) { %}
+            <td></td>
+            <td class="name"><span>{~%=file.name%}</span></td>
+            <td class="size"><span>{~%=o.formatFileSize(file.size)%}</span></td>
+            <td class="error" colspan="2"><span class="label label-important">{~%=locale.fileupload.error%}</span> {~%=locale.fileupload.errors[file.error] || file.error%}</td>
+        {~% } else { %}
+            <td class="preview">{~% if (file.thumbnail_url) { %}
+                <a href="{~%=file.url%}" title="{~%=file.name%}" rel="gallery" download="{~%=file.name%}"><img src="{~%=file.thumbnail_url%}"></a>
+            {~% } %}</td>
+            <td class="name">
+                <a href="{~%=file.url%}" title="{~%=file.name%}" rel="{~%=file.thumbnail_url&&'gallery'%}" download="{~%=file.name%}">{~%=file.name%}</a>
+            </td>
+            <td class="size"><span>{~%=o.formatFileSize(file.size)%}</span></td>
+            <td colspan="2"></td>
+        {~% } %}
+        <td class="delete">
+            <button class="btn btn-danger" data-type="{~%=file.delete_type%}" data-url="{~%=file.delete_url%}">
+                <i class="icon-trash icon-white"></i>
+                <span>{~%=locale.fileupload.destroy%}</span>
+            </button>
+            <input type="checkbox" name="delete" value="1">
+        </td>
+    </tr>
+{~% }  %}
+</script>
+
+
+</body>
+</html>

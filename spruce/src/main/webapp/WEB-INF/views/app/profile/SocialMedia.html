@@ -1,0 +1,123 @@
+`import fengfei.ucm.entity.profile.UserSocial;`
+`extends japidviews._layouts.Layout`
+`args  UserSocial m`
+`set title:i18n("notify.title")`
+`set header: "Email Notifications" `
+
+<div class="grid_row">
+
+    <div class="col col_3 ">
+        <div class="sidebar-nav ">
+            `tag SettingsMenu "SocialMedia"`
+        </div>
+    </div>
+    <div class="col col_13 ">
+        <div class="row-fluid well profile_right">
+            <div class="span8  ">
+
+                <form id="socialMediaForm" class="" action="/settings/socialmedia/done" method="post">
+
+                    <div class="control-group">
+                        <label class="control-label" for="website">&{social.website}</label>
+
+                        <div class="controls">
+                            <input type="text" id="website" name="website" class="input span9"
+                                   placeholder="&{social.website}" value="${m.web_site}">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="qq">&{social.qq}</label>
+
+                        <div class="controls">
+                            <input type="text" id="qq" name="qq" class="input span9"
+                                   placeholder="&{social.qq}" value="${m.qq}">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="qq_weibo">&{social.qq.weibo}</label>
+
+
+                        <div class="controls input-prepend">
+                            <div class="input-prepend span12">
+                                <span class="add-on">@</span>
+                                <input type="text" id="qq_weibo" name="qq_weibo" class="input input-block-level span12"
+                                       placeholder="&{social.qq.weibo}" value="${m.qq_weibo}">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="weibo">&{social.weibo}</label>
+
+                        <div class="controls">
+                            <input type="text" id="weibo" name="weibo" class="input span9"
+                                   placeholder="&{social.weibo}" value="${m.weibo}">
+                        </div>
+                    </div>
+
+
+                    <div class="control-group">
+                        <label class="control-label" for="twitter">&{social.twitter}</label>
+
+                        <div class="controls">
+                            <input type="text" id="twitter" name="twitter" class="input span9"
+                                   placeholder="&{social.twitter}" value="${m.twitter}">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="facebook">&{social.facebook}</label>
+
+                        <div class="controls">
+                            <input type="text" id="facebook" name="facebook" class="input span9"
+                                   placeholder="&{social.facebook}" value="${m.facebook}">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="flickr">&{social.flickr}</label>
+
+                        <div class="controls">
+                            <input type="text" id="flickr" name="flickr" class="input span9"
+                                   placeholder="&{social.flickr}" value="${m.flickr}">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="fengniao">&{social.fengniao}</label>
+
+                        <div class="controls">
+                            <input type="text" id="fengniao" name="fengniao" class="input span9"
+                                   placeholder="&{social.fengniao}" value="${m.fengniao}">
+                        </div>
+                    </div>
+                    <!--      <div class="control-group">
+                              <label class="control-label" for="renren">&{social.renren}</label>
+
+                              <div class="controls">
+                                  <input type="text" id="renren" name="renren" class="input span9"
+                                         placeholder="&{social.renren}" value="${m.renren}">
+                              </div>
+                          </div>-->
+                    <div class="control-group">
+                        <label class="control-label" for="douban">&{social.douban}</label>
+
+                        <div class="controls">
+                            <input type="text" id="douban" name="douban" class="input span9"
+                                   placeholder="&{social.douban}" value="${m.douban}">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn">
+                                &{save.change}
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

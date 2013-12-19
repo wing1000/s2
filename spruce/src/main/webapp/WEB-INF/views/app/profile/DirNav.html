@@ -1,0 +1,15 @@
+<pre style="display: none">
+	
+`import java.util.*;import fengfei.ucm.entity.photo.*;`
+`import fengfei.fir.utils.Path;import fengfei.fir.model.PhotoShow`
+
+`args List<PhotoSet> photoSets `
+
+</pre>
+`if(photoSets!=null){`
+`for(PhotoSet set:photoSets){`
+<li class="setItem" title="${set.name}">
+	<a href="javascript:void(0)"  src="/photo/manage/dir/${set.idSet}">${set.name}</a>
+</li>
+`}`
+`}`

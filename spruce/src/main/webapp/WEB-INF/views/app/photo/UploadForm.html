@@ -1,0 +1,182 @@
+<pre style="display: none">
+`import java.util.*;import fengfei.ucm.entity.photo.*;import fengfei.fir.utils.Path;`
+`import fengfei.fir.utils.Path;import fengfei.fir.model.PhotoShow`
+`args Photo photo, List<PhotoSet> photoSets `
+</pre>
+
+
+<tr>
+    <td class="right_line  col_8">
+        <div class=" magin_left">
+            <div id="preview" class="preview img_shadow">
+                `if(photo!=null){`
+                <img src="${Path.getJpegDownloadPath(photo.idPhoto,0)}" class="rounded3 img_shadow" alt="">
+                `}`
+
+            </div>
+            <p>
+
+            <div style="`if(photo!=null){`display: none`}`">
+                <div>
+                    &{photo.file.name} <span id="name"></span>
+                </div>
+                <div>
+                    &{photo.file.size} <span id="size"></span>
+                </div>
+
+            </div>
+            </p>
+            <div class="alert alert-error" id="uploadError" style="display: none">
+                <button type="button" class="close" data-dismiss="alert">
+                    &times;
+                </button>
+                &{upload.error}
+            </div>
+
+        </div>
+    </td>
+    <td class="right_line col_4">
+        <div class=" magin_left">
+            <div class="block">
+                <label for="title1">&{photo.title}</label>
+                <input type="text"
+                       placeholder="&{photo.title}" maxlength="100" id="title1" value=""
+                       name="title" class=" span4 ">
+                <input type="hidden" placeholder="ID" maxlength="100" id="id1" value="" name="id">
+                <input type="hidden" placeholder="ID" maxlength="100" id="id_photo1" value="" name="id_photo">
+            </div>
+            <div class="block">
+                <label for="desc1">&{photo.description}</label>
+                <textarea class=" span4 " id="desc1" rows="8" placeholder="&{photo.description}"
+                          name="description"></textarea>
+            </div>
+            <div class="block">
+                <select name="dir" id="dir1" data-style=" "
+                        class="selectpicker category span4">
+                    <option value="0">&{photo.dir.no}</option>
+                    `if(photoSets!=null){`
+                    `for(PhotoSet set:photoSets){`
+                    <option value="${set.idSet}">${set.name}</option>
+
+                    `}`
+                    `}`
+                </select>
+            </div>
+
+            <div class="block">
+                <select name="category" id="category1" data-style=" "
+                        class="selectpicker category span4">
+                    `tag CategorySelectOptions fengfei.spruce.cache.SimpleCache.categories,(byte)0`
+                </select>
+                `Map kv=new HashMap();kv.put("分类",fengfei.spruce.cache.SimpleCache.categories);`
+                `tag CategorySelector kv,(byte)0`
+            </div>
+
+            <div class="block">
+                <select name="license" id="license1" data-style=" "
+                        class="selectpicker license span4">
+                    `tag LicenseSelectOptions fengfei.spruce.cache.SimpleCache.licenses,"by"`
+                </select>
+
+                <p style="text-align: right">
+                    <a href="#">About License</a>
+                </p>
+
+                <p>
+
+                <div id="cc" style="text-align: right"></div>
+                </p>
+
+            </div>
+            <div class="block">
+                <input type="text" placeholder="&{photo.tags} " rows="6" data-provide="tag" data-caseInsensitive="true"
+                       class="span4  " name="tags" id="tags1"/>
+            </div>
+            <div class="checkbox">
+                <label for="adult1">
+                    <input type="checkbox" value="1"
+                           id="adult1" name="adult">
+                    &{photo.adult}</label>
+            </div>
+            <div class="checkbox">
+                <label for="copyright1">
+                    <input type="checkbox"
+                           value="1" id="copyright1" name="copyright" checked="checked">
+                    &{photo.copyright}</label>
+            </div>
+            <div class="checkbox">
+                <label for="can_ps1">
+                    <input type="checkbox"
+                           value="1" id="can_ps1" name="can_ps" checked="checked">
+                    &{photo.can.ps}</label>
+            </div>
+
+            <input type="hidden" value="" id="WhiteBalance1" name="WhiteBalance">
+
+            <input type="hidden" value="" id="Software1" name="Software">
+            <input type="hidden" value="" id="Flash1" name="Flash">
+            <input type="hidden" value="" id="ColorSpace1" name="ColorSpace">
+            <input type="hidden" value="" id="MeteringMode1" name="MeteringMode">
+            <input type="hidden" value="" id="ExposureProgram1" name="ExposureProgram">
+            <input type="hidden" value="" id="ExposureMode1" name="ExposureMode">
+            <input type="hidden" value="" id="GPSLatitude1" name="GPSLatitude">
+            <input type="hidden" value="" id="GPSLongitude1" name="GPSLongitude">
+            <input type="hidden" value="" id="GPSAltitude1" name="GPSAltitude">
+            <input type="hidden" value="" id="GPSOrigin1" name="GPSOrigin">
+        </div>
+    </td>
+    <td class="col_4">
+        <div class=" magin_left">
+            <div class="inline input-prepend">
+                <span class="add-on"><span class="icon-head left">&{photo.camera}</span></span>
+                <input type="text" placeholder="&{photo.camera}" value=""
+                       class="Camera" id="camera1" name="camera">
+                <input
+                        type="hidden" placeholder="&{photo.make}" value="" class="make"
+                        id="make1" name="make">
+
+            </div>
+            <div class="inline input-prepend">
+                <span class="add-on"><span class="icon-head left">&{photo.lens}</span> </span>
+                <input type="text" placeholder="&{photo.lens}" value="" class="lens"
+                       id="lens1" name="lens">
+            </div>
+            <div class="inline input-prepend">
+                <span class="add-on"><span class="icon-head left">&{photo.focus} </span></span>
+                <input type="text" placeholder="&{photo.focus.alt}" value=""
+                       class="focal-length" id="focus1" name="focus">
+            </div>
+            <div class="inline input-prepend">
+                <span class="add-on "><span class="icon-head left">&{photo.shutter} </span></span>
+                <input type="text" placeholder="&{photo.shutter.alt}" value=""
+                       class="shutter-speed" id="shutter1" name="shutter">
+            </div>
+            <div class="inline input-prepend">
+                <span class="add-on"><span class="icon-head left">&{photo.aperture}</span></span>
+                <input type="text" placeholder="&{photo.aperture}" value=""
+                       class="aperture" id="aperture1" name="aperture">
+            </div>
+            <div class="inline input-prepend ">
+                <span class="add-on"><span class="icon-head left">&{photo.iso} </span></span>
+                <input type="text" placeholder="&{photo.iso.alt}" value="" class="iso"
+                       id="iso1" name="iso">
+            </div>
+            <div class="inline input-prepend">
+                <span class="add-on"><span class="icon-head left">&{photo.ev}</span></span>
+                <input type="text" placeholder="&{photo.ev.alt}" value=""
+                       class="iso" id="ev1" name="ev">
+            </div>
+            <div class="inline input-prepend">
+                <span class="add-on"><span class="icon-head left"> &{photo.taken} </span></span>
+                <input type="hidden" value="" id="taken_at1"
+                       name="taken_at">
+                <input type="text"
+                       placeholder="&{photo.taken.alt}" value="" class="date"
+                       id="taken_at_display1">
+            </div>
+
+        </div>
+        <div class="line4"></div>
+        <div id="map_canvas" class="map_canvas img_shadow"></div>
+    </td>
+</tr>

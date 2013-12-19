@@ -1,0 +1,55 @@
+<pre style="display: none">
+	
+`import java.util.*;import fengfei.ucm.entity.photo.*;`
+`import fengfei.fir.utils.Path;import fengfei.fir.model.PhotoShow`
+`args List<PhotoSet> photoSets `
+
+</pre>
+<div class="row-fluid " >
+	<div>
+		<form class="form-inline">
+			<input name="set" id="set1"  type="text" placeholder="Set Name" class="span9"/>
+
+			<input name="idSet" id="idSet1"  type="hidden" placeholder="Set Name"  />
+
+			<button type="button" class="btn"   onclick="addPhotoSetEvent();" id="SetSaveButton">
+				Save
+			</button>
+			<button type="button" class="btn"  onclick="deletePhotoSetEvent();">
+				Delete
+			</button>
+			<button type="button" class="btn"  onclick="resetPhotoSet();">
+				Reset
+			</button>
+		</form>
+	</div>
+	<div class="manage_nav ">
+	 
+		`tag ErrorMessage`
+		<table class="table table-hover" >
+			<thead>
+				<tr>
+					<th>Name</th><th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				`if(photoSets!=null){int index=0;`
+				`for(PhotoSet set:photoSets){`
+				<tr>
+					<td  id="edit_td${index}" onclick="setPhotoSetValue(this)" id_set="${set.idSet}" name_set="${set.name}">${set.name}</td>
+					<td>
+					<button type="button" onclick="setPhotoSetValue(document.getElementById('edit_td${index}'))" class="btn btn-primary btn-small">
+						Edit
+					</button>
+					<button type="button" onclick="onDeletePhotoSet('${set.name}',${set.idSet})" class="btn btn-danger btn-small">
+						Delete
+					</button></td>
+				</tr>
+
+				`index++;}`
+				`}`
+			</tbody>
+		</table>
+
+	</div>
+</div>

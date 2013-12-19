@@ -1,0 +1,171 @@
+<pre style="display: none">
+`extends japidviews._layouts.Layout`
+`import java.util.List`
+`import fengfei.ucm.entity.profile.Camera`
+`args List<Camera> cameras`
+    `set title: i18n("camera.title")`
+    `set header:"Camera" `
+</pre>
+`set css
+<script src="@{'/public/app/camera.js'}" type="text/javascript"></script>
+<script src="@{'/public/blueimp/tmpl.min.js'}" type="text/javascript"></script>
+
+`
+
+<div class="grid_row equipment">
+
+    <div class="col col_3 ">
+        <div class="sidebar-nav ">
+            `tag SettingsMenu "Camera"`
+        </div>
+    </div>
+    <div class="col col_13 ">
+        <div class="row-fluid well profile_right">
+            <div class="span11  ">
+
+
+                <form class="form-horizontal" method="post" id="equipmentForm"
+                      action="/settings/camera/done">
+
+                    <div class="control-group">
+                        <button class="btn btn-mini add-equipment" type="button" data-id="camera">
+                            &{camera.add.camera}
+                        </button>
+                        <button class="btn btn-mini add-equipment" type="button" data-id="lens">
+                            &{camera.add.lens}
+                        </button>
+                        <button class="btn btn-mini add-equipment" type="button" data-id="tripod">
+                            &{camera.add.tripod}
+                        </button>
+                        <button class="btn btn-mini add-equipment" type="button" data-id="filter">
+                            &{camera.add.filter}
+                        </button>
+                    </div>
+                    <div class="control-group" id="equipmentFormControls">
+                        `for(Camera c : cameras){`
+                        <div>
+                            <div class="input-prepend span11">
+                                <span class="add-on add-on-head">${c.type}</span>
+                                <input class="span11" name="_${c.type}" id="_${c.type}" type="text" value="${c.equipment}">
+                                <button class="btn delete" type="button" data-id="${c.idCamera}">
+                                    &{delete}
+                                </button>
+                            </div>
+
+                        </div>
+                        `}` `if(cameras.size()==0){`
+                        <div>
+                            <div class="input-prepend span11">
+                                <span class="add-on add-on-head">camera</span>
+                                <input class=" span11" name="camera" type="text" placeholder="&{camera.camera}">
+
+                                <button class="btn  delete" type="button">
+                                    &{delete}
+                                </button>
+                            </div>
+
+                        </div>
+                        <div>
+                            <div class="input-prepend span11">
+
+                                <span class="add-on add-on-head">lens</span>
+                                <input class="span11" name="lens" type="text" placeholder="&{camera.lens}">
+                                <button class="btn  delete" type="button">
+                                    &{delete}
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="input-prepend span11">
+                                <span class="add-on add-on-head">tripod</span>
+                                <input class="span11 " name="tripod" type="text" placeholder="&{camera.tripod}">
+                                <button class="btn  delete" type="button">
+                                    &{delete}
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="input-prepend span11">
+                                <span class="add-on add-on-head">filter</span>
+                                <input class="span11 " name="filter" type="text" placeholder="&{camera.filter}">
+                                <button class="btn  delete" type="button">
+                                    &{delete}
+                                </button>
+                            </div>
+                        </div>
+                        `}`
+
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn">
+                                &{save.change}
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+            <div class="span5"></div>
+        </div>
+
+    </div>
+</div>
+
+<script id="camera_tml" type="text/x-tmpl">
+
+    <div>
+        <div class="input-prepend span11">
+            <span class="add-on add-on-head">camera</span>
+            <input class=" span11" name="camera" type="text" placeholder="&{camera.camera}">
+            <button class="btn  delete" type="button">
+                &{delete}
+            </button>
+        </div>
+    </div>
+
+</script>
+<script id="lens_tml" type="text/x-tmpl">
+
+    <div>
+        <div class="input-prepend span11">
+
+            <span class="add-on add-on-head">lens</span>
+            <input class="span11" name="lens" type="text" placeholder="&{camera.lens}">
+            <button class="btn  delete" type="button">
+                &{delete}
+            </button>
+        </div>
+    </div>
+
+</script>
+
+<script id="tripod_tml" type="text/x-tmpl">
+
+    <div>
+        <div class="input-prepend span11">
+            <span class="add-on add-on-head">tripod</span>
+            <input class="span11 " name="tripod" type="text" placeholder="&{camera.tripod}">
+            <button class="btn  delete" type="button">
+                &{delete}
+            </button>
+        </div>
+    </div>
+
+</script>
+
+<script id="filter_tml" type="text/x-tmpl">
+
+    <div>
+        <div class="input-prepend span11">
+            <span class="add-on add-on-head">filter</span>
+            <input class="span11 " name="filter" type="text" placeholder="&{camera.filter}">
+            <button class="btn  delete" type="button">
+                &{delete}
+            </button>
+        </div>
+    </div>
+
+</script>

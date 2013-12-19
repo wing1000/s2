@@ -1,0 +1,62 @@
+`extends japidviews._layouts.Layout` `set title:"Sprucy Home Page"`
+`set css
+<script src=" http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=3168919025" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="APPID" data-redirecturi="REDIRECTURI" charset="utf-8"></script>
+` `
+
+`set header:"Account" `
+
+<div class="grid_row">
+
+	<div class="col col_3 ">
+		<div class="sidebar-nav ">
+			`tag SettingsMenu "Account"`
+		</div>
+	</div>
+	<div class="col col_13 ">
+		<div class="row-fluid well profile_right">
+			<div class="span8  ">
+
+				<form class="form-horizontal">
+					<span id="qqLoginBtn"></span>
+					<script type="text/javascript">
+						QC.Login({
+							btnId : "qqLoginBtn" //���밴ť�Ľڵ�id
+						});
+					</script>
+
+					<div id="wb_connect_btn"></div>
+					<script type="text/javascript">
+						WB2.anyWhere(function(W) {
+							W.widget.connectButton({
+								id : "wb_connect_btn",
+								type : '3,2',
+								callback : {
+									login : function(o) {
+										alert(o.screen_name)
+									},
+									logout : function() {
+										alert('logout');
+									}
+								}
+							});
+						});
+					</script>
+
+					<div class="control-group">
+						<div class="controls">
+							<button type="submit" class="btn">
+								Save change
+							</button>
+						</div>
+					</div>
+
+				</form>
+
+			</div>
+			<div class="span5"></div>
+		</div>
+
+	</div>
+</div>
+

@@ -1,8 +1,7 @@
 package fengfei.spruce.utils;
 
-import play.mvc.Http;
-import play.mvc.Http.Header;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,9 +29,9 @@ public class Browser {
         return brower;
     }
 
-    public static boolean isIE67(Http.Request request) {
-        Header agentHeader = request.headers.get("user-agent");
-        String agent = agentHeader.value().toLowerCase();
+    public static boolean isIE67(HttpServletRequest request) {
+        String agentHeader = request.getHeader("user-agent");
+        String agent = agentHeader;//.value().toLowerCase();
 //        System.out.println(agent);
 //        List<String> langs=request.acceptLanguage();
 //

@@ -1,0 +1,48 @@
+`import java.util.Set;import fengfei.ucm.entity.photo.Refresh;`
+`import fengfei.fir.utils.Path;import fengfei.fir.model.PhotoShow`
+`args String pagePath, List<? extends PhotoShow> photos, int pageNum`
+
+<div class="grid_row previews" >
+	`for(PhotoShow photo : photos){`
+	`String id="photo_id_"+photo.idPhoto;`
+	<div class="col photo_col width_2" id="${id}">
+		<div class="photo_preview photo_preview_2 ">
+			<img src="${Path.getJpegDownloadPath(photo.idPhoto,2)}" class="rounded3" />
+			<div class="caption">
+				<div class="title">
+		<!--			<a href="/edit/${photo.idPhoto}" target="photo_edit" onclick="editPhoto(${photo.idPhoto},${photo.idUser})" >&{"edit"}</a>-->
+					<a href="javascript:void(0);" target="photo_view" onclick="editPhoto(${photo.idPhoto},${photo.idUser})" >&{"edit"}</a>
+				</div>
+				<div class="score">
+					<a href="javascript:void(0);" onclick="deletePhoto(${photo.idPhoto},'${id}')">&{"delete"}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	`}`
+
+</div>
+<div class="grid_row previews">
+	<div class="col col_14 pager  pagination-right">
+		<ul>
+			<li>
+				<a href="${pagePath}/${(pageNum-1<=0)?1:(pageNum-1)}">Prev</a>
+			</li>
+			`if(pageNum>=2){`
+			<li >
+				<a href="${pagePath}/1">First</a>
+			</li>`}`
+
+			<!--	<li class="disabled"><a href="#">1</a></li>
+			<li><a href="#">2</a></li>
+			<li><a href="#">3</a></li>
+			<li><a href="#">4</a></li>
+			<li><a href="#">5</a></li>-->
+			`if(photos.size()>=20){`
+			<li>
+				<a href="${pagePath}/${photos.size()<20?pageNum:(pageNum+1)}" >Next</a>
+			</li>`}`
+
+		</ul>
+	</div>
+</div>

@@ -1,9 +1,9 @@
 package controllers;
 
-import cn.bran.play.JapidResult;
 import fengfei.fir.model.PhotoShow;
 import fengfei.fir.utils.Path;
 import fengfei.spruce.cache.SimpleCache;
+import fengfei.spruce.utils.DateTimeUtils;
 import fengfei.spruce.utils.FollowServiceUtils;
 import fengfei.sprucy.AppConstants;
 import fengfei.ucm.entity.photo.*;
@@ -17,20 +17,24 @@ import fengfei.ucm.repository.impl.SqlPhotoRepository;
 import fengfei.ucm.repository.impl.SqlShowRepository;
 import fengfei.ucm.repository.impl.SqlUserRepository;
 import fengfei.ucm.service.ReadFollowService;
-import japidviews.Application.Index;
-import japidviews.Application.error.E500;
-import japidviews.Application.photo.*;
+import fengfei.web.authority.Authority;
+import fengfei.web.authority.Role;
 import org.apache.commons.collections.MapUtils;
-import play.Logger;
-import play.modules.router.Any;
-import play.modules.router.Get;
-import play.modules.router.Gets;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.*;
 
+@Controller
+@Authority(role = Role.LoggedIn)
 public class ShowAction extends Admin {
+    static Logger logger = LoggerFactory.getLogger(ShowAction.class);
 
     static CommentRepository repository = new SqlCommentRepository();
     static UserRepository userRepository = new SqlUserRepository();
@@ -39,55 +43,48 @@ public class ShowAction extends Admin {
     static PhotoRepository photoRepository = new SqlPhotoRepository();
     public static ReadFollowService readFollowService = FollowServiceUtils.readFollowService;
 
-    @Any("/show/{<[0-9]+>idPhoto}_{<[0-9]+>photoIdUser}/?")
-    public static void show(long idPhoto, Integer photoIdUser) {
+    @RequestMapping("/show/{<[0-9]+>idPhoto}_{<[0-9]+>photoIdUser}/?")
+    public ModelAndView show(long idPhoto, Integer photoIdUser, HttpServletRequest request) throws Exception {
+        ModelAndView mv = new ModelAndView("photo/Show");
 
-        try {
-            String ip = request.remoteAddress;
-            System.out.println(idPhoto);
-            Integer idUser = currentUserId();
-            String username = currentNiceName();
-            int iip = getIIP();
-            Photo photo = photoRepository.view(idPhoto, photoIdUser, idUser, iip);
+        String ip = request.getRemoteAddr();
+        System.out.println(idPhoto);
+        Integer idUser = currentUserId();
+        String username = currentNiceName();
+        int iip = getIntRemoteIP();
+        Photo photo = photoRepository.view(idPhoto, photoIdUser, idUser, iip);
 
-            if (photo == null) {// 输入错误的ID,或者照片被删除，或者不存在
-                Logger.info("photo is no-exists for id " + idPhoto);
-                render500();
-            }
-            photo.niceName = photo.user.niceName;
-            Map<String, String> exif = toMap(photo);
-            User user = photo.user;
-            user.headPath = Path.getHeadPhotoDownloadPath(user.idUser);
+        if (photo == null) {// 输入错误的ID,或者照片被删除，或者不存在
+            logger.info("photo is no-exists for id " + idPhoto);
+        }
+        photo.niceName = photo.user.niceName;
+        Map<String, String> exif = toMap(photo);
+        User user = photo.user;
+        user.headPath = Path.getHeadPhotoDownloadPath(user.idUser);
 
-            boolean isFavorite = false;
-            boolean isVote = false;
-            boolean isFollow = false;
-            // int followNum[] = { 0, 0 };
+        boolean isFavorite = false;
+        boolean isVote = false;
+        boolean isFollow = false;
+        // int followNum[] = { 0, 0 };
 
-            isFavorite = photoRepository.isFavorite(idPhoto, idUser, iip);
-            isVote = photoRepository.isVote(idPhoto, idUser, iip);
-            if (idUser != null) {
-                // 只有登陆
-                isFollow = readFollowService.isFollow(null, idUser, photo.idUser, AppConstants.DefaultFollowType);
-                // followNum[0] = readFollowService.countTarget(null, idUser);
-                // followNum[1] = readFollowService.countSource(null, idUser);
-
-            }
-            System.out.println(isFollow);
-            System.out.println(isVote);
-            System.out.println(isFavorite);
-            throw new JapidResult(new Show().render(
-                    photo,
-                    photo.rank,
-                    exif,
-                    isFollow,
-                    isFavorite,
-                    isVote));
-        } catch (Exception e) {
-            Logger.error(e, "show photo error.");
-            throw new JapidResult(new E500().render());
+        isFavorite = photoRepository.isFavorite(idPhoto, idUser, iip);
+        isVote = photoRepository.isVote(idPhoto, idUser, iip);
+        if (idUser != null) {
+            // 只有登陆
+            isFollow = readFollowService.isFollow(null, idUser, photo.idUser, AppConstants.DefaultFollowType);
+            // followNum[0] = readFollowService.countTarget(null, idUser);
+            // followNum[1] = readFollowService.countSource(null, idUser);
 
         }
+
+        mv.addObject("photo", photo);
+        mv.addObject("rank", photo.rank);
+        mv.addObject("exif", exif);
+        mv.addObject("isFollow", isFollow);
+        mv.addObject("isFavorite", isFavorite);
+        mv.addObject("isVote", isVote);
+        return mv;
+
     }
 
     private static Map<String, String> toMap(Photo photo) {
@@ -113,99 +110,68 @@ public class ShowAction extends Admin {
 
     }
 
-    @Any("/show/rank/{id}")
-    public static void showRank(long id) {
-        try {
-            Rank rank = photoRepository.getRank(id);
-            throw new JapidResult(new RankShow().render(rank));
-        } catch (Exception e) {
-            Logger.error(e, "show photo error.");
-            throw new JapidResult(new RankShow().render(new Rank()));
+    @RequestMapping("/show/rank/{id}")
+    public ModelAndView showRank(long id) throws Exception {
+        ModelAndView mv = new ModelAndView("photo/RankShow");
+        Rank rank = photoRepository.getRank(id);
+        mv.addObject("rank", rank);
+        return mv;
+    }
+
+    @RequestMapping("/comments")
+    public void showComments(HttpServletRequest request) throws Exception {
+        ModelAndView mv = new ModelAndView("photo/Comments");
+        Map<String, String> map = allSimple(request);
+        long idPhoto = MapUtils.getLongValue(map, "id");
+        Integer idUser = MapUtils.getInteger(map, "id_user");
+
+        int page = MapUtils.getIntValue(map, "p");
+        int cp = MapUtils.getIntValue(map, "cp");
+        int total = MapUtils.getIntValue(map, "t");
+        System.out.println(cp + "," + page);
+        cp += page;
+        cp = cp <= 0 ? 1 : cp;
+        List<Comment> comments = repository.select(idPhoto, idUser, (cp - 1) * Row, Row);
+        //Set<Integer> idUsers = new HashSet<>();
+        for (Comment comment : comments) {
+            //idUsers.add(comment.idUser);
+
+            comment.sinceTime = DateTimeUtils.period(comment.createAtGmt.getTime());
         }
+
+        int maxPage = total / Row + 1;
+        List<String> pages = pageList(cp, maxPage);
+        System.out.println(pages);
+        mv.addObject("comments", comments);
+        mv.addObject("pages", pages);
+        mv.addObject("cp", cp);
+        mv.addObject("maxPage", maxPage);
     }
 
-    @Any("/comments")
-    public static void showComments() {
-        try {
-            Map<String, String> map = params.allSimple();
-            long idPhoto = MapUtils.getLongValue(map, "id");
-            Integer idUser = MapUtils.getInteger(map, "id_user");
-
-            int page = MapUtils.getIntValue(map, "p");
-            int cp = MapUtils.getIntValue(map, "cp");
-            int total = MapUtils.getIntValue(map, "t");
-            System.out.println(cp + "," + page);
-            cp += page;
-            cp = cp <= 0 ? 1 : cp;
-            List<Comment> comments = repository.select(idPhoto, idUser, (cp - 1) * Row, Row);
-            //Set<Integer> idUsers = new HashSet<>();
-            for (Comment comment : comments) {
-                //idUsers.add(comment.idUser);
-
-                comment.sinceTime = DateTimeUtils.period(comment.createAtGmt.getTime());
-            }
-
-            int maxPage = total / Row + 1;
-            List<String> pages = pageList(cp, maxPage);
-            System.out.println(pages);
-            throw new JapidResult(new Comments().render(comments, pages, cp, maxPage));
-        } catch (Exception e) {
-            Logger.error(e, "show photo error.");
-        }
+    @RequestMapping("/last/?")
+    public ModelAndView lastFirst(int pageNum) throws Exception {
+        return last(0);
     }
 
-    public static void showUser(String id) {
-        throw new JapidResult(new Index().render());
-    }
-
-    @Gets({@Get("/choice/{<[0-9]+>pageNum}/?"), @Get("/choice/?")})
-    @Any("/choice/{<[0-9]+>pageNum}/?")
-    public static void choice(int pageNum) {
-        String path = "/choice";
-        try {
-            Map<String, String> map = params.allSimple();
-            Byte category = MapUtils.getByte(map, "c", null);
-            pageNum = pageNum <= 0 ? 1 : pageNum;
-            int offset = (pageNum - 1) * TotalRowShow;
-            List<Choice> choices = show.choiced(category, offset, TotalRowShow);
-
-            rankable(choices);
-
-            throw new JapidResult(new Views().render(pathTitle, path, choices, pageNum));
-        } catch (Exception e) {
-
-            Logger.error(e, "show last photo error.");
-            throw new JapidResult(new Views().render(
-
-                    pathTitle, path, new ArrayList<PhotoShow>(), 1));
-        }
-    }
-
-    @Gets({@Get("/last/{<[0-9]+>pageNum}/?"), @Get("/last/?")})
-    @Any("/last/{<[0-9]+>pageNum}/?")
-    public static void last(int pageNum) {
+    @RequestMapping("/last/{<[0-9]+>pageNum}/?")
+    public ModelAndView last(int pageNum) throws Exception {
+        ModelAndView mv = new ModelAndView("photo/Show");
         String path = "/last";
-        try {
-            Map<String, String> map = params.allSimple();
-            Byte category = MapUtils.getByte(map, "c", null);
-            pageNum = pageNum <= 0 ? 1 : pageNum;
-            int offset = (pageNum - 1) * TotalRowShow;
-            List<Refresh> refreshs = show.refreshed(category, offset, TotalRowShow);
-            // for (Refresh refresh : rfs) {
-            // ids.add(refresh.idPhoto);
-            // }
-            rankable(refreshs);
+        Map<String, String> map = allSimple();
+        Byte category = MapUtils.getByte(map, "c", null);
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        int offset = (pageNum - 1) * TotalRowShow;
+        List<Refresh> refreshes = show.refreshed(category, offset, TotalRowShow);
+        // for (Refresh refresh : rfs) {
+        // ids.add(refresh.idPhoto);
+        // }
+        rankable(refreshes);
 
-            throw new JapidResult(new Views().render(pathTitle, path, refreshs, pageNum));
-        } catch (Exception e) {
-
-            Logger.error(e, "show last photo error.");
-            throw new JapidResult(new Views().render(
-                    pathTitle,
-                    path,
-                    new ArrayList<PhotoShow>(),
-                    1));
-        }
+        mv.addObject("pathTitle", pathTitle);
+        mv.addObject("path", path);
+        mv.addObject("refreshes", refreshes);
+        mv.addObject("pageNum", pageNum);
+        return mv;
     }
 
 
@@ -236,107 +202,13 @@ public class ShowAction extends Admin {
 
     }
 
-    @Gets({@Get("/pop/{<[0-9]+>pageNum}/?"), @Get("/pop/?"), @Get("/")})
-    @Any("/pop/{<[0-9]+>pageNum}/?")
-    public static void popular(int pageNum) {
-        String path = "/pop";
-        try {
-            Map<String, String> map = params.allSimple();
-            Byte category = MapUtils.getByte(map, "c", null);
-            pageNum = pageNum <= 0 ? 1 : pageNum;
-            int offset = (pageNum - 1) * TotalRowShow;
-
-            // List<Rank> ranks = show.pop(offset, TotalRowShow);
-            List<Rank> populars = show.popular(category, offset, TotalRowShow);
-            // rankable(populars);
-            throw new JapidResult(new Views().render(pathTitle, path, populars, pageNum));
-        } catch (Exception e) {
-
-            Logger.error(e, "show pop photo error.");
-            throw new JapidResult(new Views().render(
-                    pathTitle,
-                    path,
-                    new ArrayList<PhotoShow>(),
-                    1));
-        }
-    }
-
-    @Gets({@Get("/upcoming/{<[0-9]+>pageNum}/?"), @Get("/upcoming/?")})
-    @Any("/upcoming/{<[0-9]+>pageNum}/?")
-    public static void upcoming(int pageNum) {
-        String path = "/upcoming";
-        try {
-            Map<String, String> map = params.allSimple();
-            Byte category = MapUtils.getByte(map, "c", null);
-            pageNum = pageNum <= 0 ? 1 : pageNum;
-            int offset = (pageNum - 1) * TotalRowShow;
-            List<Rank> upcomings = show.upcomed(category, offset, TotalRowShow);
-            // rankable(upcomings);
-            throw new JapidResult(new Views().render(pathTitle, path, upcomings, pageNum));
-        } catch (Exception e) {
-            Logger.error(e, "show pop photo error.");
-            throw new JapidResult(new Views().render(
-                    pathTitle,
-                    path,
-                    new ArrayList<PhotoShow>(),
-                    1));
-        }
-    }
-
-    @Gets({@Get("/category/{<[0-9]+>pageNum}/?"), @Get("/category/?")})
-    @Any("/category/{<[0-9]+>pageNum}/?")
-    public static void catalog(int pageNum) {
-        String path = "/category";
-        try {
-            Map<String, String> map = params.allSimple();
-            Byte category = MapUtils.getByte(map, "c", null);
-            pageNum = pageNum <= 0 ? 1 : pageNum;
-            int offset = (pageNum - 1) * TotalRowShow;
-            List<Refresh> refreshs = show.categorized(category, offset, TotalRowShow);
-            throw new JapidResult(new Category().render(pathTitle, path, refreshs, pageNum));
-        } catch (Exception e) {
-            Logger.error(e, "show pop photo error.");
-            throw new JapidResult(new Category().render(
-                    pathTitle,
-                    path,
-                    new ArrayList<PhotoShow>(),
-                    1));
-        }
-    }
-
-    // home actions
-    @Gets({@Get("/flow/{<[0-9]+>pageNum}/?"), @Get("/flow/?")})
-    @Any("/flow/{<[0-9]+>pageNum}/?")
-    public static void flow(int pageNum) {
-        String path = "/flow";
-        int iip = getIIP();
-
-        try {
-            pageNum = pageNum <= 0 ? 1 : pageNum;
-            int offset = (pageNum - 1) * TotalRowShow;
-            List<PhotoAccess> accesses = show.selectPhotoViewsByIP(iip, offset, TotalRowShow);
-            // for (Refresh refresh : rfs) {
-            // ids.add(refresh.idPhoto);
-            // }
-            // rankable(accesses);
-            throw new JapidResult(new HomeViews().render(pathTitle, path, accesses, pageNum));
-        } catch (Exception e) {
-
-            Logger.error(e, "show last photo error.");
-            throw new JapidResult(new HomeViews().render(
-                    pathTitle,
-                    path,
-                    new ArrayList<PhotoShow>(),
-                    1));
-        }
-    }
 
     protected static List<? extends PhotoShow> action(
             String action,
             Integer idUser,
             int offset,
             int limit) throws Exception {
-        int iip = getIIP();
+        int iip = getIntRemoteIP();
         switch (action) {
             case "fav":
                 List<Favorite> favorites = show.selectFavoritesByIP(iip, offset, limit);
@@ -347,29 +219,6 @@ public class ShowAction extends Admin {
             default:
                 accesses = show.selectPhotoViewsByIP(iip, offset, limit);
                 return accesses;
-        }
-    }
-
-    @Gets({@Get("/fav/{<[0-9]+>pageNum}/?"), @Get("/fav/?")})
-    @Any("/fav/{<[0-9]+>pageNum}/?")
-    public static void fav(int pageNum) {
-        String path = "/fav";
-        try {
-            Map<String, String> map = params.allSimple();
-            Byte category = MapUtils.getByte(map, "c", null);
-            pageNum = pageNum <= 0 ? 1 : pageNum;
-            int offset = (pageNum - 1) * TotalRowShow;
-            int iip = getIIP();
-            List<Favorite> favorites = show.selectFavoritesByIP(iip, offset, TotalRowShow);
-
-            throw new JapidResult(new HomeViews().render(pathTitle, path, favorites, pageNum));
-        } catch (Exception e) {
-            Logger.error(e, "show pop photo error.");
-            throw new JapidResult(new HomeViews().render(
-                    pathTitle,
-                    path,
-                    new ArrayList<PhotoShow>(),
-                    1));
         }
     }
 

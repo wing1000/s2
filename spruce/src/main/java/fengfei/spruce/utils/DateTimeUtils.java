@@ -1,5 +1,7 @@
 package fengfei.spruce.utils;
 
+import fengfei.fir.utils.WebUtils;
+
 public class DateTimeUtils {
 
     final static int OneMinute = 60;

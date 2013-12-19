@@ -1,0 +1,198 @@
+<pre style="display: none">
+`suppressNull on`
+`import fengfei.ucm.entity.photo.*;import fengfei.fir.utils.Path;import java.util.*;import java.util.Map.Entry;` 
+`extends japidviews._layouts.Layout` 
+`args Photo photo,Rank rank,Map exif,boolean isFollow,boolean isFavorite,boolean isVote` 
+`set title: "Sprucy Show Page"` 
+`set header: "Show" `
+</pre>
+`set css
+<script type="text/javascript"
+        src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDqPLY_onh61yMSw5KSVICJN-B5igbHCTs&sensor=false&language=zh-cn"></script>
+<script src="@{'/public/blueimp/tmpl.min.js'}" type="text/javascript"></script>
+<script src="@{'/public/app/show.js'}"></script>
+<script src="@{'/public/app/follow.js'}"></script>
+<script src="@{'/public/app/comment.js'}"></script>
+<style type="text/css">
+    .follow_btn {
+        width: 80px;
+        max-width: 80px;
+    }
+
+    .comment_error {
+        border-color: red;
+    }
+
+</style>
+`
+<div class="grid_row show">
+    <div class="col col_16  ">
+        <div class="title">
+            <h4>${(photo.title==null || "".equals(photo.title.trim()))?"Untitled":photo.title}</h4>
+        </div>
+    </div>
+    <div class="col col_12  ">
+
+        <div class="">
+            <img src="${Path.getJpegDownloadPath(photo.idPhoto,0)}" class="rounded3 img_shadow" alt="" class="">
+        </div>
+        <div class="line6"></div>
+        <div class="row-fluid ">
+            <div class="span7">
+                <button class="btn btn-mini" type="button">
+                    &nbsp;&nbsp; I want to buy this
+                    photo! &nbsp;&nbsp;
+                </button>
+            </div>
+            <div class="span5">
+                <!-- JiaThis Button BEGIN
+                <div class="jiathis_style">
+                <a class="jiathis_button_qzone"></a> <a class="jiathis_button_tsina"></a> <a
+                class="jiathis_button_tqq"></a> <a class="jiathis_button_weixin"></a> <a
+                class="jiathis_button_renren"></a> <a class="jiathis_button_xiaoyou"></a> <a
+                class="jiathis_button_tianya"></a> <a class="jiathis_button_ishare"></a> <a
+                href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis"
+                target="_blank"></a> <a class="jiathis_counter_style"></a>
+                </div>
+                <script type="text/javascript"
+                src="http://v3.jiathis.com/code/jia.js?uid=1363333029194573" charset="utf-8"></script> -->
+                <!-- JiaThis Button END -->
+            </div>
+        </div>
+        <div class="line10"></div>
+        <div>
+            <form class="form-horizontal" id="commentForm" method="post">
+                `if (session.get(Admin.SESSION_LOGIN_KEY) == null) {`
+
+                <div class="line10"></div>
+                <div class="line12"></div>
+                <a href="/login">Login</a> or <a href="/signup">Sign up</a> to comment.
+                <div class="line10"></div>
+                <div class="line10"></div>
+                `}else{`
+                <textarea class="col_12 comment" rows="3" cols="" id="comment" name="comment"
+                          placeholder="Add your comments..."></textarea>
+
+                <div class="line3"></div>
+                <input type="hidden" name="comment_count" id="comment_count"
+                       value="${photo.commentCount}"/>
+
+                `//if(!String.valueOf(photo.idUser).equals(session.get(Admin.SESSION_USER_ID_KEY))){`
+                <button type="button" id="comment_btn" class="btn btn-info  btn-mini">
+                    Comment
+                </button>
+                `//}`
+
+                `}`
+                <input type="hidden" name="id_photo" id="id_photo_x" value="${photo.idPhoto}"/>
+                <input type="hidden" name="niceName" id="niceNameX" value="${photo.user.niceName}"/>
+                <input type="hidden" name="photoIdUser" id="photoIdUserX" value="${photo.idUser}"/>
+
+                <input type="hidden" name="category" id="categoryx" value="${photo.category}"/>
+
+                <input type="hidden" name="id_photo" id="id_photo" value="${photo.idPhoto}"/>
+            </form>
+        </div>
+
+        <div class="line10"></div>
+        <div id="comments_c">
+            loading comments...
+        </div>
+
+    </div>
+    <!-- user info -->
+    <div class="col col_4 ">
+        <div class="row-fluid stat left_rounded6 shadow ">
+            <div class="span6">
+                <img width="90" height="90" class="img-rounded"
+                     src="${fengfei.spruce.utils.PhotoPathUtils.getUserPhotoDownloadPath(photo.idUser)}">
+            </div>
+            <div class="span6">
+                <p>
+                    ${photo.user.niceName}
+                </p>
+
+                <p>
+                    <button
+                            class="follow_btn btn `if(isFollow){` btn-success`}else{`btn-info`}` btn-mini  "
+                            type="button" id="follow" toid="${photo.idUser}" isfollow="${isFollow}">
+                        ${isFollow?"Following":"Follow"}
+                    </button>
+                </p>
+            </div>
+        </div>
+        <div class="line6"></div>
+        `tag RankShow rank`
+        <div class="line6"></div>
+
+        <div class="row-fluid  ">
+            <button id="vote_btn"
+                    class="btn `if(isVote){`disabled`}else{` btn-success `}` span10  btn-mini " type="button"
+                    isvote="${isVote}">
+                `if(isVote){`Thank you for voting!`}else{`Like`}`
+            </button>
+
+            <button id="favorite_btn" title="`if(isFavorite){`Cancel favorite?`}else{`Favorite`}`"
+                    class="btn favorite `if(isFavorite){`favorited`}else{`unfavorited`}` span2 btn-mini" type="button"
+                    isfavorite="${isFavorite}">
+                &#10084;
+            </button>
+
+        </div>
+        <div class="line6"></div>
+        <div class="row-fluid border-bottom shadow rounded6">
+            <div class="span12">
+                <div id="description" class="photo_stats border-bottom">
+                    ${photo.description}
+                </div>
+            </div>
+            <div class="span12">
+                <div id="tags" class="photo_stats border-bottom">
+                    <span>${photo.tags}<i class=" icon-tags"></i>tags1 </span><span><i
+                        class=" icon-tags"></i>tags2</span><span><i class=" icon-tags"></i>tags3</span>
+                </div>
+            </div>
+            <div class="span12">
+                <div id="exif" class="exif_info ">
+                    <ul>
+                        `Set sets = exif.entrySet();`
+                        `for (Object obj : sets) {`
+                        `Entry entry=(Entry)obj;`
+                        <li>
+                            <small class="key">${entry.getKey()}</small>
+                            <strong class="value">${entry.getValue()}</strong>
+                        </li>
+                        `}`
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid border-bottom shadow rounded6 show_map">
+            <div class="span12">
+                <div id="address">
+
+                </div>
+            </div>
+            <div class="span12">
+                <div id="map_show_canvas" lat="${photo.GPSLatitude}" lng="${photo.GPSLongitude}" class="show_map">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script id="comments_tml" type="text/x-tmpl">
+
+    <li class="media"><a class="pull-left" href="#"> <img width="64" height="64"
+                                                          class="media-object">
+    </a>
+
+        <div class="media-body">
+            <h5 class="media-heading border-bottom">{~%=o.username%} 1 minutes ago</h5>
+            <small>{~%=o.content%}</small>
+
+        </div>
+    </li>
+
+</script>

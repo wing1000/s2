@@ -1,8 +1,8 @@
 package fengfei.spruce.utils; /**
  */
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
+//import com.sun.image.codec.jpeg.JPEGCodec;
+//import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -73,44 +73,44 @@ public class CreateImageUtils {
             }
         }
     }
-
-    public static void createImage(long id) {
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        Graphics graphics = image.getGraphics();
-        File file = new File("c:/xx/image" + id + ".jpg");
-        try {
-            graphics.setColor(Color.WHITE);
-            graphics.fillRect(0, 0, width, height);
-            graphics.setColor(new Color(47, 122, 114));
-            boolean isRect = false;
-            fillLeftRightSymmetry(graphics, isRect);
-//            else fillUpDownSymmetry(graphics, isRect);
-
-            //  ImageIO.write(image, "PNG", file);//生成图片方法一
-            //ImageIO,可以生成不同格式的图片，比如JPG,PNG,GIF.....
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        //生成图片方法二开始,只知道生成jpg格式的图片,这个方法其他格式的还是不知道怎么弄。
-        try {
-            FileOutputStream fos = new FileOutputStream(file);
-            BufferedOutputStream bos = new BufferedOutputStream(fos);
-            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(bos);
-            encoder.encode(image);
-            bos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //生成图片方法二结束
-        graphics.dispose();//释放资源
-    }
+//
+//    public static void createImage(long id) {
+//        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+//        Graphics graphics = image.getGraphics();
+//        File file = new File("c:/xx/image" + id + ".jpg");
+//        try {
+//            graphics.setColor(Color.WHITE);
+//            graphics.fillRect(0, 0, width, height);
+//            graphics.setColor(new Color(47, 122, 114));
+//            boolean isRect = false;
+//            fillLeftRightSymmetry(graphics, isRect);
+////            else fillUpDownSymmetry(graphics, isRect);
+//
+//            //  ImageIO.write(image, "PNG", file);//生成图片方法一
+//            //ImageIO,可以生成不同格式的图片，比如JPG,PNG,GIF.....
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        //生成图片方法二开始,只知道生成jpg格式的图片,这个方法其他格式的还是不知道怎么弄。
+//        try {
+//            FileOutputStream fos = new FileOutputStream(file);
+//            BufferedOutputStream bos = new BufferedOutputStream(fos);
+//            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(bos);
+//            encoder.encode(image);
+//            bos.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        //生成图片方法二结束
+//        graphics.dispose();//释放资源
+//    }
 
 
     public static void main(String[] args) throws Exception {
 
         for (int i = 0; i < 40; i++) {
 
-            createImage(i);
+//            createImage(i);
         }
 
     }

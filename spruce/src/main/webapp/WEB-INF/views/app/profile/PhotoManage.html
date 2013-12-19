@@ -1,0 +1,51 @@
+<pre style="display: none">
+`import java.util.*; `
+`import fengfei.ucm.entity.photo.*;`
+`extends japidviews._layouts.Layout`
+`args List<PhotoSet> sets`
+ `set title:"Sprucy manage Page"`
+`set header:"" `
+`set css
+	<link type="text/css" href="@{/public/styles/photo_top.css}" />
+	<script type="text/javascript" src="@{/public/bootstrap/bootbox.js}"></script>
+	<script type="text/javascript" src="@{/public/app/photoManage.js}"></script>
+`
+</pre>
+
+
+
+`tag AddNav "manage"`
+<div class="grid_row manage">
+
+	<div class="col col_2 ">
+		<div class="manage_nav ">
+
+			<ul class="nav nav-list" id="manage_menu">
+				<li>
+					<h4>Photos</h4>
+				</li>
+				<li >
+					<a href="javascript:void(0)" src="/photo/manage/all">&{"all"}</a>
+				</li>
+				<li>
+					<a href="javascript:void(0)"  src="/photo/manage/public">&{"published"}</a>
+				</li>
+				<li>
+					<a href="javascript:void(0)"  src="/photo/manage/dir/all"><h4>&{"sets"}</h4></a>
+				</li>
+				`tag DirNav sets`
+
+			</ul>
+
+		</div>
+	</div>
+	<div class="col col_14 ">
+
+		<div  id="manage_contaner">
+
+		</div>
+
+	</div>
+</div>
+
+

@@ -1,0 +1,28 @@
+<pre style="display: none">
+	
+`import java.util.*;import fengfei.ucm.entity.photo.*;`
+`import fengfei.fir.utils.Path;import fengfei.fir.model.PhotoShow`
+`extends japidviews._layouts.Layout`
+`args List<PhotoSet> photoSets `
+`set css
+	<script type="text/javascript" src="@{/public/js/jquery-ui-1.10.3-core-interactions.js}"></script>
+	<script type="text/javascript" src="@{/public/app/dirOrg.js}"></script>
+`
+</pre>
+<div class="grid_row dir_org" >
+	<div class="col col_6">
+		<ul class="sortable nav nav-list">
+			`if(photoSets!=null){`
+			`for(PhotoSet set:photoSets){`
+			<li class="setItem" title="${set.name}">
+				<a href="javascript:void(0)"  src="/photo/manage/dir/${set.idSet}">${set.name}</a>
+			</li>
+			`}`
+			`}`
+
+		</ul>
+	</div>
+	<div class="col col_6 ">
+
+	</div>
+</div>

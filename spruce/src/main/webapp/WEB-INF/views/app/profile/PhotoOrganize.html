@@ -1,0 +1,44 @@
+<pre style="display: none">
+	
+`import java.util.*;import fengfei.ucm.entity.photo.*;`
+`import fengfei.fir.utils.Path;import fengfei.fir.model.PhotoShow`
+`args List<PhotoSet> photoSets `
+
+</pre>
+<div class="row-fluid " >
+	<div>
+		<form class="form-inline">
+			<input name="set" id="set1"  type="text" placeholder="Set Name" class="span10"/>
+			<input name="idSet" id="idSet1"  type="hidden" placeholder="Set Name"  />
+			<button type="button" class="btn"   onclick="addPhotoSetEvent();">
+				Save
+			</button>
+			<button type="button" class="btn"  onclick="deletePhotoSetEvent();">
+				Delete
+			</button>
+		</form>
+	</div>
+	<div class="manage_nav ">
+		<div>
+			${flash.get("error")}
+		</div>
+		<table class="table table-hover" >
+			<thead>
+				<tr>
+					<th>Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				`if(photoSets!=null){`
+				`for(PhotoSet set:photoSets){`
+				<tr>
+					<td onclick="setPhotoSetValue(this)" id_set="${set.idSet}" name_set="${set.name}">${set.name}</td>
+				</tr>
+
+				`}`
+				`}`
+			</tbody>
+		</table>
+
+	</div>
+</div>

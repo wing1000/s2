@@ -1,0 +1,398 @@
+`extends japidviews._layouts.EmptyLayout`
+`args List 	paths`
+`set title:"Sprucy Upload Page"`
+`set css
+<link rel="stylesheet" media="screen" href="@{'/public/styles/grid1200.css'}">
+		<link rel="stylesheet" media="screen" href="@{'/public/basic/css/fluid20.css'}">
+<script src="@{'/public/agile-uploader-3.0/jquery-1.4.min.js'}"></script>
+<script src="@{'/public/agile-uploader-3.0/swfobject.js'}"></script>
+<!--<script src="@{'/public/agile-uploader-3.0/swfobject.js'}"></script>-->
+<script src="@{'/public/agile-uploader-3.0/agile-uploader-3.1.1.js'}"></script>
+<link type="text/css" rel="stylesheet" href="@{/public/agile-uploader-3.0/agile-uploader.css}" />
+<script src="@{'/public/js/exif.js'}"></script>
+<script src="@{'/public/app/ExifUtils.js'}"></script>
+<script type="text/javascript">
+	(function(){
+ 　　var setRemoveCallback =function(){
+ 　　__flash__removeCallback =function(instance, name){
+ 　　　　　　if (instance){
+			 	instance[name] =null;
+			}
+ };
+ window.setTimeout(setRemoveCallback, 10);
+ };
+setRemoveCallback();
+})();
+
+	function prepareExif(exif) {
+		var a = eval('(' + exif + ')');
+		
+		var format = "yyyy-MM-dd hh:mm:ss";
+		// a.DateTimeDigitized = Date.parse(a.DateTimeDigitized);
+		// a.DateTimeOriginal = Date.parse(a.DateTimeOriginal);
+		// a.DateTime = Date.parse(a.DateTime);
+		if (a) {
+			var g = "";
+			//typeof a.ExposureTime != "undefined" && (a.ExposureTime < 1 ? g = "1/" + 1 / a.ExposureTime : g = Math.floor(a.ExposureTime));
+			var h = "", j = "";
+			
+			//typeof a.DateTimeOriginal != "undefined" ? h = a.DateTimeOriginal : typeof a.DateTimeDigitized != "undefined" && ( h = a.DateTimeDigitized), h != "" && ( h = ExifUtils.takenDate(h), j = ExifUtils.takenDateToHuman(h));
+
+			var ev = "";
+
+			var eb = a.ExposureBiasValue;
+			ev = eb;
+			// if ( typeof eb != "undefined") {
+			// ev = eb < 0 ? "-" : "+";
+			// if (eb == 0) {
+			// ev = "0";
+			// } else if (eb >= 1 || eb <= -1) {
+			// ev += Math.floor(eb);
+			// } else {
+			// ev += "1/" + Math.abs(1 / eb);
+			// }
+			// }
+
+			a.MakerNote = [];
+			a.UserComment = [];
+			data = a;
+			data.ExposureTime2 = g;
+			data.DateTimeOriginal2 = h;
+			data.DateTimeOriginal3 = j;
+			data.ev = ev;
+
+			data.FocalLength2 = ExifUtils.toNumber(a.FocalLength);
+			data.iso = a.ISOSpeedRatings;
+			data.FNumber2 = ExifUtils.toNumber(a.FNumber);
+			data.ExposureTime2 = ExifUtils.toHumanFraction(data.ExposureTime);
+			data.ev = ExifUtils.toZero(a.ExposureBiasValue);
+			data.ExposureBias2 = ExifUtils.toZero(a.ExposureBiasValue);
+			//data.ColorSpace2 = ExifUtils.colorSpaceHuman(data.ColorSpace);
+			console.info(a);
+			data.WhiteBalance2 = EXIF.StringValues.WhiteBalance[data.WhiteBalance];
+			data.Flash2 = EXIF.StringValues.Flash[data.Flash];
+			data.MeteringMode2 = EXIF.StringValues.MeteringMode[data.MeteringMode];
+
+			return data;
+
+		}
+
+		return {};
+	}
+
+	function toForm(exif, event) {
+		var data = prepareExif(exif);
+		console.log(data);
+		var tempIndex = 1;
+		//var fileName=event.file.fileName;
+		//var index = fileName.lastIndexOf(".");
+		//$("#title" + tempIndex).val(fileName.substring(0, index));
+
+		//
+		$("#taken_at" + tempIndex).val(data.DateTimeOriginal2);
+		$("#taken_at_display" + tempIndex).val(data.DateTimeOriginal2);
+		$("#make" + tempIndex).val(data.Make);
+		$("#camera" + tempIndex).val(data.Model);
+		$("#focus" + tempIndex).val(data.FocalLength2);
+		$("#iso" + tempIndex).val(data.iso);
+		$("#lens" + tempIndex).val($.trim(data.LensModel));
+		$("#shutter" + tempIndex).val(data.ExposureTime2);
+		$("#aperture" + tempIndex).val(data.FNumber2);
+		$("#ev" + tempIndex).val(data.ev);
+		//
+		$("#description" + tempIndex).val("");
+		$("#tags" + tempIndex).val("");
+		$("#category1" + tempIndex).val(0);
+		//data.WhiteBalance2;
+		//data.Software;
+		//data.Flash2
+		//data.ColorSpace2
+		//data.MeteringMode2 测光模式
+		$("#content").css("display", "block");
+	}
+
+	$(function() {
+
+		$('#multiple').agileUploader({
+			flashSrc : '/public/agile-uploader-3.0/agile-uploader.swf',
+			submitRedirect : '/public/agile-uploader-3.0/results.php',
+			removeIcon : '/public/agile-uploader-3.0/trash-icon.png',
+			genericFileIcon : '/public/agile-uploader-3.0/file-icon.png',
+			submitRedirect : '/agile/upload',
+			formId : 'multipleDemo',
+			max_height : 1024,
+			max_width : 1024,
+			preview_max_height : 100,
+			preview_max_width : 100,
+			flashVars : {
+				button_up : '/public/agile-uploader-3.0/add-file.png',
+				button_over : '/public/agile-uploader-3.0/add-file.png',
+				button_down : '/public/agile-uploader-3.0/add-file.png',
+				firebug : true,
+				form_action : '/agile/upload/done',
+				file_limit : 3,
+				max_post_size : (1000 * 1024),
+				exif_enable : true
+			},
+			exif_callback : function(exif, event) {
+				
+				toForm(exif, event);
+			}
+		});
+	});
+
+</script>
+`
+<div class="grid_row">
+	<div class="col col_16">
+		<form id="multipleDemo" enctype="multipart/form-data">
+			<div id="multiple"></div>
+			<button type="button" onClick="document.getElementById('agileUploaderSWF').submit();" class="btn btn-small btn-info">
+				Submit
+			</button>
+	
+		<div id="files">
+			<table class="table table-striped center " id="content"
+			style="display: ">
+				<thead>
+					<tr>
+						<td colspan="3" class="non-border span12">
+						<div id="progress"
+						class="progress progress-success progress-striped">
+							<div class="bar"></div>
+						</div></td>
+					</tr>
+				</thead>
+				<tbody data-target="#modal-gallery" data-toggle="modal-gallery"
+				class="files">
+					<tr>
+						<td class="right_line span6">
+						<div class=" magin_left">
+							<div id="preview"></div>
+							<br />
+							<p>
+								file name: <span id="name"></span>
+							</p>
+							<p>
+								source size: <span id="size"></span>
+							</p>
+						</div></td>
+						<td class="right_line span3">
+						<div class=" magin_left">
+							<div class="block">
+								<label for="title1">Title</label>
+								<input type="text"
+								placeholder="title" maxlength="100" id="title1" value=""
+								name="title" class=" input-width ">
+								<input
+								type="hidden" placeholder="ID" maxlength="100" id="id1"
+								value="" name="id" class=" input-width ">
+							</div>
+							<div class="block">
+								<label for="desc1">Description</label>
+								<textarea class=" input-width " id="desc1"
+										placeholder="Description" name="description"></textarea>
+							</div>
+							<div class="block">
+								<select name="category" id="category1"
+								class="category select-width">
+									<optgroup label="Category"></optgroup>
+									<option value="10">Abstract</option>
+									<option value="11">Animals</option>
+									<option value="5">Black and White</option>
+									<option value="1">Celebrities</option>
+									<option value="9">City and Architecture</option>
+									<option value="15">Commercial</option>
+									<option value="16">Concert</option>
+									<option value="20">Family</option>
+									<option value="14">Fashion</option>
+									<option value="2">Film</option>
+									<option value="24">Fine Art</option>
+									<option value="23">Food</option>
+									<option value="3">Journalism</option>
+									<option value="8">Landscapes</option>
+									<option value="12">Macro</option>
+									<option value="18">Nature</option>
+									<option value="4">Nude</option>
+									<option value="7">People</option>
+									<option value="19">Performing Arts</option>
+									<option value="17">Sport</option>
+									<option value="6">Still Life</option>
+									<option value="21">Street</option>
+									<option value="26">Transportation</option>
+									<option value="13">Travel</option>
+									<option value="22">Underwater</option>
+									<option value="27">Urban Exploration</option>
+									<option value="25">Wedding</option>
+									<option selected="selected" value="0">Uncategorized</option>
+								</select>
+							</div>
+							<div class="block">
+								<label for="tags1">Tags</label>
+								<textarea rows="" cols="" placeholder="Tags (divide by comma)"
+										class="tags" name="tags" id="tags1"></textarea>
+							</div>
+							<div class="checkbox">
+								<label for="adult1">
+									<input type="checkbox" value="1"
+									id="adult1" name="adult">
+									For adult content?</label>
+							</div>
+							<div class="checkbox">
+								<label for="copyright1">
+									<input type="checkbox"
+									value="1" id="copyright1" name="copyright" checked="checked">
+									Owns
+									the copyright?</label>
+							</div>
+						</div></td>
+						<td class="span3">
+						<div class=" magin_left">
+							<div class="inline input-prepend">
+								<span class="add-on"><span class=" span1 left">Camera </span></span>
+								<input type="text" placeholder="Camera" value=""
+								class="Camera" id="camera1" name="camera">
+								<input
+								type="hidden" placeholder="Make" value="" class="make"
+								id="make1" name="make">
+							</div>
+							<div class="inline input-prepend">
+								<span class="add-on"><span class=" span1 left">Lens</span> </span>
+								<input type="text" placeholder="Lens" value="" class="lens"
+								id="lens1" name="lens">
+							</div>
+							<div class="inline input-prepend">
+								<span class="add-on"><span class=" span1 left">Focus </span></span>
+								<input type="text" placeholder="Focal Length" value=""
+								class="focal-length" id="focus1" name="focus">
+							</div>
+							<div class="inline input-prepend">
+								<span class="add-on "><span class=" span1 left">Shutter </span></span>
+								<input type="text" placeholder="Shutter Speed" value=""
+								class="shutter-speed" id="shutter1" name="shutter">
+							</div>
+							<div class="inline input-prepend">
+								<span class="add-on"><span class=" span1 left">Aperture</span></span>
+								<input type="text" placeholder="Aperture" value=""
+								class="aperture" id="aperture1" name="aperture">
+							</div>
+							<div class="inline input-prepend last">
+								<span class="add-on"><span class=" span1 left">ISO </span></span>
+								<input type="text" placeholder="ISO/Film" value="" class="iso"
+								id="iso1" name="iso">
+							</div>
+							<div class="inline input-prepend last">
+								<span class="add-on"><span class=" span1 left">EV</span></span>
+								<input type="text" placeholder="Exposure Compensation" value=""
+								class="iso" id="ev1" name="ev">
+							</div>
+							<div class="inline input-prepend">
+								<span class="add-on"><span class=" span1 left"> Taken </span></span>
+								<input type="hidden" value="" id="taken_at1"
+								name="taken_at">
+								<input type="text"
+								placeholder="Date Taken" value="" class="date"
+								id="taken_at_display1">
+							</div>
+						</div></td>
+					</tr>
+					<tr class="template-upload fade in">
+						<td colspan="2"></td>
+						<td><span class="start" id="start"> </span><!-- 			 <span class="cancel" id="Cancel">
+
+						<button class="btn btn-warning">
+						<i class="icon-ban-circle icon-white"></i> <span>Cancel</span>
+						</button>
+
+						</span> --></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</form>
+	</div>
+	<div class="onerow">
+		`for(Object path:paths){`
+		<div class="col2">
+			<img src="${path}"  />
+		</div>
+		`}`
+	</div>
+</div>
+
+<style type="text/css">
+    #preview {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #000;
+        overflow: hidden;
+    }
+    #imghead {
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);
+    }
+</style>
+<script type="text/javascript">
+	function previewImage(file) {
+		var MAXWIDTH = 100;
+		var MAXHEIGHT = 100;
+		var div = document.getElementById('preview');
+		if (file.files && file.files[0]) {
+			div.innerHTML = '<img id=imghead>';
+			var img = document.getElementById('imghead');
+			img.onload = function() {
+				var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+				img.width = rect.width;
+				img.height = rect.height;
+				img.style.marginLeft = rect.left + 'px';
+				img.style.marginTop = rect.top + 'px';
+			}
+			var reader = new FileReader();
+			reader.onload = function(evt) {
+				img.src = evt.target.result;
+			}
+			reader.readAsDataURL(file.files[0]);
+		} else {
+			var sFilter = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+			file.select();
+			var src = document.selection.createRange().text;
+			div.innerHTML = '<img id=imghead>';
+			var img = document.getElementById('imghead');
+			img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+			var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+			status = ('rect:' + rect.top + ',' + rect.left + ',' + rect.width + ',' + rect.height);
+			div.innerHTML = "<div id=divhead style='width:" + rect.width + "px;height:" + rect.height + "px;margin-top:" + rect.top + "px;margin-left:" + rect.left + "px;" + sFilter + src + "\"'></div>";
+		}
+	}
+
+	function clacImgZoomParam(maxWidth, maxHeight, width, height) {
+		var param = {
+			top : 0,
+			left : 0,
+			width : width,
+			height : height
+		};
+		if (width > maxWidth || height > maxHeight) {
+			rateWidth = width / maxWidth;
+			rateHeight = height / maxHeight;
+
+			if (rateWidth > rateHeight) {
+				param.width = maxWidth;
+				param.height = Math.round(height / rateWidth);
+			} else {
+				param.width = Math.round(width / rateHeight);
+				param.height = maxHeight;
+			}
+		}
+
+		param.left = Math.round((maxWidth - param.width) / 2);
+		param.top = Math.round((maxHeight - param.height) / 2);
+		return param;
+	}
+</script>     
+
+<div id="preview">
+    <img id="imghead" width=100 height=100 border=0 src='../images/head01_big.jpg'>
+</div>
+    <br/>     
+    <input type="file" onchange="previewImage(this)" />     
+   

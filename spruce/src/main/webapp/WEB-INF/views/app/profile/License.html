@@ -1,0 +1,142 @@
+`extends japidviews._layouts.Layout`
+`args byte value`
+`set title:i18n("license.title")`
+`set header:"set License" `
+`set css
+<script type="text/javascript" src="@{/public/app/license.js}"></script>
+
+`
+
+<div class="grid_row license">
+
+    <div class="col col_3 ">
+        <div class="sidebar-nav ">
+            `tag SettingsMenu "License"`
+        </div>
+    </div>
+    <div class="col col_13 ">
+        <div class="row-fluid ">
+            <div class="span12 well">
+                <input type="hidden" value="${value}" id="licenseLastValue"/>
+
+                <form class="form-horizontal" action="/settings/license/done" id="licenseForm"
+                      method="post">
+                    `tag AllMessage`
+
+
+                    <div class="subtitle">&{license.content}</div>
+                    <div class="control-group  ">
+                        <h4>&{license.by}</h4>
+                        <label class="radio">
+                            <input type="radio" name="by" value="0" checked>
+                            &{yes}
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="by" id="nd" value="nd">
+                            &{no}
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="by" id="sa" value="sa">
+                            &{license.by.share}
+                        </label>
+
+                    </div>
+                    <div class="control-group  ">
+                        <h4>&{license.commercial}</h4>
+
+
+                        <label class="radio">
+                            <input type="radio" name="c" value="1" checked>
+                            &{yes}
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="c" id="nc" value="nc">
+                            &{no}
+                        </label>
+
+
+                    </div>
+
+
+                    <div class="control-group">
+
+                        <button type="submit" class="btn">
+                            &{save.change}
+                        </button>
+
+                    </div>
+                    <h3>你选择的许可协议</h3>
+
+                    <h4 id="cc" class="cc">
+                    </h4>
+
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="col col_3">
+        <div class=" ">
+
+
+        </div>
+
+
+    </div>
+    <div class="col col_13">
+        <div class="row-fluid  ">
+
+            <div class="span12 well">
+                <h3>知识共享协议 3.0 (Creative Commons 3.0)</h3>
+
+                <P>
+                    <img src="/public/images/cc/cc.png" class="img">
+                    本网站发布的所有内容均采用CC协议3.0,详细内容：
+                <ul>
+                    <li>查看 <a href="http://creativecommons.net.cn/licenses/meet-the-licenses/">知识共享许可协议文本</a></li>
+                    <li>查看 <a href="http://creativecommons.net.cn/licenses/licenses_exp/">许可协议说明</a></li>
+                </ul>
+                </P>
+
+
+                <br/>
+
+                <P>
+                <h4>简要协议说明：</h4>
+
+                <div class="note">
+
+                    <img src="/public/images/cc/by.png" class="img">
+                    <strong> 署名：</strong> 您允许他人对自己享有著作权的作品及演绎作品进行复制、发行、展览、表演、放映、广播或通过信息网络向公众传播，但在这些过程中对方必须保留您对原作品的署名。
+                </div>
+                <div class="note">
+                    <img src="/public/images/cc/nc.png" class="img">
+                    <strong> 非商业性使用：</strong>您允许他人对您享有著作权的作品及演绎作品进行复制、发行、展览、表演、放映、广播或通过信息网络向公众传播，但仅限于非商业性目的。
+
+                </div>
+                <div class="note">
+
+                    <img src="/public/images/cc/nd.png" class="img">
+                    <strong> 禁止演绎：</strong>您允许他人对您的作品原封不动地进行复制、发行、展览、表演、放映、广播或通过信息网络向公众传播，但不得进行演绎创作。
+                </div>
+                <div class="note">
+                    <img src="/public/images/cc/sa.png" class="img">
+                    <strong> 相同方式共享：</strong>只有在他人对演绎作品使用与您的原作品相同的许可协议的情况下，您才允许他人发行其演绎作品。
+
+
+                </div>
+                <div class="note"> 注：许可协议协议不能同时包含“相同方式共享”和“禁止演绎”许可要素，“相同方式共享”要素仅适用于演绎作品。</div>
+                </P>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+

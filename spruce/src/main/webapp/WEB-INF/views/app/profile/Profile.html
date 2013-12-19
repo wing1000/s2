@@ -1,0 +1,244 @@
+`import fengfei.ucm.entity.profile.User`
+`extends japidviews._layouts.Layout`
+`args User user`
+`set title: i18n("user.title")`
+`set header:"Information" `
+
+`set css
+<link href="@{'/public/js/jquery.fineuploader/fineuploader-3.6.2.css'}"
+      rel="stylesheet"/>
+<link href="@{'public/bootstrap/datepicker/css/datepicker.css'}" rel="stylesheet"/>
+<script src="@{'public/js/jquery.fineuploader/jquery.fineuploader-3.6.2.min.js'}" type="text/javascript"></script>
+<script src="@{'public/bootstrap/datepicker/js/bootstrap-datepicker.js'}" type="text/javascript"></script>
+<script src="@{'public/bootstrap/datepicker/js/locales/bootstrap-datepicker.zh-CN.js'}" type="text/javascript"></script>
+<link href="@{'/public/jcrop/jquery.Jcrop.min.css'}" rel="stylesheet"/>
+<script src="@{'public/jcrop/jquery.Jcrop.min.js'}" type="text/javascript"></script>
+<script src="@{'public/app/profile.js'}" type="text/javascript"></script>
+
+<style type="text/css">
+    .head_img {
+        max-width: 100px;
+        max-height: 100px;
+        width: 100px;
+        height: 100px;
+    }
+
+    .modal_photo {
+        max-width: 800px;
+        width: 800px;
+    }
+
+    .modal-body_photo {
+        max-width: 800px;
+        max-height: 540px;
+    }
+</style>
+`
+
+<div class="grid_row">
+
+    <div class="col col_3 ">
+        <div class="sidebar-nav ">
+            `tag SettingsMenu "Profile"`
+        </div>
+    </div>
+
+    <div class="col col_13 ">
+        <div class="row-fluid well profile_right">
+            <div class="span12  ">
+                `tag ErrorMessage`
+
+                <form class="" action="/settings/profile/done" method="post">
+                    <div class="row-fluid">
+                        <div class="span6">
+
+                            <div class="control-group ">
+                                <div class="controls inline">
+                                    <div class="head_img">
+                                        <img id="head_img"
+                                             src="${fengfei.spruce.utils.PhotoPathUtils.getUserPhotoDownloadPath(user.idUser,1)}">
+                                    </div>
+                                    <input type="hidden" id="user_id_photo" name="user_photo"
+                                           value="${user.isHeadPhoto}">
+                                    <label class=" inline">
+                                    <span id="upload_head"
+                                          style="display: inline;"
+                                          class="inline"></span> </label><span
+                                        id="upload_message"></span>
+                                </div>
+                            </div>
+                            <div class="control-group ">
+                                <label class="control-label" for="gender0">&{user.gender}</label>
+
+                                <div class="controls ">
+                                    <label class="radio inline">
+                                        <input type="radio"
+                                               id="gender1" name="gender" value="1" ${user.gender==1?"checked":""}>
+                                        &{user.male} </label><label class="radio inline">
+                                    <input type="radio"
+                                           id="gender2" name="gender" value="2" ${user.gender==2?"checked":""}>
+                                    &{user.female} </label><label class="radio inline">
+                                    <input type="radio"
+                                           id="gender0" name="gender" value="0"
+                                    ${(user.gender==null || user.gender==0)?"checked":""}
+                                    >
+                                    &{user.not.specified} </label>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="username">&{user.username}</label>
+
+                                <div class="controls">
+                                    <input type="text" id="username1" name="username1"
+                                           class="span11" placeholder="&{user.userName}"
+                                           value="${user.userName}" readonly="readonly">
+                                    <input
+                                            type="hidden" id="username" name="username" class="span11"
+                                            value="${user.userName}">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="email">&{user.email}</label>
+
+                                <div class="controls">
+                                    <input type="text" id="email1" name="email1" class="span11"
+                                           placeholder="&{user.email}" value="${user.email}" readonly="readonly">
+                                    <input type="hidden" id="email" name="email" class="span11"
+                                           placeholder="&{user.email}" value="${user.email}">
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label">&{user.location}</label>
+
+                                <div class="controls">
+                                    <input id="city" name="city" class="span11" placeholder="&{user.city}"
+                                           type="text" value="${user.city}"/>
+                                    <input class="span11"
+                                           id="state" name="state" placeholder="&{user.state}" type="text"
+                                           value="${user.state}"/>
+                                    <input id="country" name="country"
+                                           class="span11" placeholder="&{user.country}" type="text"
+                                           value="${user.country}"/>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="span6  ">
+
+                            <div class="control-group">
+                                <label class="control-label" for="nicename">&{user.nice.name}</label>
+
+                                <div class="controls">
+                                    <input type="text" id="nicename" name="nicename"
+                                           class="span11" placeholder="&{user.nice.name}"
+                                           value="${user.niceName}">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="birthday">&{user.birthday}</label>
+
+                                <div class="controls">
+                                    <input type="text" id="birthday" name="birthday" data-date="1980-02-02"
+                                           class="span11" placeholder="&{user.birthday}"
+                                           value="${user.birthday}">
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="phone">&{user.phone}</label>
+
+                                <div class="controls">
+                                    <input type="text" id="phone" name="phone" class="span11"
+                                           placeholder="&{user.phone}" value="${user.phoneNum}">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="realName">&{user.real.name}</label>
+
+                                <div class="controls">
+                                    <input type="text" id="realName" name="realName"
+                                           class="span11" placeholder="&{user.real.name}"
+                                           value="${user.realName}">
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="about">&{user.about}</label>
+
+                                <div class="controls">
+                                    <textarea id="about" name="about" class="span11" rows="6"
+                                              placeholder="&{user.about}">${user.about}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn">
+                                Save change
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+            <div class="span5"></div>
+        </div>
+
+    </div>
+</div>
+
+<div id="userPhotoModal" class="modal hide fade modal_photo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"
+                aria-hidden="true">
+            ×
+        </button>
+        <h3 id="myModalLabel">User's photo</h3>
+    </div>
+    <div class="modal-body modal-body_photo">
+        <div id="viewUserPhoto">
+            <img
+                    src="${fengfei.spruce.utils.PhotoPathUtils.getUserPhotoDownloadPath(user.idUser,0)}"
+                    id="ora_user_photo"/>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <form id="cropForm" method="post" class="form-inline">
+            <label>X1
+                <input type="text" size="4" id="x1" name="x1"
+                       class="span1"/>
+            </label><label>Y1
+            <input type="text" size="4"
+                   id="y1" name="y1" class="span1"/>
+        </label><label>X2
+            <input type="text" size="4" id="x2" name="x2"
+                   class="span1"/>
+        </label><label>Y2
+            <input type="text" size="4"
+                   id="y2" name="y2" class="span1"/>
+        </label><label>W
+            <input
+                    type="text" size="4" id="w" name="w" class="span1"/>
+        </label><label>H
+            <input type="text" size="4" id="h" name="h"
+                   class="span1"/>
+        </label>
+
+            <button class="btn" data-dismiss="modal" aria-hidden="true">
+                Close
+            </button>
+            <button class="btn btn-primary" id="SaveUserPhoto" type="button">
+                Save
+                changes
+            </button>
+        </form>
+    </div>
+</div>

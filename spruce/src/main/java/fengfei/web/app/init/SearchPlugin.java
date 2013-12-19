@@ -6,24 +6,23 @@ import fengfei.fir.search.lucene.PhotoIndexCreator;
 import fengfei.fir.search.lucene.Searcher;
 import fengfei.fir.search.lucene.UserIndexCreator;
 import fengfei.fir.utils.PausableLock;
+import fengfei.forest.slice.utils.ResourcesUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import play.Play;
-import play.PlayPlugin;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class SearchPlugin extends PlayPlugin {
+public class SearchPlugin extends BaseInit {
 
     static Logger logger = LoggerFactory.getLogger(SearchPlugin.class);
 
-    @Override
-    public void onApplicationStart() {
-        Properties p = Play.configuration;
+    public void onApplicationStart() throws IOException {
+        Properties p = init();
         String photoQueuePath = p.getProperty("fqueue.path.photo");
         String lucenePhotoPath = p.getProperty("lucene.index.path.photo");
 

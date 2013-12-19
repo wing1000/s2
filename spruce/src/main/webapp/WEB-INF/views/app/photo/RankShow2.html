@@ -1,0 +1,56 @@
+<pre style="display: none">
+`suppressNull on`
+`import fengfei.ucm.entity.photo.*;import fengfei.fir.utils.Path;import java.util.*;import java.util.Map.Entry;` 
+`args Rank rank` 
+</pre>
+<div id="rankShow">
+	<div class="row-fluid stat  border-bottom">
+		<div class="span5 " title="&{pluse.alt}">
+
+			<div class="photo_score_stats">
+				<strong>${rank.sscore}</strong>
+			</div>
+		</div>
+		<div class="span7 ">
+			<div class="photo_stats border-left">
+				<ul>
+
+					<li title="&{view.num}">
+						<strong class="key">${rank.view}</strong><small class="value">&{view}</small>
+					</li>
+
+					<li  title="&{vote.num}" >
+						<strong
+						class="key">${rank.vote}</strong><small class="value">&{view}</small>
+					</li>
+
+					<li  title="&{favorite.num}" >
+						<strong
+						class="key">${rank.favorite}</strong><small class="value">&{favorite}</small>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+
+	</div>
+	<div class="row-fluid stat shadow">
+		<div class="span5">
+			<div class="photo_max_stats">
+				<strong>${rank.sMaxScore}</strong>
+			</div>
+		</div>
+		<div class="span7 ">
+			<div class="photo_stats  border-left">
+				<ul class="stats">
+					<li>
+						<small class="faded">&{"highest.pulse"}</small>
+					</li>
+					<li>
+						<small class="faded">${rank.sMaxAt}</small>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

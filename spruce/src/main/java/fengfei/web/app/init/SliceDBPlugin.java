@@ -8,12 +8,10 @@ import fengfei.forest.slice.database.DatabaseRouterFactory;
 import fengfei.forest.slice.database.utils.Transactions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import play.Play;
-import play.PlayPlugin;
 
 import java.util.Properties;
 
-public class SliceDBPlugin extends PlayPlugin {
+public class SliceDBPlugin extends BaseInit {
 
     static Logger logger = LoggerFactory.getLogger(SliceDBPlugin.class);
     public static final String SliceConfig = "SliceConfig";
@@ -21,10 +19,10 @@ public class SliceDBPlugin extends PlayPlugin {
     DatabaseRouterFactory databaseRouterFactory;
     SliceConfigReader configReader;
 
-    @Override
     public void onApplicationStart() {
         System.out.println("----------------------------");
-        Properties p = Play.configuration;
+        Properties p = init();
+        boolean isDev = p.getProperty("application.mode").equals("dev");
         String sliceConfig = p.getProperty(SliceConfig);
         if (sliceConfig != null && !"".equals(sliceConfig)) {
             String[] scc = sliceConfig.split("/");
@@ -44,17 +42,18 @@ public class SliceDBPlugin extends PlayPlugin {
                 databaseRouterFactory = new DatabaseRouterFactory(config);
                 logger.info("pasered config.");
                 Transactions
-                    .setDatabaseSliceGroupFactory(databaseRouterFactory, Play.mode.isDev());
+                        .setDatabaseSliceGroupFactory(databaseRouterFactory, isDev);
 
             } catch (Throwable e) {
                 logger.error("Initialize slice config error for file " + sliceConfig, e);
             }
         }
     }
+
     private void expressInstallTable() {
 
     }
-    @Override
+
     public void onApplicationStop() {
         // try {
         // if (null != Transactions.databaseSliceGroupFactory) {

@@ -1,0 +1,29 @@
+`extends japidviews._layouts.Layout`
+`import fengfei.ucm.entity.profile.UserPwd`
+`args UserPwd up`
+`set title:"Sprucy Log in Page"`
+`set header:" Log in " `
+`set css
+
+`
+<p class="line10"></p><p class="line10"></p>
+<div class="grid_row signupx">
+	<div class="col col_4" >
+		<p  ></p>
+	</div>
+	<div class="col col_8" >
+
+		<div id="login"   class="cardx"   >
+			<h5>Hi, ${up.userName}</h5>
+			<p>
+				Your email address: ${up.email}
+			</p>
+			<p>
+				Register sucess! Check your email to verify email address.
+			</p>
+		</div>
+	</div>
+	<div class="col col_4" >
+		<p></p>
+	</div>
+</div>

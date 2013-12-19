@@ -2,6 +2,7 @@ package controllers;
 
 import fengfei.fir.utils.AppUtils;
 import fengfei.fir.utils.MapUtils;
+import fengfei.fir.utils.WebUtils;
 import fengfei.sprucy.AppConstants;
 import fengfei.ucm.entity.photo.Photo;
 

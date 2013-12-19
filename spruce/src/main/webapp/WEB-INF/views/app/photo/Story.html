@@ -1,0 +1,356 @@
+<pre style="display: none">
+`import java.util.Set;import fengfei.ucm.entity.photo.Refresh;import fengfei.fir.utils.Path;import fengfei.fir.model.PhotoShow`
+`import fengfei.ucm.entity.profile.User;`
+`extends  japidviews._layouts.Layout`
+`set title: "Sprucy Story Page"`
+`set header: "Story"`
+`set css
+<!--[if lt IE 7]><link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap-ie6.min.css"><![endif]-->
+<link rel="stylesheet" href="@{'/public/blueimp/css/jquery.fileupload-ui.css'}">
+<script src="@{'/public/blueimp/js/vendor/jquery.ui.widget.js'}"></script>
+<script src="@{'/public/blueimp/load-image.min.js'}"></script>
+<script src="@{'/public/blueimp/tmpl.min.js'}"></script>
+<script src="@{'/public/blueimp/canvas-to-blob.min.js'}"></script>
+<script src="@{'/public/blueimp/js/jquery.iframe-transport.js'}"></script>
+<script src="@{'/public/blueimp/js/jquery.fileupload.js'}"></script>
+<script src="@{'/public/blueimp/js/jquery.fileupload-process.js'}"></script>
+<script src="@{'/public/blueimp/js/jquery.fileupload-image.js'}"></script>
+<script src="@{'/public/blueimp/js/jquery.fileupload-validate.js'}"></script>
+<script src="@{'/public/js/binaryajax.js'}"></script>
+<script src="@{'/public/js/exif.js'}"></script>
+<script src="@{'/public/app/ExifUtils.js'}"></script>
+<script src="@{'/public/app/story.js'}"></script>
+<style type="text/css">
+	.left {
+		text-align: left;
+		padding: 0px;
+		padding-right: 4px;
+		margin: 0px;
+		width: 50px;
+		*width: 50px;
+		margin: 0px;
+	}
+
+	.right_line {
+		border-right: 1px solid #dddddd;
+	}
+
+	.non-border {
+		border: 0px;
+	}
+
+	.magin_left {
+		margin-left: 0px;
+	}
+
+	.center {
+		text-align: center;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.story {
+
+	}
+	.story .title {
+		border-bottom: 1px solid #CCCCCC;
+		padding-bottom: 20px;
+		width: 100%;
+		margin-bottom: 20px;
+		font-size: 18px;
+	}
+	.story input.col_12, .story textarea.col_12 {
+		width: 866px;
+		max-width: 866px;
+	}
+	.story .well {
+		width: 1140px;
+		max-width: 1140px;
+		margin-top: 15px;
+	}
+	.story .edit_exif {
+		display: none;
+	}
+	.story .edit {
+		height: 240px;
+		max-height: 240px;
+	}
+	.story .preview {
+		width: 100%;
+		margin-left: auto;
+		margin-right: auto;
+		*zoom: 1;
+		overflow: hidden;
+	}
+	.story .preview img, .story .preview canvas {
+		width: 100%;
+		-moz-box-shadow: 0px 1px 3px rgba(0,0,0,0.3);
+		-webkit-box-shadow: 0px 1px 3px rgba(0,0,0,0.3);
+		box-shadow: 0px 1px 3px rgba(0,0,0,0.3);
+	}
+
+	.story .help {
+		width: 240px;
+		max-width: 240px;
+	}
+	.story .icon-head {
+		width: 60px;
+		max-width: 60px;
+		overflow: hidden;
+	}
+
+</style>
+
+`
+</pre>
+
+
+
+
+
+
+`tag AddNav "story"`
+
+<form id="fileuploadForm" action="/story/done" method="post" enctype="multipart/form-data">
+
+	<div class="grid_row story">
+<!--
+		<div class="col col_16"  >
+			<div class="title">
+				New Story
+			</div>
+		</div>-->
+
+
+		<div class="col col_4">
+			<div class="help  edit">
+				<img src="@{/public/images/stories_edit.png}" />
+				<div  >
+					Story book
+				</div>
+			</div>
+
+		</div>
+
+		<div class="col col_12"  >
+			<div>
+				<input  type="text" name="story_title" placeholder="Story title" title="Story title" class="col_12"/>
+			</div>
+			<div>
+				<textarea name="content" placeholder="Your story" title="Your story" class="col_12" rows="6"></textarea>
+			</div>
+			<div>
+				<textarea name="tags" placeholder="List tags" title="List tags" class="col_12" rows="2"></textarea>
+			</div>
+		</div>
+
+		<div class="col col_16  "  >
+			<div class="well fileupload-buttonbar shadow">
+
+				<div class="">
+					<!-- The fileinput-button span is used to style the file input field as button -->
+					<span class="btn btn-success fileinput-button"> <i class="icon-plus icon-white"></i> <span>Add files...</span>
+						<input type="file" name="files[]" multiple>
+					</span>
+					<button type="submit" class="btn btn-primary start">
+						<i class="icon-upload icon-white"></i>
+						<span>Start All</span>
+					</button>
+					<button type="reset" class="btn btn-warning cancel">
+						<i class="icon-ban-circle icon-white"></i>
+						<span>Cancel All</span>
+					</button>
+					<!-- The loading indicator is shown during file processing -->
+					<span class="fileupload-loading"></span>
+				</div>
+				<!-- The global progress information -->
+				<div class=" fileupload-progress fade">
+					<!-- The global progress bar -->
+					<div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+						<div class="bar" style="width:0%;"></div>
+					</div>
+					<!-- The extended global progress information -->
+					<div class="progress-extended">
+						&nbsp;
+					</div>
+				</div>
+			</div>
+			<div class="files"></div>
+
+		</div>
+
+	</div>
+</form>
+
+<script id="template-upload" type="text/x-tmpl">
+
+	{~% for (var i=0, file; file=o.files[i]; i++) {console.info(o);  var data=o.data;var imgIndex=data.imageIndex;  %}
+	<table class="table table-striped img_shadow template-upload fade">
+	<thead>
+	<tr>
+	<td colspan="2" class="non-border ">
+	<div class="progress_per progress progress-info progress-striped" >
+	<div class="bar"></div>
+	</div></td>
+	<td> {~% if (!o.files.error && !i && !o.options.autoUpload) { %}
+	{~% if (!o.options.autoUpload) { %}
+	<button class="btn btn-primary start">
+	<i class="icon-upload icon-white"></i>
+	<span>{~%=locale.fileupload.start%}</span>
+	</button> {~% } %}  {~% } %}
+	{~% if (!i) { %}
+	<button class="btn btn-warning cancel">
+	<i class="icon-ban-circle icon-white"></i>
+	<span>{~%=locale.fileupload.cancel%}</span>
+	</button> {~% } %} </td>
+	</tr>
+	</thead>
+	<tbody >
+	<tr>
+	<td class="right_line  col_8">
+	<div class=" magin_left">
+
+	<div id="preview" class="  preview img_shadow"></div>
+	<p>
+	{~% if (file.error) { %}
+	<div>
+	<span class="label label-important">Error</span> {~%=file.error%}
+	</div>
+	{~% } %}
+	</p>
+	<p>
+	file name: <span id="name">{~%=file.name%}</span>
+	</p>
+	<p>
+	source size: <span id="size">{~%=o.formatFileSize(file.size)%}</span>
+	</p>
+	</div></td>
+
+	<td class="right_line col_4">
+	<div class=" magin_left">
+	<div class="block">
+	<label for="title{~%=imgIndex%}">Title</label>
+	<input type="text"
+	placeholder="title" maxlength="100" id="title{~%=imgIndex%}" value="{~%=file.name%}"
+	name="title" class=" span4 ">
+	<input	type="hidden"  id="id{~%=imgIndex%}" name="id" />
+	<input	type="hidden"  id="index{~%=imgIndex%}"	value="{~%=imgIndex%}" name="index"/>
+
+	</div>
+	<div class="block">
+	<label for="description{~%=imgIndex%}">Description</label>
+	<textarea class=" span4 " id="description{~%=imgIndex%}" rows="6"	placeholder="Description" name="description"></textarea>
+	</div>
+	<div class="block">
+	<select name="category" id="category{~%=imgIndex%}"
+	class="category span4">
+	<optgroup label="Category"></optgroup>
+	<option value="10">Abstract</option>
+	<option value="11">Animals</option>
+	<option value="5">Black and White</option>
+	<option value="1">Celebrities</option>
+	<option value="9">City and Architecture</option>
+	<option value="15">Commercial</option>
+	<option value="16">Concert</option>
+	<option value="20">Family</option>
+	<option value="14">Fashion</option>
+	<option value="2">Film</option>
+	<option value="24">Fine Art</option>
+	<option value="23">Food</option>
+	<option value="3">Journalism</option>
+	<option value="8">Landscapes</option>
+	<option value="12">Macro</option>
+	<option value="18">Nature</option>
+	<option value="4">Nude</option>
+	<option value="7">People</option>
+	<option value="19">Performing Arts</option>
+	<option value="17">Sport</option>
+	<option value="6">Still Life</option>
+	<option value="21">Street</option>
+	<option value="26">Transportation</option>
+	<option value="13">Travel</option>
+	<option value="22">Underwater</option>
+	<option value="27">Urban Exploration</option>
+	<option value="25">Wedding</option>
+	<option selected="selected" value="0">Uncategorized</option>
+	</select>
+	</div>
+	<div class="block">
+	<label for="tags{~%=imgIndex%}">Tags</label>
+	<textarea   placeholder="Tags (divide by comma)" rows="6"
+	class="span4" name="tags" id="tags{~%=imgIndex%}"></textarea>
+	</div>
+
+	</div></td>
+	<td class="col_4">
+	<div class=" magin_left">
+	<div class="inline input-prepend">
+	<span class="add-on"><span class="icon-head left">Camera</span></span>
+	<input type="text" placeholder="Camera" value=""
+	class="Camera" id="camera{~%=imgIndex%}" name="camera">
+	<input
+	type="hidden" placeholder="Make" value="" class="make"
+	id="make{~%=imgIndex%}" name="make">
+	<input type="hidden"  value="" id="WhiteBalance{~%=imgIndex%}" name="WhiteBalance">
+	<input type="hidden"  value="" id="Software{~%=imgIndex%}" name="Software">
+	<input type="hidden"  value="" id="Flash{~%=imgIndex%}" name="Flash">
+	<input type="hidden"  value="" id="ColorSpace{~%=imgIndex%}" name="ColorSpace">
+	<input type="hidden"  value="" id="MeteringMode{~%=imgIndex%}" name="MeteringMode">
+
+	</div>
+	<div class="inline input-prepend">
+	<span class="add-on"><span class="icon-head left">Lens</span> </span>
+	<input type="text" placeholder="Lens" value="" class="lens"
+	id="lens{~%=imgIndex%}" name="lens">
+	</div>
+	<div class="inline input-prepend">
+	<span class="add-on"><span class="icon-head left">Focus </span></span>
+	<input type="text" placeholder="Focal Length" value=""
+	class="focal-length" id="focus{~%=imgIndex%}" name="focus">
+	</div>
+	<div class="inline input-prepend">
+	<span class="add-on "><span class="icon-head left">Shutter </span></span>
+	<input type="text" placeholder="Shutter Speed" value=""
+	class="shutter-speed" id="shutter{~%=imgIndex%}" name="shutter">
+	</div>
+	<div class="inline input-prepend">
+	<span class="add-on"><span class="icon-head left">Aperture</span></span>
+	<input type="text" placeholder="Aperture" value=""
+	class="aperture" id="aperture{~%=imgIndex%}" name="aperture">
+	</div>
+	<div class="inline input-prepend last">
+	<span class="add-on"><span class="icon-head left">ISO </span></span>
+	<input type="text" placeholder="ISO/Film" value="" class="iso"
+	id="iso{~%=imgIndex%}" name="iso">
+	</div>
+	<div class="inline input-prepend last">
+	<span class="add-on"><span class="icon-head left">EV</span></span>
+	<input type="text" placeholder="Exposure Compensation" value=""
+	class="iso" id="ev{~%=imgIndex%}" name="ev">
+	</div>
+	<div class="inline input-prepend">
+	<span class="add-on"><span class="icon-head left"> Taken </span></span>
+	<input type="hidden" value="" id="taken_at{~%=imgIndex%}"
+	name="taken_at">
+	<input type="text"
+	placeholder="Date Taken" value="" class="date"
+	id="taken_at_display{~%=imgIndex%}">
+	</div>
+	<div class="checkbox">
+	<label for="adult{~%=imgIndex%}">
+	<input type="checkbox" value="1"
+	id="adult{~%=imgIndex%}" name="adult">
+	For adult content?</label>
+	</div>
+	<div class="checkbox">
+	<label for="copyright{~%=imgIndex%}">
+	<input type="checkbox"
+	value="1" id="copyright{~%=imgIndex%}" name="copyright" checked="checked">
+	Owns
+	the copyright?</label>
+	</div>
+	</div></td>
+	</tr>
+	</tbody>
+	</table>
+	{~%  } %}
+</script>

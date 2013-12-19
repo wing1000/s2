@@ -11,28 +11,25 @@ import fengfei.shard.redis.RedisCommand;
 import org.apache.commons.pool.impl.GenericObjectPool.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import play.Play;
-import play.PlayPlugin;
 
 import java.util.Properties;
 
-public class RedisPlugin extends PlayPlugin {
+public class RedisPlugin extends BaseInit {
 
     static Logger logger = LoggerFactory.getLogger(RedisPlugin.class);
     final static String HostsKey = "redis.hosts";
     final static String TimeoutKey = "redis.timeout";
     final static String PloyKey = "redis.ploy.class";
 
-    @Override
     public void onApplicationStart() {
-        Properties p = Play.configuration;
+        Properties  p = init();
         String hosts = p.getProperty(HostsKey, "localhost:6379");
         String timeoutStr = p.getProperty(TimeoutKey, "localhost:6379");
         int timeout = Integer.parseInt(timeoutStr);
         String ployClass = p.getProperty(PloyKey, HashPlotter.class.getCanonicalName());
         try {
             Ploy ploy = (Ploy) Class.forName(ployClass).newInstance();
-            play.Logger.info("init redis shards.");
+            logger.info("init redis shards.");
             JedisShards redis = new JedisShards(hosts, timeout, ploy, readConfig());
 
             //
@@ -53,21 +50,23 @@ public class RedisPlugin extends PlayPlugin {
     private Config readConfig() {
         String prefix = "redis.pool.";
         Config cfg = new Config();
-        Properties p = Play.configuration;
+        Properties p = init();
         cfg.lifo = Boolean.valueOf(p.getProperty(prefix + "lifo", "true"));
         cfg.maxActive = Integer.valueOf(p.getProperty(prefix + "maxActive", "18"));
         cfg.maxIdle = Integer.valueOf(p.getProperty(prefix + "maxIdle", "6"));
         cfg.maxWait = Integer.valueOf(p.getProperty(prefix + "maxWait", "150000"));
         cfg.minEvictableIdleTimeMillis = Integer.valueOf(p.getProperty(prefix
-                + "minEvictableIdleTimeMillis", "100000"));
+                                                                               + "minEvictableIdleTimeMillis",
+                                                                       "100000"));
         cfg.minIdle = Integer.valueOf(p.getProperty(prefix + "minIdle", "0"));
         cfg.numTestsPerEvictionRun = Integer.valueOf(p.getProperty(prefix
-                + "numTestsPerEvictionRun", "1"));
+                                                                           + "numTestsPerEvictionRun", "1"));
         cfg.testOnBorrow = Boolean.valueOf(p.getProperty(prefix + "testOnBorrow", "false"));
         cfg.testOnReturn = Boolean.valueOf(p.getProperty(prefix + "testOnReturn", "false"));
         cfg.testWhileIdle = Boolean.valueOf(p.getProperty(prefix + "testWhileIdle", "false"));
         cfg.timeBetweenEvictionRunsMillis = Integer.valueOf(p.getProperty(prefix
-                + "timeBetweenEvictionRunsMillis", "120000"));
+                                                                                  + "timeBetweenEvictionRunsMillis",
+                                                                          "120000"));
         cfg.whenExhaustedAction = Byte.valueOf(
                 p.getProperty(prefix + "whenExhaustedAction", "1"),
                 10);

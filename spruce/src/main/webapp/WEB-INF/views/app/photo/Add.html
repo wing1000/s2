@@ -1,0 +1,31 @@
+`extends japidviews._layouts.Layout`
+`set title: "Sprucy Home Page"`
+`set header: "Index" `
+
+<div class="grid_row">
+
+	<div class="col photo_col width_4">
+		<a href="/upload"  >
+		<div class="photo_preview photo_preview_4 ">
+			&{add.upload}
+		</div></a>
+	</div>
+	<div class="col photo_col width_4">
+		<a href="/story"  >
+		<div class="photo_preview photo_preview_4 ">
+			&{add.story}
+		</div> </a>
+	</div>
+	<div class="col photo_col width_4">
+		<a href="/blink"   >
+		<div class="photo_preview photo_preview_4 ">
+			&{add.blink}
+		</div> </a>
+	</div>
+	<div class="col photo_col width_4">
+		<a href="/photo/manage"  >
+		<div class="photo_preview photo_preview_4 ">
+			&{add.manage}
+		</div> </a>
+	</div>
+</div>

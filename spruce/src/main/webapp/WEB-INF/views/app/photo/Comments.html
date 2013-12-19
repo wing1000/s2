@@ -1,0 +1,55 @@
+<pre style="display: none">
+`suppressNull on`
+`import fengfei.ucm.entity.photo.*;import fengfei.fir.utils.Path;import java.util.*;import java.util.Map.Entry;` 
+`args List<Comment> comments,List<String> pages,int cp,int ct`
+</pre>
+
+
+<div>
+    <ul class="media-list" id="comments">
+        `for(Comment c:comments){`
+        <li class="media">
+            <a class="pull-left" href="/to/${c.idUser}">
+                <div class="media-object"><img
+                        class=" img-rounded image_64"
+                        src="${fengfei.spruce.utils.PhotoPathUtils.getUserPhotoDownloadPath(c.idUser)}">
+                </div>
+            </a>
+
+            <div class="media-body">
+                <div class="media-heading border-bottom">
+                    <strong><a href="/to/${c.idUser}">${c.niceName}</a></strong>
+                    <small>  &nbsp;&nbsp;${c.sinceTime}</small>
+                </div>
+                <small>${c.content}</small>
+            </div>
+        </li>
+        `}`
+
+    </ul>
+
+</div>
+<div class="line6"></div>
+`if(pages.size()>1){`
+<div class="pagination pagination-centered" id="pagination">
+    <input type="hidden" name="cp" id="cp" value="${cp}"/>
+    <input type="hidden" name="ct" id="ct" value="${ct}"/>
+    <ul>
+        <li
+        ${cp==1?"class=\"disabled\"":""}>
+        <a href="javascript:void()" page="-1" ${cp==1?"disabled":""}>Prev</a>
+        </li>
+        `for(String page: pages){int p=Integer.parseInt(page);`
+        <li
+        ${cp==p?"class=\"active\"":""}>
+        <a href="javascript:void()" page="${p-cp}" ${cp==p?"disabled":""}>${p}</a>
+        </li>
+        `}`
+        <li
+        ${cp==ct?"class=\"disabled\"":""}>
+        <a href="javascript:void()" page="1" ${cp==ct?"disabled":""}>Next</a>
+        </li>
+    </ul>
+</div>
+`}`
+</div>

@@ -1,0 +1,193 @@
+<pre style="display: none">
+`import java.util.Set;import fengfei.ucm.entity.photo.*;import fengfei.fir.utils.Path;import fengfei.fir.model.PhotoShow`
+`import fengfei.ucm.entity.profile.User;`
+`extends  japidviews._layouts.Layout`
+`args String pagePath, List<? extends PhotoShow> photos, int pageNum, User user,List<Long> targets,List<Long> sources,int targetCount,int sourceCount,Rank rank` 
+`set title: "Sprucy Your Page"`
+`set header: "Yours"`
+`set css
+`
+</pre>
+
+`System.out.println(user);`
+
+
+
+
+
+
+<div class="grid_row yours">
+	<div class="col col_4">
+		<div class="row-fluid card "  >
+			<div class="span6 first">
+				<img width="95" height="95" class="img-rounded"
+				src="${fengfei.spruce.utils.PhotoPathUtils.getUserPhotoDownloadPath(user.idUser)}">
+			</div>
+			<div class="span6">
+				<div class=" ">
+					<div>
+						<strong>${user.niceName}</strong>
+					</div>
+					<div>
+						<a href="/settings/profile" class="btn btn-small">Edit Profile</a>
+					</div>
+				</div>
+			</div>
+			<div class="span12 first" >
+				<div class="line10 hr1"></div>
+				<div class="line10"></div>
+				个人介绍
+			</div>
+		</div>
+
+		<div class="row-fluid card ">
+			<div class="span6 affection">
+				<div>
+					<strong>${rank.affection}</strong>
+				</div>
+				<div>
+					Affection
+				</div>
+			</div>
+			<div class="span6 photo_stats">
+				<ul >
+
+					<li title="Views">
+						<small class="key" >Views</small><strong class="value">${rank.view}</strong>
+					</li>
+					<li title="Votes">
+						<small class="key">Votes</small><strong class="value">${rank.vote}</strong>
+					</li>
+					<li title="Favorites">
+						<small class="key">Favorites</small><strong class="value">${rank.favorite}</strong>
+					</li>
+					<li title="comments">
+						<small class="key">Comments</small><strong class="value">${rank.comment}</strong>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+		<div class=" card map "  >
+			`String location=user.toLocation();if(location.length()<=6) location="chengdu, China";`
+			<a href="http://maps.google.com/maps?spn=0.1,0.1&t=m&z=10&q=${location}" target="_blank"> <img alt="Staticmap?size=280x100&amp;sensor=false&amp;zoom=6&amp;markers${location}" src="http://maps.googleapis.com/maps/api/staticmap?size=280x100&amp;sensor=false&amp;zoom=6&amp;markers=${location}" /> </a>
+		</div>
+
+		<div class="card   ">
+			<h6>Following (${targetCount})</h6>
+			<div class="onerow">
+				`if(targets!=null){`
+				`for(long id: targets){`
+				<div class="col3"><img class="img-rounded"
+					src="${fengfei.spruce.utils.PhotoPathUtils.getUserPhotoDownloadPath(id)}">
+				</div>
+
+				`}`
+				`}`
+
+			</div>
+		</div>
+		<div class="card ">
+			<h6>Followed (${sourceCount})</h6>
+			<div class="onerow">
+				`if(sources!=null){`
+				`for(Long id: sources){`
+				<div class="col3"><img class="img-rounded"
+					src="${fengfei.spruce.utils.PhotoPathUtils.getUserPhotoDownloadPath(id)}">
+				</div>
+
+				`}`
+				`}`
+
+			</div>
+		</div>
+		<div class="card ">
+			<div class="feeds">
+				RSS Feeds:
+				<div>
+					<a>${user.niceName}'s Photos</a>
+				</div>
+				<div>
+					<a>${user.niceName}'s Favorites</a>
+				</div>
+				<div>
+					<a>${user.niceName}'s Stories</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	`String action=fengfei.spruce.utils.WebUtils.getLastUrlWord(request.url);`
+	`Map actions=new HashMap();`
+	`actions.put(action,"class=\"active\"");`
+	<div class="col col_12 yours">
+		<div class="onerow" >
+			<div class="col20 nav_title  " >
+				<ul class="nav nav-pills ">
+					<li ${actions.get("home")}>
+						<a href="/yours/0/home">Photos</a>
+					</li>
+					<li  ${actions.get("story")}>
+						<a href="/yours/0/story">Stories</a>
+					</li>
+					<li ${actions.get("fav")}>
+						<a href="/yours/0/fav">Favorites</a>
+					</li>
+					<li ${actions.get("flow")}>
+						<a href="/yours/0/flow">Flow</a>
+					</li>
+					<li ${actions.get("stats")}>
+						<a href="/yours/0/stats">Statistics</a>
+					</li>
+				</ul>
+
+			</div>
+
+		</div>
+
+		<div class="grid_row  previews">
+			`for(PhotoShow photo : photos){`
+			<div class="col photo_col width_3">
+				<div class="photo_preview photo_preview_3" >
+					<a href="/show/${photo.idPhoto}_${photo.idUser}?from=${pagePath}" target="photo_view" ><img src="${Path.getJpegDownloadPath(photo.idPhoto,1)}" /></a>
+					<div class="caption">
+						<div class="title">
+							<a href="/show/${photo.idPhoto}_${photo.idUser}?feature=${pagePath}" target="photo_view" >${photo.title}</a>
+						</div>
+						<div class="score">
+							${photo.sscore}
+						</div>
+					</div>
+
+				</div>
+			</div>
+			`}`
+
+		</div>
+		<div class=" container">
+			<div class="col col_16 pager pagination-right">
+				<ul>
+					<li>
+						<a href="${pagePath}/${(pageNum-1<=0)?1:(pageNum-1)}">Prev</a>
+					</li>
+					`if(pageNum>=2){`
+					<li >
+						<a href="${pagePath}/1">First</a>
+					</li>`}`
+
+					<!--	<li class="disabled"><a href="#">1</a></li>
+					<li><a href="#">2</a></li>
+					<li><a href="#">3</a></li>
+					<li><a href="#">4</a></li>
+					<li><a href="#">5</a></li>-->
+					`if(photos.size()>=20){`
+					<li>
+						<a href="${pagePath}/${photos.size()<20?pageNum:(pageNum+1)}" >Next</a>
+					</li>`}`
+
+				</ul>
+			</div>
+		</div>
+
+	</div>
+</div>
+
